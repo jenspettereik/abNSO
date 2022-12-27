@@ -1,0 +1,63 @@
+module infra_isis {
+
+  namespace "http://example.com/infra_isis";
+  prefix infra_isis;
+
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import tailf-common {
+    prefix tailf;
+  }
+  import tailf-ncs {
+    prefix ncs;
+  }
+
+  description
+    "Infrastructure ISIS for Mobile Backhaul for all other devices than ER. This service is used as RFS in an CFS-RFS setup. Alternatively the mb_infra_cfs does the device provisioning directly";
+
+  revision 2022-12-21 {
+    description
+      "Initial revision.";
+  }
+
+  list infra_isis {
+    description "This is an RFS skeleton service";
+
+    key name;
+    leaf name {
+      tailf:info "Unique service id";
+      tailf:cli-allow-range;
+      type string;
+    }
+
+    uses ncs:service-data;
+    ncs:servicepoint infra_isis-servicepoint;
+
+    leaf device {
+      type leafref {
+        path "/ncs:devices/ncs:device/ncs:name";
+      }
+    }
+    leaf instance {
+      type string;
+    }
+    leaf maxwait {
+      type uint32;
+    }
+    leaf max_lsp_lifetime {
+      type uint32;
+    }
+    leaf interface_name {
+      tailf:info "Interface name. For example FastEthernet.";
+      type string;
+    }
+    leaf interface_number {
+      tailf:info "Interface number. For example 0 or 1/0";
+      type string;
+    }
+    leaf mgmt_ipv4_address {
+      type inet:ipv4-address;
+    }
+  }
+}

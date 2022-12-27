@@ -1,0 +1,13 @@
+<config-template xmlns="http://tail-f.com/ns/config/1.0">
+  <!-- THIS TEMPLATE IS USED IN CASE OF INDIRECT DEPLOYMENT TO DEVICE, IE CFS - RFS CONCEPT IS APPLIED -->
+  <!-- THIS TEMPLATE IS FOR THE ER DEVICE TYPE -->
+  <infra_isis_er xmlns="http://example.com/infra_isis_er">
+    <name>{$name}</name>
+    <device>{$device}</device>
+    <maxwait>{$maxwait}</maxwait>
+    <instance>{$isis_instance}</instance>
+    <max_lsp_lifetime>{$max_lsp_lifetime}</max_lsp_lifetime>
+    <interface_name>{$isis_interface_name}</interface_name>
+    <interface_number>{$isis_interface_number}</interface_number>
+  </infra_isis_er>
+</config-template>

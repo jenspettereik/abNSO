@@ -1,0 +1,205 @@
+module mb_core {
+
+  namespace "http://example.com/mb_core";
+  prefix mb_core;
+
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import tailf-common {
+    prefix tailf;
+  }
+  import tailf-ncs {
+    prefix ncs;
+  }
+
+  description
+    "This is the Mobile Backhaul Core service, which contains the inventory. You must populate the inventory before the augmenting infrastructure, metro3 and l3vpn services can run";
+
+  revision 2022-12-20 {
+    description
+      "Initial revision.";
+  }
+
+  container mb {
+
+    container mb_inventory {
+
+      container metroDevices {
+        list metroDevice {
+          key device_name;
+          leaf device_name {
+            type leafref {
+              path "/ncs:devices/ncs:device/ncs:name";
+            }
+          }
+          leaf hostname {
+            type string;
+          }
+          leaf device_type {
+            tailf:info "The type of the device decides which template to use";
+            type enumeration {
+              enum ER;
+              enum CSR;
+              enum AGG;
+              enum PE;
+              enum CE;
+            }
+          }
+          leaf ipv4_mgmt_addr {
+            tailf:info "IPv4 management address and Loopback0 address";
+            type inet:ipv4-address;
+          }
+          leaf isis_interface_name {
+            tailf:info "Metro interface name eg TenGigE";
+            type string;
+          }
+
+          leaf isis_interface_number {
+            tailf:info "Metro interface number eg 0/0/0/21";
+            type string;
+          }
+
+          leaf ipv4_addr {
+            tailf:info "IP address of the metro interface";
+            type inet:ipv4-address;
+          }
+
+          leaf ipv4_mask {
+            tailf:info "Mask for the IP address of the metro interface";
+            type inet:ipv4-address;
+          }
+        }
+      }
+
+      container access_lists {
+        list access_list {
+          key acl_name;
+          leaf acl_name {
+            type string;
+          }
+          list sequence {
+            key sequence_number;
+            leaf sequence_number {
+              type uint16;
+            }
+            leaf permit_or_deny {
+              type enumeration {
+                enum permit;
+                enum deny;
+              }
+            }
+            leaf protocol {
+              type string;
+            }
+            leaf ipv4_addr {
+              type inet:ipv4-address;
+            }
+            leaf prefix-length {
+              type uint16;
+            }
+          }
+        }
+      }
+
+      container bgp_config {
+        leaf as_number {
+          tailf:info "Autonomous System number eg 29695 set as default";
+          type uint16;
+          default 29695;
+        }
+      }
+
+      container customers {
+        list customer {
+          key customer_name;
+          leaf customer_name {
+            type string;
+          }
+          leaf AS {
+            tailf:info "Autonomous System number";
+            type uint16;
+          }
+          list vpn {
+            key vpn_name;
+            leaf vpn_name {
+              type string;
+              mandatory true;
+            }
+            leaf interface {
+              type string;
+              tailf:info "Interface for the VPN";
+            }
+            leaf device_group {
+              type leafref {
+                path "/ncs:devices/ncs:device-group/ncs:name";
+              }
+            }
+            leaf c_vlan {
+              type uint16;
+              tailf:info "Customer VLAN";
+            }
+            leaf ipv4_addr {
+              tailf:info "Ip address of the VPN interface";
+              type inet:ipv4-address;
+            }
+            leaf ipv4_mask {
+              type inet:ipv4-address;
+            }
+            leaf vrf_name {
+              type string;
+            }
+            leaf RD {
+              tailf:info "Route Distinguisher";
+              type uint32;
+            }
+          }
+        }
+      }
+
+      container METRO3Areas {
+        list METRO3Area {
+          key metro3_area;
+          leaf metro3_area {
+            type string;
+          }
+          list RR {
+            key RR_ipv4_addr;
+            leaf RR_ipv4_addr {
+              tailf:info "IP address of the neighbor";
+              type inet:ipv4-address;
+            }
+            leaf neighbor_group_name {
+              tailf:info "Name of the neighbor group to which the RR belongs";
+              type string;
+              default "T-RR-NC";
+            }
+            leaf neighbor_description {
+              tailf:info "Description of the neighbor RR";
+              type string;
+              default "### ALL iBGP SESSIONS ###";
+            }
+          }
+        }
+      }
+
+      container ISISinstances {
+        list ISISinstance {
+          key instance;
+          leaf instance {
+            type string;
+          }
+          leaf maxwait {
+            type uint32;
+          }
+          leaf max_lsp_lifetime {
+            type uint32;
+          }
+          leaf net_id {
+            type string;
+          }
+        }
+      }
+    }
+  }
+}

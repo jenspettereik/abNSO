@@ -1,0 +1,10 @@
+<config-template xmlns="http://tail-f.com/ns/config/1.0">
+  <metro3_rr xmlns="http://example.com/metro3_rr">
+    <name>{$name}</name>
+    <device>{$device}</device>
+    <as_number>{$as_number}</as_number>
+    <neighbor_ipv4_address>{$neighbor_ipv4_address}</neighbor_ipv4_address>
+    <neighbor_group_name>{$neighbor_group_name}</neighbor_group_name>
+    <neighbor_description>{$neighbor_description}</neighbor_description>
+  </metro3_rr>
+</config-template>

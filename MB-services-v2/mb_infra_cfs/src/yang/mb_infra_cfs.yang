@@ -1,0 +1,152 @@
+module mb_infra_cfs {
+
+  namespace "http://example.com/mb_infra_cfs";
+  prefix mb_infra_cfs;
+
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import tailf-common {
+    prefix tailf;
+  }
+  import tailf-ncs {
+    prefix ncs;
+  }
+  import mb_core {
+    prefix mbc;
+  }
+
+  description
+    "The infrastructure CFS";
+
+  revision 2022-12-20 {
+    description
+      "Initial revision.";
+  }
+
+  augment /mbc:mb {
+
+    list mb_infra_cfs {
+      description "This is an RFS skeleton service";
+
+      key name;
+      leaf name {
+        tailf:info "Unique service id";
+        tailf:cli-allow-range;
+        type string;
+      }
+
+      uses ncs:service-data;
+      ncs:servicepoint mb_infra_cfs-servicepoint;
+
+      leaf group {
+        tailf:info "Group or Devices";
+        type enumeration {
+          enum Group;
+          enum Device;
+        }
+        default Group;
+      }
+
+      leaf device_group_id {
+        tailf:display-when "../group = 'Group'";
+        tailf:info "Unique device-group id";
+        type leafref {
+          path "/ncs:devices/ncs:device-group/ncs:name";
+        }
+      }
+
+      leaf-list device {
+        tailf:info "leaf-list device is used if device group is not used, ie the group parameter needs to be set to 'Device'";
+        tailf:display-when "../group = 'Device'";
+        type leafref {
+          path "/ncs:devices/ncs:device/ncs:name";
+        }
+      }
+
+      container acl_config {
+        leaf do_acl_config {
+          type boolean;
+        }
+      }
+      
+      container bgp_config {
+        leaf do_bgp_config {
+          type boolean;
+        }
+        leaf as_number {
+          tailf:info "Autonomous System number eg 29695 set as default";
+          type uint16;
+          default 29695;
+        }
+      }
+      
+      container isis_config {
+        leaf do_isis_config {
+          type boolean;
+        }
+        leaf isis_instance {
+          type leafref {
+            path "/mbc:mb/mbc:mb_inventory/mbc:ISISinstances/mbc:ISISinstance/mbc:instance";
+            // path "/open-net:open-net-access/open-net:inventory/open-net:sps/open-net:sp/open-net:sp_id";
+          }
+        }
+      }
+      
+      container ldp_config {
+        leaf do_ldp_config {
+          type boolean;
+        }
+        /* leaf router_id {
+          tailf:info "MPLS router id, usually the address of Loopback0 eg 213.167.115.202";
+          type inet:ipv4-address;
+        } */
+        leaf address_family {
+          type string;
+        }
+        leaf acl_name {
+          tailf:info "The ACL to be used with mpls";
+          type leafref {
+            path "/mbc:mb/mbc:mb_inventory/mbc:access_lists/mbc:access_list/mbc:acl_name";
+          }
+        }
+        container mpls_interfaces {
+          list mpls_interface {
+            key description;
+            leaf description {
+              type string;
+            }
+            leaf mpls_interface_name {
+              tailf:info "Metro interface name eg TenGigE";
+              type string;
+            }
+            leaf mpls_interface_number {
+              tailf:info "MPLS interface number eg 0/0/0/21";
+              type string;
+            }
+          }
+        }
+      }
+      
+      container ntp_config {
+        leaf do_ntp_config {
+          type boolean;
+        }
+        // Do the yang for NTP here
+      }
+      
+      container snmp_config {
+        leaf do_snmp_config {
+          type boolean;
+        }
+        // Do the yang for SNMP here
+      }
+      container add_sections_as_needed {
+        leaf do_section {
+          type boolean;
+        }
+        // Do the yang for another section here
+      }
+    }
+  }
+}

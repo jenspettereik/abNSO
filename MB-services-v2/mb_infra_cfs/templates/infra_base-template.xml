@@ -1,0 +1,49 @@
+<config-template xmlns="http://tail-f.com/ns/config/1.0">
+  <!-- THIS TEMPLATE IS USED IN CASE OF DIRECT DEPLOYMENT TO DEVICE, IE NO CFS - RFS CONCEPT -->
+  <!-- THIS TEMPLATE IS NOT FINISHED -->
+  <devices xmlns="http://tail-f.com/ns/ncs">
+    <device>
+      <name>{/device}</name>
+      <config>
+        <logging xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-logging-cfg">
+          <console>debugging</console>
+          <trap>debugging</trap>
+          <monitor>debugging</monitor>
+          <buffered>
+            <logging-buffer-size>125000000</logging-buffer-size>
+          </buffered>
+          <vrfs>
+            <vrf>
+              <vrf-name>default</vrf-name>
+              <host-ipv4-addresses>
+                <host-ipv4-address>
+                  <ipv4-address>213.167.97.170</ipv4-address>
+                  <severity>debugging</severity>
+                  <port>514</port>
+                </host-ipv4-address>
+              </host-ipv4-addresses>
+            </vrf>
+          </vrfs>
+          <source-interfaces>
+            <source-interface>
+              <source-interface-name>Loopback0</source-interface-name>
+              <vrfs>
+                <vrf>
+                  <vrf-name>default</vrf-name>
+                </vrf>
+              </vrfs>
+            </source-interface>
+          </source-interfaces>
+        </logging>
+        <netconf-yang xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-netconf-yang-cfg">
+          <agent>
+            <ssh/>
+            <with-defaults-support>
+              <enable/>
+            </with-defaults-support>
+          </agent>
+        </netconf-yang>
+      </config>
+    </device>
+  </devices>
+</config-template>

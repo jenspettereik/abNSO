@@ -1,0 +1,63 @@
+module metro3_rr {
+
+  namespace "http://example.com/metro3_rr";
+  prefix metro3_rr;
+
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import tailf-common {
+    prefix tailf;
+  }
+  import tailf-ncs {
+    prefix ncs;
+  }
+
+  description
+    "METRO3 BGP neighbors - RRs";
+
+  revision 2022-12-21 {
+    description
+      "Initial revision.";
+  }
+
+  list metro3_rr {
+    description "This is an RFS skeleton service";
+
+    key name;
+    leaf name {
+      tailf:info "Unique service id";
+      tailf:cli-allow-range;
+      type string;
+    }
+
+    uses ncs:service-data;
+    ncs:servicepoint metro3_rr-servicepoint;
+
+    leaf device {
+      type leafref {
+        path "/ncs:devices/ncs:device/ncs:name";
+      }
+    }
+    leaf as_number {
+      tailf:info "Autonomous System number eg 29695 set as default";
+      type uint16;
+      default 29695;
+    }
+
+    leaf neighbor_ipv4_address {
+      tailf:info "IP address of a neighbor RR. Used in case the RR inventory is in the mb_l3vpn CFS";
+      type inet:ipv4-address;
+    }
+    leaf neighbor_group_name {
+      tailf:info "Name of the neighbor group to which the RR belongs. Used in case the RR inventory is in the mb_l3vpn CFS";
+      type string;
+      default "T-RR-NC";
+    }
+    leaf neighbor_description {
+      tailf:info "Description of the neighbor RR. Used in case the RR inventory is in the mb_l3vpn CFS";
+      type string;
+      default "### ALL iBGP SESSIONS ###";
+    }
+  }
+}

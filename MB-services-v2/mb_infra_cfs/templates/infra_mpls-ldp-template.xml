@@ -1,0 +1,48 @@
+<config-template xmlns="http://tail-f.com/ns/config/1.0">
+  <!-- THIS TEMPLATE IS USED IN CASE OF DIRECT DEPLOYMENT TO DEVICE, IE NO CFS - RFS CONCEPT -->
+  <!-- THIS TEMPLATE IS NOT FINISHED -->
+  <devices xmlns="http://tail-f.com/ns/ncs">
+    <device>
+      <name>{$device}</name>
+      <config>
+        <mpls xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-mpls-ldp-cfg">
+          <ldp>
+            <router-id>{$router_id}</router-id>
+            <log>
+              <neighbor/>
+              <nsr/>
+              <graceful-restart/>
+            </log>
+            <address-families>
+              <address-family>
+                <af-name>{$address_family}</af-name>
+                <label>
+                  <local>
+                    <allocate>
+                      <for>
+                        <access-list>{$acl_name}</access-list>
+                      </for>
+                    </allocate>
+                    <advertise>
+                      <interfaces>
+                        <interface>
+                          <interface-name>{$mpls_interface_name}{$mpls_interface_number}</interface-name>
+                        </interface>
+                      </interfaces>
+                      <disable/>
+                      <for>
+                        <access-lists>
+                          <access-list-name>{$acl_name}</access-list-name>
+                        </access-lists>
+                      </for>
+                    </advertise>
+                  </local>
+                </label>
+              </address-family>
+            </address-families>
+          </ldp>
+        </mpls>
+      </config>
+    </device>
+  </devices>
+</config-template>
