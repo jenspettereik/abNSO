@@ -26,7 +26,7 @@ class ServiceCallbacks(Service):
             vars.add('device', endpoint.csr.device)
             vars.add('interface_name', endpoint.csr.local.interface_name)
             vars.add('interface_number', endpoint.csr.local.interface_number)
-            interface = endpoint.csr.local.interface_name + endpoint.csr.local.interface_number
+            interface = str(endpoint.csr.local.interface_name) + str(endpoint.csr.local.interface_number)
             vars.add('interface', interface)
             interface_description = "VPN: " + service.vrf_name + ", Circuit ID: " + endpoint.id
             vars.add('interface_description', interface_description)
@@ -34,11 +34,11 @@ class ServiceCallbacks(Service):
             vars.add('ipv4_mask', endpoint.csr.local.ipv4_mask)
             vars.add('ul_interface_name', endpoint.csr.link.interface_name)
             vars.add('ul_interface_number', endpoint.csr.link.interface_number)
-            ul_interface = endpoint.csr.link.interface_name + endpoint.csr.link.interface_number
+            ul_interface = str(endpoint.csr.link.interface_name) + str(endpoint.csr.link.interface_number)
             self.log.info('CSR UL INTERFACE: ', ul_interface)
             vars.add('ul_interface', ul_interface)
             # "link to PE / {$PE} - {$PE_INT_NAME}</description>"
-            ul_interface_description = endpoint.er.device + " - " + endpoint.er.link.interface_name + endpoint.er.link.interface_number
+            ul_interface_description = endpoint.er.device + " - " + str(endpoint.er.link.interface_name) + str(endpoint.er.link.interface_number)
             vars.add('ul_interface_description', ul_interface_description)
             vars.add('ul_ipv4_address', endpoint.csr.link.ipv4_address)
             vars.add('ul_ipv4_mask', endpoint.csr.link.ipv4_mask)

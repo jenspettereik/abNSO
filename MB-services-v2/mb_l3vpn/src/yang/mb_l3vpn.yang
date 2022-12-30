@@ -19,6 +19,11 @@ module mb_l3vpn {
   description
     "L3VPN service for mobile backhaul.";
 
+  revision 2022-12-29 {
+    description
+      "vrf_name is key, which means that endpoints are added to the VPN service instance. Pattern added for interface_number. Enumeration added for interface_name";
+  }
+
   revision 2022-12-21 {
     description
       "Initial revision.";
@@ -27,11 +32,24 @@ module mb_l3vpn {
   grouping endpoint_grouping {
     leaf interface_name {
       tailf:info "Interface name. For example FastEthernet.";
-      type string;
+      type enumeration {
+        enum FastEthernet;
+        enum GigabitEthernet;
+        enum TenGigE;
+        enum TwentyFiveGigE;
+        enum FortyGigE;
+        enum FiftyGigE;
+        enum HundredGigE;
+        enum TwoHundredGigE;
+        enum FourHundredGigE;
+        enum EightHundredGigE;
+      }
     }
     leaf interface_number {
       tailf:info "Interface number. For example 0 or 1/0";
-      type string;
+      type string {
+        pattern "[0-9]{1,2}(/[0-9]{1,2}){1,4}";
+      }
     }
     leaf ipv4_address {
       tailf:info "Local interface address.";
@@ -48,9 +66,9 @@ module mb_l3vpn {
     list mb_l3vpn {
       description "This is an RFS skeleton service";
 
-      key name;
-      leaf name {
-        tailf:info "Unique service id";
+      key vrf_name;
+      leaf vrf_name {
+        tailf:info "Unique VPN service id";
         tailf:cli-allow-range;
         type string;
       }
@@ -58,10 +76,10 @@ module mb_l3vpn {
       uses ncs:service-data;
       ncs:servicepoint mb_l3vpn-servicepoint;
 
-      leaf vrf_name {
-        tailf:info "VRF Name";
+      /* leaf vrf_name {
+        tailf:info "VRF Name. When this is a separate leaf ie not the key, endpoints can be added as separate service instances eg via POST API call";
         type string;
-      }
+      } */
       list endpoint {
         key "id";
         leaf id {

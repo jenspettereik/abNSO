@@ -16,6 +16,11 @@ module mb_core {
   description
     "This is the Mobile Backhaul Core service, which contains the inventory. You must populate the inventory before the augmenting infrastructure, metro3 and l3vpn services can run";
 
+  revision 2022-12-29 {
+    description
+      "Pattern added for interface_number. Enumeration added for interface_name";
+  }
+
   revision 2022-12-20 {
     description
       "Initial revision.";
@@ -52,12 +57,25 @@ module mb_core {
           }
           leaf isis_interface_name {
             tailf:info "Metro interface name eg TenGigE";
-            type string;
+            type enumeration {
+              enum FastEthernet;
+              enum GigabitEthernet;
+              enum TenGigE;
+              enum TwentyFiveGigE;
+              enum FortyGigE;
+              enum FiftyGigE;
+              enum HundredGigE;
+              enum TwoHundredGigE;
+              enum FourHundredGigE;
+              enum EightHundredGigE;
+            }
           }
 
           leaf isis_interface_number {
             tailf:info "Metro interface number eg 0/0/0/21";
-            type string;
+            type string {
+              pattern "[0-9]{1,2}(/[0-9]{1,2}){1,4}";
+            }
           }
 
           leaf ipv4_addr {

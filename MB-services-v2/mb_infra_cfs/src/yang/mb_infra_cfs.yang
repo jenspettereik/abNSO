@@ -97,6 +97,7 @@ module mb_infra_cfs {
         leaf do_ldp_config {
           type boolean;
         }
+        // router_id is now fetched from the inventory for each device.
         /* leaf router_id {
           tailf:info "MPLS router id, usually the address of Loopback0 eg 213.167.115.202";
           type inet:ipv4-address;

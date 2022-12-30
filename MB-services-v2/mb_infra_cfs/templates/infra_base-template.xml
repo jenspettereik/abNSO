@@ -5,6 +5,28 @@
     <device>
       <name>{/device}</name>
       <config>
+        <line xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-line-cfg">
+          <default>
+            <session-timeout>
+              <timeout-interval>30</timeout-interval>
+            </session-timeout>
+            <transport>
+              <input>
+                <all/>
+              </input>
+            </transport>
+            <session-limit>10</session-limit>
+            <login xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-aaa-task-user-cfg">
+              <authentication>default</authentication>
+            </login>
+            <exec-timeout xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-line-exec-timeout-cfg">
+              <timeout-in-minutes>120</timeout-in-minutes>
+              <timeout-in-seconds>0</timeout-in-seconds>
+            </exec-timeout>
+            <absolute-timeout xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-line-general-cfg">10000</absolute-timeout>
+            <timestamp xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-line-timestamp-cfg"/>
+          </default>
+        </line>
         <logging xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-logging-cfg">
           <console>debugging</console>
           <trap>debugging</trap>
