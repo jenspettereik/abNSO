@@ -16,6 +16,11 @@ module mb_core {
   description
     "This is the Mobile Backhaul Core service, which contains the inventory. You must populate the inventory before the augmenting infrastructure, metro3 and l3vpn services can run";
 
+  revision 2023-01-09 {
+    description
+      "Added ability to add all interfaces to the metroDevices";
+  }
+
   revision 2022-12-29 {
     description
       "Pattern added for interface_number. Enumeration added for interface_name";
@@ -86,6 +91,70 @@ module mb_core {
           leaf ipv4_mask {
             tailf:info "Mask for the IP address of the metro interface";
             type inet:ipv4-address;
+          }
+          list interface {
+            key interface_number;
+            leaf interface_number {
+              tailf:info "Metro interface number eg 0/0/0/21";
+              type string {
+                pattern "[0-9]{1,2}(/[0-9]{1,2}){1,4}";
+              }
+            }
+            leaf interface_name {
+              tailf:info "Metro interface name eg TenGigE";
+              type enumeration {
+                enum FastEthernet;
+                enum GigabitEthernet;
+                enum TenGigE;
+                enum TwentyFiveGigE;
+                enum FortyGigE;
+                enum FiftyGigE;
+                enum HundredGigE;
+                enum TwoHundredGigE;
+                enum FourHundredGigE;
+                enum EightHundredGigE;
+              }
+            }
+            leaf util_status {
+              type enumeration {
+                enum idle;
+                enum core;
+                enum downlink;
+                enum uplink;
+                enum customer;
+                enum vrf;
+                enum peering;
+              }
+            }
+            leaf isis {
+              type enumeration {
+                enum none;
+                enum level1;
+                enum level2;
+                enum level1level2;
+              }
+            }
+            leaf bgp {
+              type enumeration {
+                enum none;
+                enum ibgp;
+                enum ebgp;
+              }
+            }
+            leaf mpls {
+              type enumeration {
+                enum none;
+                enum on;
+              }
+            }
+            leaf ipv4_addr {
+              tailf:info "IP address of the metro interface";
+              type inet:ipv4-address;
+            }
+            leaf ipv4_mask {
+              tailf:info "Mask for the IP address of the metro interface";
+              type inet:ipv4-address;
+            }
           }
         }
       }
