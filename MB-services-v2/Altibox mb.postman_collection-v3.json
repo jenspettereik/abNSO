@@ -7,7 +7,7 @@
 	},
 	"item": [
 		{
-			"name": "POST a CSR device to the mb inventory",
+			"name": "POST a CSR device to the mb inventory - iosxr2",
 			"request": {
 				"auth": {
 					"type": "basic",
@@ -44,6 +44,63 @@
 				"body": {
 					"mode": "raw",
 					"raw": "{\n    \"metroDevice\": [\n        {\n            \"device_name\": \"iosxr2\",\n            \"hostname\": \"CSR2\",\n            \"device_type\": \"CSR\",\n            \"ipv4_mgmt_addr\": \"172.18.2.1\",\n            \"isis_interface_name\": \"TenGigE\",\n            \"isis_interface_number\": \"0/0/0/21\",\n            \"ipv4_addr\": \"10.2.2.11\",\n            \"ipv4_mask\": \"255.255.255.0\"\n        }\n    ]\n}"
+				},
+				"url": {
+					"raw": "http://{{host}}:8080/restconf/data/mb_core:mb/mb_core:mb_inventory/mb_core:metroDevices",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "8080",
+					"path": [
+						"restconf",
+						"data",
+						"mb_core:mb",
+						"mb_core:mb_inventory",
+						"mb_core:metroDevices"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST a CSR device to the mb inventory - iosxr1",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{user}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/yang-data+json"
+					},
+					{
+						"key": "Cache-Control",
+						"type": "text",
+						"value": "no-cache"
+					},
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/yang-data+json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"metroDevice\": [\n        {\n            \"device_name\": \"iosxr1\",\n            \"hostname\": \"CSR1\",\n            \"device_type\": \"CSR\",\n            \"ipv4_mgmt_addr\": \"172.18.8.1\",\n            \"isis_interface_name\": \"TenGigE\",\n            \"isis_interface_number\": \"0/0/0/21\",\n            \"ipv4_addr\": \"10.0.0.11\",\n            \"ipv4_mask\": \"255.255.255.0\"\n        }\n    ]\n}"
 				},
 				"url": {
 					"raw": "http://{{host}}:8080/restconf/data/mb_core:mb/mb_core:mb_inventory/mb_core:metroDevices",
@@ -121,6 +178,64 @@
 			"response": []
 		},
 		{
+			"name": "PATCH an interface of a device to the mb inventory",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{user}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/yang-data+json"
+					},
+					{
+						"key": "Cache-Control",
+						"type": "text",
+						"value": "no-cache"
+					},
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/yang-data+json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"metroDevice\": [\n        {\n            \"device_name\": \"iosxr1\",\n            \"interface\": [\n                {\n                    \"interface_number\": \"0/0/0/0\",\n                    \"interface_name\": \"TenGigE\",\n                    \"util_status\": \"idle\",\n                    \"isis\": \"level2\",\n                    \"bgp\": \"none\",\n                    \"mpls\": \"on\",\n                    \"ipv4_addr\": \"172.18.56.57\",\n                    \"ipv4_mask\": \"255.255.255.0\"\n                }\n            ]\n        }\n    ]\n}"
+				},
+				"url": {
+					"raw": "http://{{host}}:8080/restconf/data/mb_core:mb/mb_core:mb_inventory/mb_core:metroDevices/mb_core:metroDevice=iosxr1",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "8080",
+					"path": [
+						"restconf",
+						"data",
+						"mb_core:mb",
+						"mb_core:mb_inventory",
+						"mb_core:metroDevices",
+						"mb_core:metroDevice=iosxr1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "GET all CSR devices from the mb inventory",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
@@ -175,6 +290,67 @@
 						"mb_core:mb",
 						"mb_core:mb_inventory",
 						"mb_core:metroDevices"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET one metroDevice from the mb inventory",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{user}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/yang-data+json"
+					},
+					{
+						"key": "Cache-Control",
+						"type": "text",
+						"value": "no-cache"
+					},
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/yang-data+json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://{{host}}:8080/restconf/data/mb_core:mb/mb_core:mb_inventory/mb_core:metroDevices/mb_core:metroDevice=iosxr1",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "8080",
+					"path": [
+						"restconf",
+						"data",
+						"mb_core:mb",
+						"mb_core:mb_inventory",
+						"mb_core:metroDevices",
+						"mb_core:metroDevice=iosxr1"
 					]
 				}
 			},
@@ -1368,7 +1544,7 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://{{host}}:8080/restconf/data/mb_core:mb/mb_core:mb_inventory/mb_core:metroDevices/mb_core:metroDevice=iosxr2",
+					"raw": "http://{{host}}:8080/restconf/data/mb_core:mb/mb_core:mb_inventory/mb_core:metroDevices/mb_core:metroDevice=iosxr0",
 					"protocol": "http",
 					"host": [
 						"{{host}}"
@@ -1380,7 +1556,7 @@
 						"mb_core:mb",
 						"mb_core:mb_inventory",
 						"mb_core:metroDevices",
-						"mb_core:metroDevice=iosxr2"
+						"mb_core:metroDevice=iosxr0"
 					]
 				}
 			},
@@ -1600,7 +1776,7 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://{{host}}:8080/restconf/data/mb_core:mb/mb_infra_cfs:mb_infra_cfs=MPLS1",
+					"raw": "http://{{host}}:8080/restconf/data/mb_core:mb/mb_infra_cfs:mb_infra_cfs=ISIS1",
 					"protocol": "http",
 					"host": [
 						"{{host}}"
@@ -1610,7 +1786,7 @@
 						"restconf",
 						"data",
 						"mb_core:mb",
-						"mb_infra_cfs:mb_infra_cfs=MPLS1"
+						"mb_infra_cfs:mb_infra_cfs=ISIS1"
 					]
 				}
 			},
