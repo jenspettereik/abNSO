@@ -1,0 +1,25 @@
+<config-template xmlns="http://tail-f.com/ns/config/1.0">
+  <ba_bgp xmlns="http://example.com/ba_bgp">
+    <name>{$name}</name>
+    <as_number>{$as_number}</as_number>
+    <bgp>
+      <csr>
+        <device>{$csr_device}</device>
+        <mgmt_ipv4_address>{$csr_mgmt_ipv4_address}</mgmt_ipv4_address>
+        <paths_route_policy>{$paths_route_policy}</paths_route_policy>
+        <networks_route_policy>{$networks_route_policy}</networks_route_policy>
+        <ng_route_policy_in>{$ng_route_policy_in}</ng_route_policy_in>
+        <ng_route_policy_out>{$ng_route_policy_out}</ng_route_policy_out>
+        <neighbor_ipv4_address>{$csr_neighbor_ipv4_address}</neighbor_ipv4_address>
+        <neighbor_group_name>{$csr_neighbor_group_name}</neighbor_group_name>
+        <neighbor_description>{$csr_neighbor_description}</neighbor_description>
+      </csr>
+      <agg>
+        <device>{$agg_device}</device>
+        <neighbor_ipv4_address>{$agg_neighbor_ipv4_address}</neighbor_ipv4_address>
+        <neighbor_group_name>{$agg_neighbor_group_name}</neighbor_group_name>
+        <neighbor_description>{$agg_neighbor_description}</neighbor_description>
+      </agg>
+    </bgp>
+  </ba_bgp>
+</config-template>

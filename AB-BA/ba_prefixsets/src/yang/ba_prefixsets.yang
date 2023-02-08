@@ -1,0 +1,62 @@
+module ba_prefixsets {
+
+  namespace "http://example.com/ba_prefixsets";
+  prefix ba_prefixsets;
+
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import tailf-common {
+    prefix tailf;
+  }
+  import tailf-ncs {
+    prefix ncs;
+  }
+
+  description
+    "Bla bla...";
+
+  revision 2023-02-07 {
+    description
+      "Initial revision.";
+  }
+
+  list ba_prefixsets {
+    description "This is an RFS skeleton service";
+
+    key name;
+    leaf name {
+      tailf:info "Unique service id";
+      tailf:cli-allow-range;
+      type string;
+    }
+
+    uses ncs:service-data;
+    ncs:servicepoint ba_prefixsets-servicepoint;
+
+    leaf device {
+      type leafref {
+        path "/ncs:devices/ncs:device/ncs:name";
+      }
+    }
+
+    leaf prefix_set_umpls {
+      type string;
+    }
+    leaf prefix_set_ip {
+      type inet:ipv4-address;
+    }
+    leaf prefix_set_mask1 {
+      tailf:info "E.g. 16";
+      type uint16;
+    }
+    leaf prefix_set_operator {
+      tailf:info "E.g. le";
+      type string;
+    }
+    leaf prefix_set_mask2 {
+      tailf:info "E.g. 32";
+      type uint16;
+    }
+  }
+}

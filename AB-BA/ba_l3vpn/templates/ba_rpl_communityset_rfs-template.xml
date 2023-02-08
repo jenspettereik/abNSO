@@ -1,0 +1,9 @@
+<config-template xmlns="http://tail-f.com/ns/config/1.0">
+  <ba_communitysets xmlns="http://example.com/ba_communitysets">
+    <name>{$name}</name>
+    <device>{$csr_device}</device>
+    <community_set_umpls>{$community_set_umpls}</community_set_umpls>
+    <as_number>{$as_number}</as_number>
+    <set_number>{$set_number}</set_number>
+  </ba_communitysets>
+</config-template>

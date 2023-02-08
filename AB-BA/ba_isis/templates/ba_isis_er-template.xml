@@ -1,0 +1,76 @@
+<!-- PS!
+METRO3 processen i denne RFS skal aldri slettes av CFSn selv om dette er siste interface som slettes fra denne noden i tjenesten.
+bør vel ha "no create" ???
+ -->
+<config-template xmlns="http://tail-f.com/ns/config/1.0">
+  <devices xmlns="http://tail-f.com/ns/ncs">
+    <device>
+      <name>{$er_device}</name>
+      <config>
+        <interfaces xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-interface-cfg">
+          <interface>
+            <interface-name>{$er_interface_name}{$er_interface_number}</interface-name>
+            <description>{$er_interface_description}</description>
+            <mtu>9080</mtu>
+            <service-policy xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-if-service-policy-qos-cfg">
+              <input>
+                <service-policy-name>CORE-IN</service-policy-name>
+              </input>
+            </service-policy>
+            <ipv4>
+              <addresses xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-if-ip-address-cfg">
+                <address>
+                  <address>{$er_ipv4_address}</address>
+                  <netmask>{$er_ipv4_mask}</netmask>
+                </address>
+              </addresses>
+            </ipv4>
+            <lldp xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-lldp-cfg">
+              <enable/>
+            </lldp>
+          </interface>
+        </interfaces>
+        <router xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-isis-cfg">
+          <isis>
+            <processes>
+              <process>
+                <process-id>METRO3</process-id>
+                <interfaces>
+                  <interface>
+                    <interface-name>{$er_interface_name}{$er_interface_number}</interface-name>
+                    <circuit-type>level-2-only</circuit-type>
+                    <hello-padding>
+                      <disable/>
+                    </hello-padding>
+                    <point-to-point/>
+                    <address-families>
+                      <address-family>
+                        <af-name>ipv4</af-name>
+                        <saf-name>unicast</saf-name>
+                        <metric>
+                          <levels>
+                            <level>
+                              <level-id>2</level-id>
+                              <default-metric>100050</default-metric>
+                            </level>
+                          </levels>
+                        </metric>
+                        <mpls>
+                          <ldp>
+                            <sync>
+                              <level>2</level>
+                            </sync>
+                          </ldp>
+                        </mpls>
+                      </address-family>
+                    </address-families>
+                  </interface>
+                </interfaces>
+              </process>
+            </processes>
+          </isis>
+        </router>
+      </config>
+    </device>
+  </devices>
+</config-template>

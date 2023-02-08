@@ -1,0 +1,26 @@
+<config-template xmlns="http://tail-f.com/ns/config/1.0">
+  <devices xmlns="http://tail-f.com/ns/ncs">
+    <device>
+      <name>{/device}</name>
+      <config>
+        <routing-policy xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-route-policy-cfg">
+          <sets>
+            <prefix-sets>
+              <prefix-set>
+                <!-- set-name PFX-uMPLS_LOOPBACKS -->
+                <set-name>{prefix_set_umpls}</set-name>
+                <rpl-prefix-set>prefix-set {prefix_set_umpls}
+                    {prefix_set_ip}/{prefix_set_mask1} {prefix_set_operator} {prefix_set_mask2}
+                    <!-- 10.161.0.0/16 le 32,
+                    77.110.255.0/24 le 32,
+                    213.167.115.0/24 le 32 -->
+                  <!-- end-set -->
+                </rpl-prefix-set>
+              </prefix-set>
+            </prefix-sets>
+          </sets>
+        </routing-policy>
+      </config>
+    </device>
+  </devices>
+</config-template>

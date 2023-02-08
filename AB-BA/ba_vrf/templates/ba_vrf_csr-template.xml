@@ -1,0 +1,108 @@
+<!-- 
+  vrf configuration for ba_l3vpn RFS
+  vrf:
+ -->
+<config-template xmlns="http://tail-f.com/ns/config/1.0">
+  <devices xmlns="http://tail-f.com/ns/ncs">
+    <device>
+      <name>{$csr_device}</name>
+      <config>
+        <vrfs xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-vrf-cfg">
+          <vrf>
+          	<vrf-name>{$vrf_name}</vrf-name>
+            <address-family>
+              <ipv4>
+                <unicast/>
+              </ipv4>
+              <ipv6>
+                <unicast/>
+              </ipv6>
+            </address-family>
+            <rd xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-bgp-cfg">
+              <two-byte-as>
+                <as-number>{$as_number}</as-number>
+                <index>{$rd}</index>
+                <!-- <stitching>false</stitching> -->
+              </two-byte-as>
+            </rd>
+          </vrf>
+        </vrfs>
+
+        <!-- 
+          inteface (PS! her vil QOS vel være en egen RFS
+          RP/0/RP0/CPU0:S400123321-CSR0#sh run int tenGigE 0/0/0/23 | xml 
+          Tue Jan 24 09:24:33.086 UTC
+         -->
+
+        <interfaces xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-interface-cfg">
+          <interface>
+            <interface-name>{$csr_ul_interface_name}{$csr_ul_interface_number}</interface-name>
+            <ipv4>
+              <addresses xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-if-ip-address-cfg">
+                <address>
+                  <address>{$csr_ul_ipv4_address}</address>
+                  <netmask>{$csr_ul_ipv4_mask}</netmask>
+                </address>
+              </addresses>
+              <mtu xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-if-ipv4-cfg">9160</mtu>
+            </ipv4>
+            <mtu>9000</mtu>
+            <description>{$csr_ul_interface_description}</description>
+          </interface>
+          <interface>
+            <interface-name>{$csr_interface_name}{$csr_interface_number}</interface-name>
+            <description>{$csr_interface_description}</description>
+            <mtu>9080</mtu>
+          </interface>
+          <interface>
+            <interface-name>{$csr_interface_name}{$csr_interface_number}.{$vlan}</interface-name>
+            <vrf xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-if-vrf-cfg">{vrf_name}</vrf>
+            <ipv4>
+              <addresses xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-if-ip-address-cfg">
+                <address>
+                  <address>{$csr_ipv4_address}</address>
+                  <netmask>{$csr_ipv4_mask}</netmask>
+                </address>
+              </addresses>
+            </ipv4>
+            <encapsulation xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-l2-ethernet-cfg">
+              <dot1q>
+                <vlan-id>{$vlan}</vlan-id>
+              </dot1q>
+            </encapsulation>
+          </interface>
+        </interfaces>
+
+        <!-- bgp -->
+
+        <router xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-bgp-cfg">
+          <bgp>
+            <as>
+              <as-number>{$as_number}</as-number>
+              <vrfs>
+                <vrf>
+                  <vrf-name>{$vrf_name}</vrf-name>
+                  <rd>
+                    <two-byte-as>
+                      <as-number>{$as_number}</as-number>
+                      <index>{$rd}</index>
+                    </two-byte-as>
+                  </rd>
+                  <address-families>
+                    <address-family>
+                      <af-name>ipv4-unicast</af-name>
+                      <redistribute>
+                        <connected/>
+                        <static/>
+                      </redistribute>
+                    </address-family>
+                  </address-families>
+                </vrf>
+              </vrfs>
+            </as>
+          </bgp>
+        </router>
+      </config>
+    </device>
+  </devices>
+</config-template>

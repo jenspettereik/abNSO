@@ -1,0 +1,54 @@
+<config-template xmlns="http://tail-f.com/ns/config/1.0">
+  <devices xmlns="http://tail-f.com/ns/ncs">
+    <device>
+      <name>{$device}</name>
+      <config>
+        <mpls xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-mpls-oam-cfg">
+          <oam/>
+        </mpls>
+        <mpls xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-mpls-lsd-cfg">
+          <ip-ttl-propagate>
+              <disable/>
+          </ip-ttl-propagate>
+        </mpls>
+        <mpls xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-mpls-ldp-cfg">
+          <ldp>
+            <log>
+            <neighbor/>
+              <nsr/>
+              <graceful-restart/>
+            </log>
+            <router-id>{$mgmt_ipv4_address}</router-id>
+            <address-families>
+              <address-family>
+                <af-name>ipv4</af-name>
+                <label>
+                  <local>
+                    <allocate>
+                      <for>
+                        <access-list>MPLS_LOOPBACKS</access-list>
+                      </for>
+                    </allocate>
+                    <advertise>
+                      <disable/>
+                      <for>
+                        <access-lists>
+                          <access-list-name>MPLS_LOOPBACKS</access-list-name>
+                        </access-lists>
+                      </for>
+                      <interfaces>
+                        <interface>
+                          <interface-name>{$interface_name}{$interface_number}</interface-name>
+                        </interface>
+                      </interfaces>
+                    </advertise>
+                  </local>
+                </label>
+              </address-family>
+            </address-families>
+          </ldp>
+        </mpls>
+      </config>
+    </device>
+  </devices>
+</config-template>

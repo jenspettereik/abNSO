@@ -1,0 +1,76 @@
+<config-template xmlns="http://tail-f.com/ns/config/1.0">
+  <devices xmlns="http://tail-f.com/ns/ncs">
+    <device>
+      <name>{/device}</name>
+      <config>
+        <routing-policy xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-route-policy-cfg">
+          <route-policies>
+            <route-policy>
+              <!-- route-policy-name RPL-uMPLS_ADVERTISE -->
+              <route-policy-name>RPL-uMPLS_ADVERTISE</route-policy-name>
+              <rpl-route-policy>route-policy RPL-uMPLS_ADVERTISE
+                    set community {community_set_umpls} additive
+                    set local-preference 3107
+                  end-policy
+              </rpl-route-policy>
+            </route-policy>
+            <route-policy>
+              <!-- route-policy-name RPL-uMPLS_PIC_INSTALL -->
+              <route-policy-name>RPL-uMPLS_PIC_INSTALL</route-policy-name>
+              <rpl-route-policy>route-policy RPL-uMPLS_PIC_INSTALL
+                    if community matches-any {community_set_umpls} then
+                      set path-selection backup 1 install
+                    endif
+                  end-policy
+              </rpl-route-policy>
+            </route-policy>
+            <route-policy>
+              <!-- route-policy-name RPL-uMPLS_IN -->
+              <route-policy-name>RPL-uMPLS_IN</route-policy-name>
+              <rpl-route-policy>route-policy RPL-uMPLS_IN
+                  if destination in {prefix_set_umpls} then
+                    if community matches-any {community_set_umpls} then
+                      set local-preference 3107
+                      pass
+                    else
+                      drop
+                    endif
+                  else
+                    drop
+                  endif
+                  if destination in {prefix_set_umpls} then
+                    if community matches-any {community_set_umpls} then
+                      set local-preference 3107
+                      pass
+                    else
+                      drop
+                    endif
+                  else    
+                    drop
+                  endif
+                end-policy
+              </rpl-route-policy>
+            </route-policy>
+            <route-policy>
+              <!-- route-policy-name RPL-uMPLS_OUT -->
+              <route-policy-name>RPL-uMPLS_OUT</route-policy-name>
+              <rpl-route-policy>route-policy RPL-uMPLS_OUT
+                  if destination in {prefix_set_umpls} then
+                    if community matches-any {community_set_umpls} then
+                      set local-preference 3107
+                      pass
+                    else
+                      drop
+                    endif
+                  else
+                    drop
+                  endif
+                end-policy
+              </rpl-route-policy>
+            </route-policy>
+          </route-policies>
+        </routing-policy>
+      </config>
+    </device>
+  </devices>
+</config-template>

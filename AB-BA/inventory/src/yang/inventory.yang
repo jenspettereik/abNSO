@@ -1,0 +1,137 @@
+module inventory {
+
+  namespace "http://example.com/inventory";
+  prefix inventory;
+
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import tailf-common {
+    prefix tailf;
+  }
+  import tailf-ncs {
+    prefix ncs;
+  }
+
+  description
+    "Inventory for the BA L3VPN Service";
+
+  revision 2023-01-31 {
+    description
+      "Initial revision.";
+  }
+
+  container inventory {
+
+    container METRO3Areas {
+      list METRO3Area {
+        key metro3_area;
+        leaf metro3_area {
+          type string;
+        }
+        list RR {
+          key agg_device;
+          leaf agg_device {
+            type leafref {
+              path "/ncs:devices/ncs:device/ncs:name";
+            }
+          }
+          leaf RR_ipv4_addr {
+            tailf:info "IP address of the neighbor";
+            type inet:ipv4-address;
+          }
+          leaf neighbor_group_name {
+            tailf:info "Name of the neighbor group to which the RR belongs";
+            type string;
+            default "T-RR-NC";
+          }
+          leaf neighbor_description {
+            tailf:info "Description of the neighbor RR";
+            type string;
+            default "### ALL iBGP SESSIONS ###";
+          }
+        }
+      }
+    }
+
+    container prefix_sets {
+      list prefix_set {
+        key prefix_set_name;
+        leaf prefix_set_name {
+          type string;
+        }
+        list rpl_prefix_set {
+          key prefix_set_ip;
+          leaf prefix_set_ip {
+            type inet:ipv4-address;
+          }
+          leaf prefix_set_mask1 {
+            tailf:info "E.g. 16";
+            type uint16;
+          }
+          leaf prefix_set_operator {
+            tailf:info "E.g. le";
+            type string;
+          }
+          leaf prefix_set_mask2 {
+            tailf:info "E.g. 32";
+            type uint16;
+          }
+        }
+      }
+    }
+
+    container community_sets {
+      list community_set {
+        key community_set_name;
+        leaf community_set_name {
+          type string;
+        }
+        list rpl_community_set {
+          key part1;
+          leaf part1 {
+            type uint16;
+          }
+          leaf part2 {
+            type uint16;
+          }
+        }
+      }
+    }
+
+    container qos_policy {
+      
+    }
+
+    container qos_class_map {
+      
+    }
+
+  }
+
+  /* list inventory {
+    description "This is an RFS skeleton service";
+
+    key name;
+    leaf name {
+      tailf:info "Unique service id";
+      tailf:cli-allow-range;
+      type string;
+    }
+
+    uses ncs:service-data;
+    ncs:servicepoint inventory-servicepoint;
+
+    // may replace this with other ways of refering to the devices.
+    leaf-list device {
+      type leafref {
+        path "/ncs:devices/ncs:device/ncs:name";
+      }
+    }
+
+    // replace with your own stuff here
+    leaf dummy {
+      type inet:ipv4-address;
+    }
+  } */
+}
