@@ -15,9 +15,67 @@ class ServiceCallbacks(Service):
         self.log.info('Service create(service=', service._path, ')')
 
         vars = ncs.template.Variables()
-        vars.add('DUMMY', '127.0.0.1')
         template = ncs.template.Template(service)
-        template.apply('ba_rpl_qos-template', vars)
+
+        vars.add('device', service.device)
+        if service.run_as_rfs:
+            self.log.info('Running as RFS, DEVICE: ', service.device)
+        else:
+            self.log.info('what to configure: ', service.independent.what_to_configure)
+            self.log.info('Running independent, DEVICE: ', service.device)
+            if service.independent.what_to_configure == "class_map":
+                vars.add('qos_class_map_name', service.independent.class_map.class_map_name)
+                vars.add('class_map_description', root.inventory.qos_class_maps.qos_class_map[service.independent.class_map.class_map_name].description)
+                vars.add('match_statement', root.inventory.qos_class_maps.qos_class_map[service.independent.class_map.class_map_name].match_statement)
+                for me in root.inventory.qos_class_maps.qos_class_map[service.independent.class_map.class_map_name].match_elements.match_element:
+                    self.log.info('match_subject: ', me.match_subject)
+                    if me.match_subject == "cos":
+                        for cv in me.cos.cos_values:
+                            vars.add('cos_value', cv.cos_value)
+                            template.apply('ba_class_map_cos-template', vars)
+                    elif me.match_subject == "dscp":
+                        for dv in me.dscp.dscp_values:
+                            vars.add('dscp_value', dv.dscp_value)
+                            template.apply('ba_class_map_dscp-template', vars)
+                    elif me.match_subject == "mpls":
+                        vars.add('mpls_subject1', me.mpls.mpls_subject1)
+                        vars.add('mpls_subject2', me.mpls.mpls_subject2)
+                        for m in me.mpls.mpls_labels:
+                            vars.add('mpls_label', m.mpls_label)
+                            template.apply('ba_class_map_mpls-template', vars)
+            elif service.independent.what_to_configure == "policy_map":
+                self.log.info('Policy Map: ', service.independent.policy_map.policy_map_name)
+                vars.add('qos_policy_map_name', service.independent.policy_map.policy_map_name)
+                vars.add('policy_map_description', root.inventory.qos_policy_maps.qos_policy_map[service.independent.policy_map.policy_map_name].description)
+                vars.add('qos_group_value', 0)
+                vars.add('traffic_class_value', 0)
+                vars.add('discard_class_value', 0)
+                vars.add('police_value', 0)
+                vars.add('police_unit', "percent")
+                for p_class in root.inventory.qos_policy_maps.qos_policy_map[service.independent.policy_map.policy_map_name].policy_classes.policy_class:
+                    vars.add('class_name', p_class.class_name)
+                    vars.add('class_type', p_class.class_type)
+                    for co in p_class.class_operation:
+                        vars.add('class_operation_name', co.class_operation_name)
+                        if co.class_operation_name == "set":
+                            vars.add('set_subject', co.set_subject)
+                            if co.set_subject == "qos-group":
+                                vars.add('qos_group_value', co.qos_group_value)
+                                template.apply('ba_policy_map-template', vars)
+                            elif co.set_subject == "traffic-class":
+                                vars.add('traffic_class_value', co.traffic_class_value)
+                                template.apply('ba_policy_map-template', vars)
+                            elif co.set_subject == "discard-class":
+                                vars.add('discard_class_value', co.discard_class_value)
+                                template.apply('ba_policy_map-template', vars)
+                        elif co.class_operation_name == "police":
+                            vars.add('police_subject', co.police_subject)
+                            vars.add('police_value', co.police_value)
+                            vars.add('police_unit', co.police_unit)
+                            template.apply('ba_policy_map-template', vars)
+
+            elif service.independent.what_to_configure == "interface":
+                self.log.info('Interface Policy Map: ', service.independent.interface.policy_map_name)
 
     # The pre_modification() and post_modification() callbacks are optional,
     # and are invoked outside FASTMAP. pre_modification() is invoked before

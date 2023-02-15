@@ -15,15 +15,15 @@
           <ipv4_mask>{$csr_ipv4_mask}</ipv4_mask>
           <interface_description>{$csr_interface_description}</interface_description>
         </local>
-        <link>
+        <!-- <link>
           <interface_name>{$csr_ul_interface_name}</interface_name>
           <interface_number>{$csr_ul_interface_number}</interface_number>
           <ipv4_address>{$csr_ul_ipv4_address}</ipv4_address>
           <ipv4_mask>{$csr_ul_ipv4_mask}</ipv4_mask>
           <interface_description>{$csr_ul_interface_description}</interface_description>
-        </link>
+        </link> -->
       </csr>
-      <er>
+      <!-- <er>
         <device>{$er_device}</device>
         <link>
           <interface_name>{$er_interface_name}</interface_name>
@@ -32,7 +32,7 @@
           <ipv4_mask>{$er_ipv4_mask}</ipv4_mask>
           <interface_description>{$er_interface_description}</interface_description>
         </link>
-      </er>
+      </er> -->
     </endpoint>
   </ba_vrf>
 </config-template>

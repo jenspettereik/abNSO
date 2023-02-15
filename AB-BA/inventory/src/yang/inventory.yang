@@ -99,39 +99,208 @@ module inventory {
       }
     }
 
-    container qos_policy {
-      
-    }
-
-    container qos_class_map {
-      
-    }
-
-  }
-
-  /* list inventory {
-    description "This is an RFS skeleton service";
-
-    key name;
-    leaf name {
-      tailf:info "Unique service id";
-      tailf:cli-allow-range;
-      type string;
-    }
-
-    uses ncs:service-data;
-    ncs:servicepoint inventory-servicepoint;
-
-    // may replace this with other ways of refering to the devices.
-    leaf-list device {
-      type leafref {
-        path "/ncs:devices/ncs:device/ncs:name";
+    container qos_policy_maps {
+      list qos_policy_map {
+        key qos_policy_map_name;
+        leaf qos_policy_map_name {
+          type string;
+        }
+        leaf description {
+          type string;
+        }
+        container policy_classes {
+          list policy_class {
+            key class_name;
+            leaf class_name {
+              type leafref {
+                path "../../../../../qos_class_maps/qos_class_map/qos_class_map_name";
+              }
+            }
+            leaf class_type {
+              type enumeration {
+                enum qos;
+                enum traffic;
+              }
+            }
+            list class_operation {
+              key operation_name;
+              leaf operation_name {
+                tailf:info "Just any name";
+                type string;
+              }
+              leaf class_operation_name {
+                type enumeration {
+                  enum set;
+                  enum police;
+                  enum shape;
+                  enum bandwidth;
+                  // The list is not complete
+                }
+              }
+              leaf set_subject {
+                tailf:display-when "../class_operation_name = 'set'";
+                type enumeration {
+                  enum qos-group;
+                  enum traffic-class;
+                  enum discard-class;
+                  enum cos;
+                  enum dscp;
+                  // The list is not complete
+                }
+              }
+              leaf police_subject {
+                tailf:display-when "../class_operation_name = 'police'";
+                type enumeration {
+                  enum police_rate;
+                  // The list is not complete
+                }
+              }
+              leaf qos_group_value {
+                tailf:display-when "../set_subject = 'qos-group'";
+                type uint8 {
+                  range "0..8";
+                }
+              }
+              leaf traffic_class_value {
+                tailf:display-when "../set_subject = 'traffic-class'";
+                type uint8 {
+                  range "0..8";
+                }
+              }
+              leaf discard_class_value {
+                tailf:display-when "../set_subject = 'discard-class'";
+                type uint8 {
+                  range "0..8";
+                }
+              }
+              leaf police_value {
+                tailf:display-when "../police_subject = 'police_rate'";
+                type uint64;
+              }
+              leaf police_unit {
+                tailf:display-when "../police_subject = 'police_rate'";
+                type enumeration {
+                  enum percent;
+                  enum bps;
+                  enum cellsps;
+                  enum kbps;
+                  enum mbps;
+                  enum gbps;
+                  enum pps;
+                  enum per-million;
+                  enum per-thousand;
+                }
+              }
+            }
+          }
+        }
       }
     }
 
-    // replace with your own stuff here
-    leaf dummy {
-      type inet:ipv4-address;
+    container qos_class_maps {
+      list qos_class_map {
+        key qos_class_map_name;
+        leaf qos_class_map_name {
+          type string;
+        }
+        leaf match_statement {
+          type enumeration {
+            enum match-all;
+            enum match-any;
+            enum match-not;
+          }
+        }
+        leaf description {
+          type string;
+        }
+        container match_elements {
+          list match_element {
+            key match_subject;
+            leaf match_subject {
+              type enumeration {
+                enum ipv4;
+                enum traffic-class;
+                enum destination-address;
+                enum protocol;
+                enum vlan;
+                enum destination-port;
+                enum mpls;
+                enum qos-group;
+                enum cos;
+                enum dscp;
+                enum precedence;
+                // The list is not complete. Only the ones used by the use-case are enabled
+              }
+            }
+            container mpls {
+              tailf:display-when "../match_subject = 'mpls'";
+              leaf mpls_subject1 {
+                type enumeration {
+                  enum experimental;
+                  enum disposition;
+                }
+              }
+              leaf mpls_subject2 {
+                tailf:display-when "../mpls_subject1 = 'experimental'";
+                type enumeration {
+                  enum imposition;
+                  enum topmost;
+                }
+              }
+              list mpls_labels {
+                key mpls_label;
+                leaf mpls_label {
+                  type uint8 {
+                    range "1..7";
+                  }
+                }
+              }
+            }
+            container dscp {
+              tailf:display-when "../match_subject = 'dscp'";
+              list dscp_values {
+                key dscp_value;
+                leaf dscp_value {
+                  type enumeration {
+                    enum af11;
+                    enum af12;
+                    enum af13;
+                    enum af21;
+                    enum af22;
+                    enum af23;
+                    enum af31;
+                    enum af32;
+                    enum af33;
+                    enum af41;
+                    enum af42;
+                    enum af43;
+                    enum cs1;
+                    enum cs2;
+                    enum cs3;
+                    enum cs4;
+                    enum cs5;
+                    enum cs6;
+                    enum cs7;
+                    enum ef;
+                    enum def;
+                  }
+                }
+              }
+            }
+            container cos {
+              tailf:display-when "../match_subject = 'cos'";
+              list cos_values {
+                key cos_value;
+                leaf cos_value {
+                  type uint8 {
+                    range "1..7";
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
-  } */
+  }
 }

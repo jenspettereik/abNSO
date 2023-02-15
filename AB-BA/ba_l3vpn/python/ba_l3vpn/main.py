@@ -55,6 +55,7 @@ class ServiceCallbacks(Service):
             vars.add('er_ipv4_address', endpoint.er.link.ipv4_address)
             vars.add('er_ipv4_mask', endpoint.er.link.ipv4_mask)
 
+            ########## COMMUNITY SET SECTION ########
             vars.add('community_set_umpls', endpoint.csr.community_set_umpls)
             for cs in root.inventory.community_sets.community_set[endpoint.csr.community_set_umpls].rpl_community_set:
                 vars.add('as_number', cs.part1)
@@ -63,6 +64,7 @@ class ServiceCallbacks(Service):
                 vars.add('name', name)
                 template.apply('ba_rpl_communityset_rfs-template', vars)
 
+            ########## PREFIX SET SECTION ########
             vars.add('prefix_set_umpls', endpoint.csr.prefix_set_umpls)
             for ps in root.inventory.prefix_sets.prefix_set[endpoint.csr.prefix_set_umpls].rpl_prefix_set:
                 vars.add('prefix_set_ip', ps.prefix_set_ip)
@@ -73,8 +75,9 @@ class ServiceCallbacks(Service):
                 vars.add('name', name)
                 template.apply('ba_rpl_prefixset_rfs-template', vars)
 
-                template.apply('ba_rpl_bgp_rfs-template', vars)
+            template.apply('ba_rpl_bgp_rfs-template', vars)
 
+            ########## ba-bgp SECTION ########
             csr_mgmt_ip = endpoint.csr.mgmt_ipv4_address
             vars.add('csr_mgmt_ipv4_address', csr_mgmt_ip)
             vars.add('paths_route_policy', endpoint.csr.paths_route_policy)
@@ -97,16 +100,19 @@ class ServiceCallbacks(Service):
                 vars.add('agg_neighbor_description', rr.neighbor_description)
                 template.apply('ba_bgp_rfs-template', vars)
 
+            ########## ba-isis SECTION ########
             name = "ISIS-"+endpoint.csr.device+"-"+endpoint.id
             vars.add('name', name)
             result = "49.0002.{}.{}.{}.00".format(*[''.join(map(lambda x: x.zfill(3), csr_mgmt_ip.split('.')))[i:i+4] for i in range(0, 12, 4)])
             vars.add('net_id', result)
             template.apply('ba_isis_rfs-template', vars)
 
+            ########## MPLS SECTION ########
             name = "MPLS-"+endpoint.csr.device+"-"+str(endpoint.id)
             vars.add('name', name)
             template.apply('ba_mpls_rfs-template', vars)
 
+            ########## L3VPN SECTION ########
             template.apply('ba_vrf_rfs-template', vars)
 
     # The pre_modification() and post_modification() callbacks are optional,

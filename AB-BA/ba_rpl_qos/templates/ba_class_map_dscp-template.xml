@@ -1,0 +1,23 @@
+<config-template xmlns="http://tail-f.com/ns/config/1.0">
+  <devices xmlns="http://tail-f.com/ns/ncs">
+    <device>
+      <name>{$device}</name>
+      <config>
+        <class-map xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-policymap-classmap-cfg">
+          <type>
+            <qos>
+              <class-map-name>{$qos_class_map_name}</class-map-name>
+              <match-any/>
+              <description>{$class_map_description}</description>
+              <match>
+                <dscp>
+                  <value>{$dscp_value}</value>
+                </dscp>
+              </match>
+            </qos>
+          </type>
+        </class-map>
+      </config>
+    </device>
+  </devices>
+</config-template>

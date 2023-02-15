@@ -31,29 +31,31 @@ class ServiceCallbacks(Service):
         vars.add('csr_interface_description', interface_description)
         vars.add('csr_ipv4_address', service.endpoint.csr.local.ipv4_address)
         vars.add('csr_ipv4_mask', service.endpoint.csr.local.ipv4_mask)
-        vars.add('csr_ul_interface_name', service.endpoint.csr.link.interface_name)
+
+        # Uplink interfaces are handled by the ISIS RFS:
+        """ vars.add('csr_ul_interface_name', service.endpoint.csr.link.interface_name)
         vars.add('csr_ul_interface_number', service.endpoint.csr.link.interface_number)
         ul_interface = str(service.endpoint.csr.link.interface_name) + str(service.endpoint.csr.link.interface_number)
         self.log.info('CSR UL INTERFACE: ', ul_interface)
-        vars.add('csr_ul_interface', ul_interface)
+        vars.add('csr_ul_interface', ul_interface) """
         # "link to PE / {$PE} - {$PE_INT_NAME}</description>"
-        ul_interface_description = service.endpoint.er.device + " - " + str(service.endpoint.er.link.interface_name) + str(service.endpoint.er.link.interface_number)
+        """ ul_interface_description = service.endpoint.er.device + " - " + str(service.endpoint.er.link.interface_name) + str(service.endpoint.er.link.interface_number)
         vars.add('csr_ul_interface_description', ul_interface_description)
         vars.add('csr_ul_ipv4_address', service.endpoint.csr.link.ipv4_address)
-        vars.add('csr_ul_ipv4_mask', service.endpoint.csr.link.ipv4_mask)
+        vars.add('csr_ul_ipv4_mask', service.endpoint.csr.link.ipv4_mask) """
 
-        self.log.info('ER DEVICE: ', service.endpoint.er.device)
+        """ self.log.info('ER DEVICE: ', service.endpoint.er.device)
         vars.add('er_device', service.endpoint.er.device)
         vars.add('er_interface_name', service.endpoint.er.link.interface_name)
-        vars.add('er_interface_number', service.endpoint.er.link.interface_number)
+        vars.add('er_interface_number', service.endpoint.er.link.interface_number) """
         # "link to CSR / {$CSR} - {$CSR_INT_NAME}</description>"
-        interface_description = service.endpoint.csr.device + " - " + ul_interface
+        """ interface_description = service.endpoint.csr.device + " - " + ul_interface
         vars.add('er_interface_description', interface_description)
         vars.add('er_ipv4_address', service.endpoint.er.link.ipv4_address)
-        vars.add('er_ipv4_mask', service.endpoint.er.link.ipv4_mask)
+        vars.add('er_ipv4_mask', service.endpoint.er.link.ipv4_mask) """
 
         template.apply('ba_vrf_csr-template', vars)
-        template.apply('ba_vrf_er-template', vars)
+        # template.apply('ba_vrf_er-template', vars)
 
     # The pre_modification() and post_modification() callbacks are optional,
     # and are invoked outside FASTMAP. pre_modification() is invoked before

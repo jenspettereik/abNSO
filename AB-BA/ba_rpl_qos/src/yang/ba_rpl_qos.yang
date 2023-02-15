@@ -12,13 +12,40 @@ module ba_rpl_qos {
   import tailf-ncs {
     prefix ncs;
   }
+  import inventory {
+    prefix inventory;
+  }
 
   description
     "Bla bla...";
 
-  revision 2016-01-01 {
+  revision 2023-02-14 {
     description
       "Initial revision.";
+  }
+
+  grouping interface_grouping {
+    leaf interface_name {
+      tailf:info "Interface name. For example TenGigE.";
+      type enumeration {
+        enum FastEthernet;
+        enum GigabitEthernet;
+        enum TenGigE;
+        enum TwentyFiveGigE;
+        enum FortyGigE;
+        enum FiftyGigE;
+        enum HundredGigE;
+        enum TwoHundredGigE;
+        enum FourHundredGigE;
+        enum EightHundredGigE;
+      }
+    }
+    leaf interface_number {
+      tailf:info "Interface number. For example 0 or 1/0";
+      type string {
+        pattern "[0-9]{1,2}(/[0-9]{1,2}){1,4}";
+      }
+    }
   }
 
   list ba_rpl_qos {
@@ -34,16 +61,57 @@ module ba_rpl_qos {
     uses ncs:service-data;
     ncs:servicepoint ba_rpl_qos-servicepoint;
 
-    // may replace this with other ways of refering to the devices.
-    leaf-list device {
-      type leafref {
-        path "/ncs:devices/ncs:device/ncs:name";
+    leaf run_as_rfs {
+      tailf:info "Should this service run as rfs = true, or independent = false.";
+      type boolean;
+    }
+
+    container rfs {
+      tailf:display-when "../run_as_rfs = 'true'";
+    }
+
+    container independent {
+      tailf:display-when "../run_as_rfs = 'false'";
+      leaf what_to_configure {
+        type enumeration {
+          enum class_map;
+          enum policy_map;
+          enum interface;
+        }
+      }
+      container class_map {
+        tailf:display-when "../what_to_configure = 'class_map'";
+        leaf class_map_name {
+          type leafref {
+            path "/inventory:inventory/inventory:qos_class_maps/inventory:qos_class_map/inventory:qos_class_map_name";
+          }
+        }
+      }
+      container policy_map {
+        tailf:display-when "../what_to_configure = 'policy_map'";
+        leaf policy_map_name {
+          type leafref {
+            path "/inventory:inventory/inventory:qos_policy_maps/inventory:qos_policy_map/inventory:qos_policy_map_name";
+          }
+        }
+      }
+      container interface {
+        tailf:display-when "../what_to_configure = 'interface'";
+        leaf policy_map_name {
+          type leafref {
+            path "/inventory:inventory/inventory:qos_policy_maps/inventory:qos_policy_map/inventory:qos_policy_map_name";
+          }
+        }
+        container interface {
+          uses interface_grouping;
+        }
       }
     }
 
-    // replace with your own stuff here
-    leaf dummy {
-      type inet:ipv4-address;
+    leaf device {
+      type leafref {
+        path "/ncs:devices/ncs:device/ncs:name";
+      }
     }
   }
 }

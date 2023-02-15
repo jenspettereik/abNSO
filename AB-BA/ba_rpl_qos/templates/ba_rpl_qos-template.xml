@@ -9,30 +9,68 @@ rfs ba_qos_csr_rfs
     <device>
       <name>{/device}</name>
       <config>
-        <!--
-            Add device-specific parameters here.
-            In this skeleton the, java code sets a variable DUMMY, use it
-            to set something on the device e.g.:
-            <ip-address-on-device>{$DUMMY}</ip-address-on-device>
-        -->
-    <policy-map-name>BA-ACCESS-IN</policy-map-name>
-      <class>
-        <name>class-default</name>
-        <type>qos</type>
-        <service-policy>
-          <type>qos</type>
-          <name>BA-ACCESS</name>
-        </service-policy>
-        <police>
-          <rate>
-          <value>{bandwidth}</value>
-          <unit>mbps</unit>
-          </rate>
-        </police>
-      </class>
-    </qos>
-    </type>
-  </policy-map>
+        <class-map xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-policymap-classmap-cfg">
+          <type>
+            <qos>
+              <class-map-name>IN-VOD</class-map-name>
+              <match-any/>
+              <description>myVOD</description>
+              <match>
+                <cos>
+                  <value>3</value>
+                </cos>
+                <dscp>
+                  <value>af31</value>
+                </dscp>
+                <mpls>
+                  <experimental>
+                    <topmost>
+                      <label>3</label>
+                    </topmost>
+                  </experimental>
+                </mpls>
+              </match>
+            </qos>
+          </type>
+        </class-map>
+        <policy-map xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-policymap-classmap-cfg">
+          <type>
+            <qos>
+              <policy-map-name>CORE-IN</policy-map-name>
+              <description>myCorePM</description>
+              <class>
+                <name>IN-VOD</name>
+                <type>qos</type>
+                <set>
+                  <traffic-class>5</traffic-class>
+                  <qos-group>5</qos-group>
+                </set>
+              </class>
+            </qos>
+          </type>
+        </policy-map>
+
+        <policy-map xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-policymap-classmap-cfg">
+          <type>
+            <qos>
+              <policy-map-name>BA-ACCESS-IN</policy-map-name>
+              <class>
+                <name>class-default</name>
+                <type>qos</type>
+                <service-policy>
+                  <type>qos</type>
+                  <name>BA-ACCESS</name>
+                </service-policy>
+                <police>
+                  <rate>
+                    <value>{bandwidth}</value>
+                    <unit>mbps</unit>
+                  </rate>
+                </police>
+              </class>
+            </qos>
+          </type>
+        </policy-map>
 
         <!-- qos på uplink og downlink interface config:
         PS! interface skal skal ikke slettes selv om QOS slettes

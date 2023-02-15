@@ -98,12 +98,14 @@ module ba_vrf {
         container local {
           uses endpoint_grouping;
         }
-        container link {
+        // Uplink interfaces are handled by the ISIS RFS.
+        /* container link {
           uses endpoint_grouping;
-        }
+        } */
       }
 
-      container er {
+      // Uplink interfaces are handled by the ISIS RFS.
+      /* container er {
         leaf device {
           type leafref {
             path "/ncs:devices/ncs:device/ncs:name";
@@ -112,7 +114,7 @@ module ba_vrf {
         container link {
           uses endpoint_grouping;
         }
-      }
+      } */
     }
   }
 }

@@ -34,8 +34,9 @@
           Tue Jan 24 09:24:33.086 UTC
          -->
 
+        <!-- UPLINK ISIS interface is done by the ISIS RFS: -->
         <interfaces xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-interface-cfg">
-          <interface>
+          <!-- <interface>
             <interface-name>{$csr_ul_interface_name}{$csr_ul_interface_number}</interface-name>
             <ipv4>
               <addresses xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-if-ip-address-cfg">
@@ -48,7 +49,7 @@
             </ipv4>
             <mtu>9000</mtu>
             <description>{$csr_ul_interface_description}</description>
-          </interface>
+          </interface> -->
           <interface>
             <interface-name>{$csr_interface_name}{$csr_interface_number}</interface-name>
             <description>{$csr_interface_description}</description>
