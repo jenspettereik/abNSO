@@ -112,27 +112,37 @@ module ba_l3vpn {
             path "/inventory:inventory/inventory:prefix_sets/inventory:prefix_set/inventory:prefix_set_name";
           }
         }
+        leaf vrf_policy_map {
+          type leafref {
+            path "/inventory:inventory/inventory:qos_policy_maps/inventory:qos_policy_map/inventory:qos_policy_map_name";
+          }
+        }
+        leaf uplink_policy_map {
+          type leafref {
+            path "/inventory:inventory/inventory:qos_policy_maps/inventory:qos_policy_map/inventory:qos_policy_map_name";
+          }
+        }
         leaf mgmt_ipv4_address {
           tailf:info "IP address of a Loopback interface";
           type inet:ipv4-address;
         }
         leaf paths_route_policy {
-          tailf:info "e.g. RPL-uMPLS_PIC_INSTALL";
+          tailf:info "ex RPL-uMPLS_PIC_INSTALL";
           type string;
           default "RPL-uMPLS_PIC_INSTALL";
         }
         leaf networks_route_policy {
-          tailf:info "e.g. RPL-uMPLS_ADVERTISE";
+          tailf:info "ex RPL-uMPLS_ADVERTISE";
           type string;
           default "RPL-uMPLS_ADVERTISE";
         }
         leaf ng_route_policy_in {
-          tailf:info "e.g. RPL-uMPLS_IN";
+          tailf:info "ex RPL-uMPLS_IN";
           type string;
           default "RPL-uMPLS_IN";
         }
         leaf ng_route_policy_out {
-          tailf:info "e.g. RPL-uMPLS_OUT";
+          tailf:info "ex RPL-uMPLS_OUT";
           type string;
           default "RPL-uMPLS_OUT";
         }
@@ -148,6 +158,11 @@ module ba_l3vpn {
         leaf device {
           type leafref {
             path "/ncs:devices/ncs:device/ncs:name";
+          }
+        }
+        leaf downlink_policy_map {
+          type leafref {
+            path "/inventory:inventory/inventory:qos_policy_maps/inventory:qos_policy_map/inventory:qos_policy_map_name";
           }
         }
         container link {

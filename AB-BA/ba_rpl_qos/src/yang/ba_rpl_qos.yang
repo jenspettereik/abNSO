@@ -68,6 +68,16 @@ module ba_rpl_qos {
 
     container rfs {
       tailf:display-when "../run_as_rfs = 'true'";
+      container interface {
+        leaf policy_map_name {
+          type leafref {
+            path "/inventory:inventory/inventory:qos_policy_maps/inventory:qos_policy_map/inventory:qos_policy_map_name";
+          }
+        }
+        container interface {
+          uses interface_grouping;
+        }
+      }
     }
 
     container independent {

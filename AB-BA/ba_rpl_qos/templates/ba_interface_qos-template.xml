@@ -12,34 +12,17 @@
         -->
         <interfaces xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-interface-cfg">
           <interface>
-            <interface-name>{interface_name}{interface_number}</interface-name>
+            <interface-name>{$interface_name}{$interface_number}</interface-name>
             <mtu>9080</mtu>
             <service-policy xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-if-service-policy-qos-cfg">
               <input>
-                <service-policy-name>CORE-IN</service-policy-name>
+                <service-policy-name>{$policy_map_name}</service-policy-name>
               </input>
             </service-policy>
           </interface>
 
         <!-- downlink -->
-          <interface>
-            <interface-name>{interface_name}{interface_number}</interface-name>
-            <service-policy xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-if-service-policy-qos-cfg">
-              <input>
-                <service-policy-name>CORE-IN</service-policy-name>
-              </input>
-            </service-policy>
-            </interface>
-
         <!-- qos på vrf interface -->
-          <interface>
-            <interface-name>{interface_name}{interface_number}</interface-name>
-            <service-policy xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-if-service-policy-qos-cfg">
-              <input>
-                <service-policy-name>BA-ACCESS-IN</service-policy-name>
-              </input>
-            </service-policy>
-            </interface>
         </interfaces>
       </config>
     </device>

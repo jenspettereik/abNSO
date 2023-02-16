@@ -20,6 +20,13 @@ class ServiceCallbacks(Service):
         vars.add('device', service.device)
         if service.run_as_rfs:
             self.log.info('Running as RFS, DEVICE: ', service.device)
+            vars.add('policy_map_name', service.rfs.interface.policy_map_name)
+            vars.add('interface_name', service.rfs.interface.interface.interface_name)
+            vars.add('interface_number', service.rfs.interface.interface.interface_number)
+            self.log.info('POLICY MAP: ', service.rfs.interface.policy_map_name)
+            self.log.info('INTERFACE NAME: ', service.rfs.interface.interface.interface_name)
+            self.log.info('INTERFACE NUMBER: ', service.rfs.interface.interface.interface_number)
+            template.apply('ba_interface_qos-template', vars)
         else:
             self.log.info('what to configure: ', service.independent.what_to_configure)
             self.log.info('Running independent, DEVICE: ', service.device)
