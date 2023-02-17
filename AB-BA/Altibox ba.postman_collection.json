@@ -1,0 +1,1934 @@
+{
+	"info": {
+		"_postman_id": "17e436f3-9478-4d1b-adaf-7e15131a445c",
+		"name": "Altibox ba",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "5324268"
+	},
+	"item": [
+		{
+			"name": "Inventory",
+			"item": [
+				{
+					"name": "Class Maps",
+					"item": [
+						{
+							"name": "POST a Class Map to the inventory",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "{{password}}",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "{{user}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									},
+									{
+										"key": "Cache-Control",
+										"type": "text",
+										"value": "no-cache"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"qos_class_map\": [\n        {\n            \"qos_class_map_name\": \"IN-TEST\",\n            \"match_statement\": \"match-any\",\n            \"description\": \"IN-TEST\",\n            \"match_elements\": {\n                \"match_element\": [\n                    {\n                        \"match_subject\": \"mpls\",\n                        \"mpls\": {\n                            \"mpls_subject1\": \"experimental\",\n                            \"mpls_subject2\": \"topmost\",\n                            \"mpls_labels\": [\n                                {\n                                    \"mpls_label\": 1\n                                },\n                                {\n                                    \"mpls_label\": 2\n                                }\n                            ]\n                        }\n                    },\n                    {\n                        \"match_subject\": \"cos\",\n                        \"cos\": {\n                            \"cos_values\": [\n                                {\n                                    \"cos_value\": 1\n                                },\n                                {\n                                    \"cos_value\": 2\n                                }\n                            ]\n                        }\n                    },\n                    {\n                        \"match_subject\": \"dscp\",\n                        \"dscp\": {\n                            \"dscp_values\": [\n                                {\n                                    \"dscp_value\": \"af31\"\n                                },\n                                {\n                                    \"dscp_value\": \"cs1\"\n                                },\n                                {\n                                    \"dscp_value\": \"cs2\"\n                                }\n                            ]\n                        }\n                    }\n                ]\n            }\n        }\n    ]\n}\n"
+								},
+								"url": {
+									"raw": "http://{{host}}:8080/restconf/data/inventory:inventory/inventory:qos_class_maps",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"port": "8080",
+									"path": [
+										"restconf",
+										"data",
+										"inventory:inventory",
+										"inventory:qos_class_maps"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST IN-BUSINESS Class Map",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "{{password}}",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "{{user}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									},
+									{
+										"key": "Cache-Control",
+										"type": "text",
+										"value": "no-cache"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"qos_class_map\": [\n        {\n        \"qos_class_map_name\": \"IN-BUSINESS\",\n        \"match_statement\": \"match-any\",\n        \"description\": \"IN-BUSINESS\",\n        \"match_elements\": {\n            \"match_element\": [\n            {\n                \"match_subject\": \"mpls\",\n                \"mpls\": {\n                \"mpls_subject1\": \"experimental\",\n                \"mpls_subject2\": \"topmost\",\n                \"mpls_labels\": [\n                    {\n                    \"mpls_label\": 1\n                    },\n                    {\n                    \"mpls_label\": 2\n                    }\n                ]\n                }\n            },\n            {\n                \"match_subject\": \"cos\",\n                \"cos\": {\n                \"cos_values\": [\n                    {\n                    \"cos_value\": 1\n                    },\n                    {\n                    \"cos_value\": 2\n                    }\n                ]\n                }\n            },\n            {\n                \"match_subject\": \"dscp\",\n                \"dscp\": {\n                \"dscp_values\": [\n                    {\n                    \"dscp_value\": \"cs1\"\n                    },\n                    {\n                    \"dscp_value\": \"cs2\"\n                    }\n                ]\n                }\n            }\n            ]\n        }\n        }\n    ]\n}\n"
+								},
+								"url": {
+									"raw": "http://{{host}}:8080/restconf/data/inventory:inventory/inventory:qos_class_maps",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"port": "8080",
+									"path": [
+										"restconf",
+										"data",
+										"inventory:inventory",
+										"inventory:qos_class_maps"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST IN-IPTV Class Map",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "{{password}}",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "{{user}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									},
+									{
+										"key": "Cache-Control",
+										"type": "text",
+										"value": "no-cache"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"qos_class_map\": [\n        {\n        \"qos_class_map_name\": \"IN-IPTV\",\n        \"match_statement\": \"match-any\",\n        \"description\": \"IN-IPTV\",\n        \"match_elements\": {\n            \"match_element\": [\n            {\n                \"match_subject\": \"mpls\",\n                \"mpls\": {\n                \"mpls_subject1\": \"experimental\",\n                \"mpls_subject2\": \"topmost\",\n                \"mpls_labels\": [\n                    {\n                    \"mpls_label\": 4\n                    }\n                ]\n                }\n            },\n            {\n                \"match_subject\": \"cos\",\n                \"cos\": {\n                \"cos_values\": [\n                    {\n                    \"cos_value\": 4\n                    }\n                ]\n                }\n            },\n            {\n                \"match_subject\": \"dscp\",\n                \"dscp\": {\n                \"dscp_values\": [\n                    {\n                    \"dscp_value\": \"af41\"\n                    },\n                    {\n                    \"dscp_value\": \"af43\"\n                    },\n                    {\n                    \"dscp_value\": \"cs3\"\n                    },\n                    {\n                    \"dscp_value\": \"cs4\"\n                    }\n                ]\n                }\n            }\n            ]\n        }\n        }\n    ]\n}\n"
+								},
+								"url": {
+									"raw": "http://{{host}}:8080/restconf/data/inventory:inventory/inventory:qos_class_maps",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"port": "8080",
+									"path": [
+										"restconf",
+										"data",
+										"inventory:inventory",
+										"inventory:qos_class_maps"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST IN-MGMT Class Map",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "{{password}}",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "{{user}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									},
+									{
+										"key": "Cache-Control",
+										"type": "text",
+										"value": "no-cache"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"qos_class_map\": [\n        {\n        \"qos_class_map_name\": \"IN-MGMT\",\n        \"match_statement\": \"match-any\",\n        \"description\": \"IN-MGMT\",\n        \"match_elements\": {\n            \"match_element\": [\n            {\n                \"match_subject\": \"mpls\",\n                \"mpls\": {\n                \"mpls_subject1\": \"experimental\",\n                \"mpls_subject2\": \"topmost\",\n                \"mpls_labels\": [\n                    {\n                    \"mpls_label\": 6\n                    },\n                    {\n                    \"mpls_label\": 7\n                    }\n                ]\n                }\n            },\n            {\n                \"match_subject\": \"cos\",\n                \"cos\": {\n                \"cos_values\": [\n                    {\n                    \"cos_value\": 6\n                    },\n                    {\n                    \"cos_value\": 7\n                    }\n                ]\n                }\n            },\n            {\n                \"match_subject\": \"dscp\",\n                \"dscp\": {\n                \"dscp_values\": [\n                    {\n                    \"dscp_value\": \"cs6\"\n                    },\n                    {\n                    \"dscp_value\": \"cs7\"\n                    }\n                ]\n                }\n            }\n            ]\n        }\n        }\n    ]\n}\n"
+								},
+								"url": {
+									"raw": "http://{{host}}:8080/restconf/data/inventory:inventory/inventory:qos_class_maps",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"port": "8080",
+									"path": [
+										"restconf",
+										"data",
+										"inventory:inventory",
+										"inventory:qos_class_maps"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST IN-VOD Class Map",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "{{password}}",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "{{user}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									},
+									{
+										"key": "Cache-Control",
+										"type": "text",
+										"value": "no-cache"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"qos_class_map\": [\n        {\n        \"qos_class_map_name\": \"IN-VOD\",\n        \"match_statement\": \"match-any\",\n        \"description\": \"IN-VOD\",\n        \"match_elements\": {\n            \"match_element\": [\n            {\n                \"match_subject\": \"mpls\",\n                \"mpls\": {\n                \"mpls_subject1\": \"experimental\",\n                \"mpls_subject2\": \"topmost\",\n                \"mpls_labels\": [\n                    {\n                    \"mpls_label\": 3\n                    }\n                ]\n                }\n            },\n            {\n                \"match_subject\": \"cos\",\n                \"cos\": {\n                \"cos_values\": [\n                    {\n                    \"cos_value\": 3\n                    }\n                ]\n                }\n            },\n            {\n                \"match_subject\": \"dscp\",\n                \"dscp\": {\n                \"dscp_values\": [\n                    {\n                    \"dscp_value\": \"af31\"\n                    }\n                ]\n                }\n            }\n            ]\n        }\n        }\n    ]\n}\n"
+								},
+								"url": {
+									"raw": "http://{{host}}:8080/restconf/data/inventory:inventory/inventory:qos_class_maps",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"port": "8080",
+									"path": [
+										"restconf",
+										"data",
+										"inventory:inventory",
+										"inventory:qos_class_maps"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST IN-VOICE Class Map",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "{{password}}",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "{{user}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									},
+									{
+										"key": "Cache-Control",
+										"type": "text",
+										"value": "no-cache"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"qos_class_map\": [\n        {\n        \"qos_class_map_name\": \"IN-VOICE\",\n        \"match_statement\": \"match-any\",\n        \"description\": \"IN-VOICE\",\n        \"match_elements\": {\n            \"match_element\": [\n            {\n                \"match_subject\": \"mpls\",\n                \"mpls\": {\n                \"mpls_subject1\": \"experimental\",\n                \"mpls_subject2\": \"topmost\",\n                \"mpls_labels\": [\n                    {\n                    \"mpls_label\": 5\n                    }\n                ]\n                }\n            },\n            {\n                \"match_subject\": \"cos\",\n                \"cos\": {\n                \"cos_values\": [\n                    {\n                    \"cos_value\": 5\n                    }\n                ]\n                }\n            },\n            {\n                \"match_subject\": \"dscp\",\n                \"dscp\": {\n                \"dscp_values\": [\n                    {\n                    \"dscp_value\": \"ef\"\n                    }\n                ]\n                }\n            }\n            ]\n        }\n        }\n    ]\n}\n"
+								},
+								"url": {
+									"raw": "http://{{host}}:8080/restconf/data/inventory:inventory/inventory:qos_class_maps",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"port": "8080",
+									"path": [
+										"restconf",
+										"data",
+										"inventory:inventory",
+										"inventory:qos_class_maps"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST class-default Class Map",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "{{password}}",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "{{user}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									},
+									{
+										"key": "Cache-Control",
+										"type": "text",
+										"value": "no-cache"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"qos_class_map\": [\n        {\n            \"qos_class_map_name\": \"class-default\",\n            \"description\": \"class-default\"\n        }\n    ]\n}\n"
+								},
+								"url": {
+									"raw": "http://{{host}}:8080/restconf/data/inventory:inventory/inventory:qos_class_maps",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"port": "8080",
+									"path": [
+										"restconf",
+										"data",
+										"inventory:inventory",
+										"inventory:qos_class_maps"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DELETE a Class Map",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "{{password}}",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "{{user}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									},
+									{
+										"key": "Cache-Control",
+										"type": "text",
+										"value": "no-cache"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://{{host}}:8080/restconf/data/inventory:inventory/inventory:qos_class_maps/inventory:qos_class_map=IN-TEST",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"port": "8080",
+									"path": [
+										"restconf",
+										"data",
+										"inventory:inventory",
+										"inventory:qos_class_maps",
+										"inventory:qos_class_map=IN-TEST"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET all Class Maps",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "{{password}}",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "{{user}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									},
+									{
+										"key": "Cache-Control",
+										"type": "text",
+										"value": "no-cache"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://{{host}}:8080/restconf/data/inventory:inventory/inventory:qos_class_maps",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"port": "8080",
+									"path": [
+										"restconf",
+										"data",
+										"inventory:inventory",
+										"inventory:qos_class_maps"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET one Class Map",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "{{password}}",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "{{user}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									},
+									{
+										"key": "Cache-Control",
+										"type": "text",
+										"value": "no-cache"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://{{host}}:8080/restconf/data/inventory:inventory/inventory:qos_class_maps/inventory:qos_class_map=IN-VOD",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"port": "8080",
+									"path": [
+										"restconf",
+										"data",
+										"inventory:inventory",
+										"inventory:qos_class_maps",
+										"inventory:qos_class_map=IN-VOD"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Policy Maps",
+					"item": [
+						{
+							"name": "POST CORE-IN Policy Map",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "{{password}}",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "{{user}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									},
+									{
+										"key": "Cache-Control",
+										"type": "text",
+										"value": "no-cache"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"qos_policy_map\": [\n        {\n        \"qos_policy_map_name\": \"CORE-IN\",\n        \"description\": \"CORE-IN\",\n        \"policy_classes\": {\n            \"policy_class\": [\n            {\n                \"class_name\": \"IN-BUSINESS\",\n                \"class_type\": \"qos\",\n                \"class_operation\": [\n                {\n                    \"operation_name\": \"IN-BUSINESS-op1\",\n                    \"class_operation_name\": \"set\",\n                    \"set_subject\": \"qos-group\",\n                    \"qos_group_value\": 2\n                },\n                {\n                    \"operation_name\": \"IN-BUSINESS-op2\",\n                    \"class_operation_name\": \"set\",\n                    \"set_subject\": \"traffic-class\",\n                    \"traffic_class_value\": 2\n                },\n                {\n                    \"operation_name\": \"IN-BUSINESS-op3\",\n                    \"class_operation_name\": \"set\",\n                    \"set_subject\": \"discard-class\",\n                    \"discard_class_value\": 1\n                }\n                ]\n            },\n            {\n                \"class_name\": \"IN-IPTV\",\n                \"class_type\": \"qos\",\n                \"class_operation\": [\n                {\n                    \"operation_name\": \"IN-IPTV-op1\",\n                    \"class_operation_name\": \"set\",\n                    \"set_subject\": \"qos-group\",\n                    \"qos_group_value\": 4\n                },\n                {\n                    \"operation_name\": \"IN-IPTV-op2\",\n                    \"class_operation_name\": \"set\",\n                    \"set_subject\": \"traffic-class\",\n                    \"traffic_class_value\": 4\n                }\n                ]\n            },\n            {\n                \"class_name\": \"IN-MGMT\",\n                \"class_type\": \"qos\",\n                \"class_operation\": [\n                {\n                    \"operation_name\": \"IN-MGMT-op1\",\n                    \"class_operation_name\": \"set\",\n                    \"set_subject\": \"qos-group\",\n                    \"qos_group_value\": 6\n                },\n                {\n                    \"operation_name\": \"IN-MGMT-op2\",\n                    \"class_operation_name\": \"set\",\n                    \"set_subject\": \"traffic-class\",\n                    \"traffic_class_value\": 6\n                }\n                ]\n            },\n            {\n                \"class_name\": \"IN-VOD\",\n                \"class_type\": \"qos\",\n                \"class_operation\": [\n                {\n                    \"operation_name\": \"IN-VOD-op1\",\n                    \"class_operation_name\": \"set\",\n                    \"set_subject\": \"qos-group\",\n                    \"qos_group_value\": 3\n                },\n                {\n                    \"operation_name\": \"IN-VOD-op2\",\n                    \"class_operation_name\": \"set\",\n                    \"set_subject\": \"traffic-class\",\n                    \"traffic_class_value\": 3\n                }\n                ]\n            },\n            {\n                \"class_name\": \"IN-VOICE\",\n                \"class_type\": \"qos\",\n                \"class_operation\": [\n                {\n                    \"operation_name\": \"CORE-IN-op1\",\n                    \"class_operation_name\": \"set\",\n                    \"set_subject\": \"qos-group\",\n                    \"qos_group_value\": 5\n                },\n                {\n                    \"operation_name\": \"CORE-IN-op2\",\n                    \"class_operation_name\": \"set\",\n                    \"set_subject\": \"traffic-class\",\n                    \"traffic_class_value\": 5\n                }\n                ]\n            },\n            {\n                \"class_name\": \"class-default\",\n                \"class_type\": \"qos\",\n                \"class_operation\": [\n                {\n                    \"operation_name\": \"default-class-op1\",\n                    \"class_operation_name\": \"set\",\n                    \"set_subject\": \"qos-group\",\n                    \"qos_group_value\": 0\n                },\n                {\n                    \"operation_name\": \"default-class-op2\",\n                    \"class_operation_name\": \"set\",\n                    \"set_subject\": \"traffic-class\",\n                    \"traffic_class_value\": 0\n                },\n                {\n                    \"operation_name\": \"default-class-op3\",\n                    \"class_operation_name\": \"set\",\n                    \"set_subject\": \"discard-class\",\n                    \"discard_class_value\": 0\n                }\n                ]\n            }\n            ]\n        }\n        }\n    ]\n}\n"
+								},
+								"url": {
+									"raw": "http://{{host}}:8080/restconf/data/inventory:inventory/inventory:qos_policy_maps",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"port": "8080",
+									"path": [
+										"restconf",
+										"data",
+										"inventory:inventory",
+										"inventory:qos_policy_maps"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST TEST Policy Map",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "{{password}}",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "{{user}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									},
+									{
+										"key": "Cache-Control",
+										"type": "text",
+										"value": "no-cache"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"qos_policy_map\": [\n        {\n        \"qos_policy_map_name\": \"TEST-TEST\",\n        \"description\": \"TEST TEST TEST\",\n        \"policy_classes\": {\n            \"policy_class\": [\n            {\n                \"class_name\": \"IN-BUSINESS\",\n                \"class_type\": \"qos\",\n                \"class_operation\": [\n                {\n                    \"operation_name\": \"IN-BUSINESS-op1\",\n                    \"class_operation_name\": \"set\",\n                    \"set_subject\": \"qos-group\",\n                    \"qos_group_value\": 2\n                },\n                {\n                    \"operation_name\": \"IN-BUSINESS-op2\",\n                    \"class_operation_name\": \"set\",\n                    \"set_subject\": \"traffic-class\",\n                    \"traffic_class_value\": 2\n                },\n                {\n                    \"operation_name\": \"IN-BUSINESS-op3\",\n                    \"class_operation_name\": \"set\",\n                    \"set_subject\": \"discard-class\",\n                    \"discard_class_value\": 1\n                }\n                ]\n            },\n            {\n                \"class_name\": \"IN-IPTV\",\n                \"class_type\": \"qos\",\n                \"class_operation\": [\n                {\n                    \"operation_name\": \"IN-IPTV-op1\",\n                    \"class_operation_name\": \"set\",\n                    \"set_subject\": \"qos-group\",\n                    \"qos_group_value\": 4\n                },\n                {\n                    \"operation_name\": \"IN-IPTV-op2\",\n                    \"class_operation_name\": \"set\",\n                    \"set_subject\": \"traffic-class\",\n                    \"traffic_class_value\": 4\n                }\n                ]\n            },\n            {\n                \"class_name\": \"IN-MGMT\",\n                \"class_type\": \"qos\",\n                \"class_operation\": [\n                {\n                    \"operation_name\": \"IN-MGMT-op1\",\n                    \"class_operation_name\": \"set\",\n                    \"set_subject\": \"qos-group\",\n                    \"qos_group_value\": 6\n                },\n                {\n                    \"operation_name\": \"IN-MGMT-op2\",\n                    \"class_operation_name\": \"set\",\n                    \"set_subject\": \"traffic-class\",\n                    \"traffic_class_value\": 6\n                }\n                ]\n            },\n            {\n                \"class_name\": \"IN-VOD\",\n                \"class_type\": \"qos\",\n                \"class_operation\": [\n                {\n                    \"operation_name\": \"IN-VOD-op1\",\n                    \"class_operation_name\": \"set\",\n                    \"set_subject\": \"qos-group\",\n                    \"qos_group_value\": 3\n                },\n                {\n                    \"operation_name\": \"IN-VOD-op2\",\n                    \"class_operation_name\": \"set\",\n                    \"set_subject\": \"traffic-class\",\n                    \"traffic_class_value\": 3\n                }\n                ]\n            },\n            {\n                \"class_name\": \"IN-VOICE\",\n                \"class_type\": \"qos\",\n                \"class_operation\": [\n                {\n                    \"operation_name\": \"CORE-IN-op1\",\n                    \"class_operation_name\": \"set\",\n                    \"set_subject\": \"qos-group\",\n                    \"qos_group_value\": 5\n                },\n                {\n                    \"operation_name\": \"CORE-IN-op2\",\n                    \"class_operation_name\": \"set\",\n                    \"set_subject\": \"traffic-class\",\n                    \"traffic_class_value\": 5\n                }\n                ]\n            },\n            {\n                \"class_name\": \"class-default\",\n                \"class_type\": \"qos\",\n                \"class_operation\": [\n                {\n                    \"operation_name\": \"default-class-op1\",\n                    \"class_operation_name\": \"set\",\n                    \"set_subject\": \"qos-group\",\n                    \"qos_group_value\": 0\n                },\n                {\n                    \"operation_name\": \"default-class-op2\",\n                    \"class_operation_name\": \"set\",\n                    \"set_subject\": \"traffic-class\",\n                    \"traffic_class_value\": 0\n                },\n                {\n                    \"operation_name\": \"default-class-op3\",\n                    \"class_operation_name\": \"set\",\n                    \"set_subject\": \"discard-class\",\n                    \"discard_class_value\": 0\n                }\n                ]\n            }\n            ]\n        }\n        }\n    ]\n}\n"
+								},
+								"url": {
+									"raw": "http://{{host}}:8080/restconf/data/inventory:inventory/inventory:qos_policy_maps",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"port": "8080",
+									"path": [
+										"restconf",
+										"data",
+										"inventory:inventory",
+										"inventory:qos_policy_maps"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST BA-ACCESS Policy Map",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "{{password}}",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "{{user}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									},
+									{
+										"key": "Cache-Control",
+										"type": "text",
+										"value": "no-cache"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"qos_policy_map\": [\n        {\n        \"qos_policy_map_name\": \"BA-ACCESS\",\n        \"description\": \"BA-ACCESS\",\n        \"policy_classes\": {\n            \"policy_class\": [\n            {\n                \"class_name\": \"IN-BUSINESS\",\n                \"class_type\": \"qos\",\n                \"class_operation\": [\n                {\n                    \"operation_name\": \"IN-BUSINESS-op1\",\n                    \"class_operation_name\": \"set\",\n                    \"set_subject\": \"qos-group\",\n                    \"qos_group_value\": 2\n                },\n                {\n                    \"operation_name\": \"IN-BUSINESS-op2\",\n                    \"class_operation_name\": \"set\",\n                    \"set_subject\": \"discard-class\",\n                    \"discard_class_value\": 1\n                }\n                ]\n            },\n            {\n                \"class_name\": \"IN-IPTV\",\n                \"class_type\": \"qos\",\n                \"class_operation\": [\n                {\n                    \"operation_name\": \"IN-IPTV-op1\",\n                    \"class_operation_name\": \"set\",\n                    \"set_subject\": \"qos-group\",\n                    \"qos_group_value\": 4\n                },\n                {\n                    \"operation_name\": \"IN-IPTV-op2\",\n                    \"class_operation_name\": \"set\",\n                    \"set_subject\": \"traffic-class\",\n                    \"traffic_class_value\": 4\n                }\n                ]\n            },\n            {\n                \"class_name\": \"IN-MGMT\",\n                \"class_type\": \"qos\",\n                \"class_operation\": [\n                {\n                    \"operation_name\": \"IN-MGMT-op1\",\n                    \"class_operation_name\": \"set\",\n                    \"set_subject\": \"qos-group\",\n                    \"qos_group_value\": 6\n                },\n                {\n                    \"operation_name\": \"IN-MGMT-op2\",\n                    \"class_operation_name\": \"set\",\n                    \"set_subject\": \"traffic-class\",\n                    \"traffic_class_value\": 6\n                }\n                ]\n            },\n            {\n                \"class_name\": \"IN-VOD\",\n                \"class_type\": \"qos\",\n                \"class_operation\": [\n                {\n                    \"operation_name\": \"IN-VOD-op1\",\n                    \"class_operation_name\": \"set\",\n                    \"set_subject\": \"qos-group\",\n                    \"qos_group_value\": 3\n                },\n                {\n                    \"operation_name\": \"IN-VOD-op2\",\n                    \"class_operation_name\": \"set\",\n                    \"set_subject\": \"traffic-class\",\n                    \"traffic_class_value\": 3\n                }\n                ]\n            },\n            {\n                \"class_name\": \"IN-VOICE\",\n                \"class_type\": \"qos\",\n                \"class_operation\": [\n                {\n                    \"operation_name\": \"IN-VOICE-op1\",\n                    \"class_operation_name\": \"set\",\n                    \"set_subject\": \"qos-group\",\n                    \"qos_group_value\": 5\n                },\n                {\n                    \"operation_name\": \"IN-VOICE-op2\",\n                    \"class_operation_name\": \"set\",\n                    \"set_subject\": \"traffic-class\",\n                    \"traffic_class_value\": 5\n                },\n                {\n                    \"operation_name\": \"IN-VOICE-op3\",\n                    \"class_operation_name\": \"police\",\n                    \"police_subject\": \"police_rate\",\n                    \"police_value\": \"30\",\n                    \"police_unit\": \"percent\"\n                }\n                ]\n            },\n            {\n                \"class_name\": \"class-default\",\n                \"class_type\": \"qos\",\n                \"class_operation\": [\n                {\n                    \"operation_name\": \"class-default-op1\",\n                    \"class_operation_name\": \"set\",\n                    \"set_subject\": \"qos-group\",\n                    \"qos_group_value\": 1\n                },\n                {\n                    \"operation_name\": \"class-default-op2\",\n                    \"class_operation_name\": \"set\",\n                    \"set_subject\": \"discard-class\",\n                    \"discard_class_value\": 1\n                }\n                ]\n            }\n            ]\n        }\n        }\n    ]\n}\n"
+								},
+								"url": {
+									"raw": "http://{{host}}:8080/restconf/data/inventory:inventory/inventory:qos_policy_maps",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"port": "8080",
+									"path": [
+										"restconf",
+										"data",
+										"inventory:inventory",
+										"inventory:qos_policy_maps"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DELETE a Policy Map",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "{{password}}",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "{{user}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									},
+									{
+										"key": "Cache-Control",
+										"type": "text",
+										"value": "no-cache"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://{{host}}:8080/restconf/data/inventory:inventory/inventory:qos_policy_maps/inventory:qos_policy_map=TEST-TEST",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"port": "8080",
+									"path": [
+										"restconf",
+										"data",
+										"inventory:inventory",
+										"inventory:qos_policy_maps",
+										"inventory:qos_policy_map=TEST-TEST"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET one Policy Map",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "{{password}}",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "{{user}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									},
+									{
+										"key": "Cache-Control",
+										"type": "text",
+										"value": "no-cache"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://{{host}}:8080/restconf/data/inventory:inventory/inventory:qos_policy_maps/inventory:qos_policy_map=BA-ACCESS",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"port": "8080",
+									"path": [
+										"restconf",
+										"data",
+										"inventory:inventory",
+										"inventory:qos_policy_maps",
+										"inventory:qos_policy_map=BA-ACCESS"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET all Policy Maps",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "{{password}}",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "{{user}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									},
+									{
+										"key": "Cache-Control",
+										"type": "text",
+										"value": "no-cache"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://{{host}}:8080/restconf/data/inventory:inventory/inventory:qos_policy_maps",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"port": "8080",
+									"path": [
+										"restconf",
+										"data",
+										"inventory:inventory",
+										"inventory:qos_policy_maps"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Metro3 areas",
+					"item": [
+						{
+							"name": "POST a Metro3 Area",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "{{password}}",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "{{user}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									},
+									{
+										"key": "Cache-Control",
+										"type": "text",
+										"value": "no-cache"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"METRO3Area\": [\n        {\n        \"metro3_area\": \"VI\",\n        \"RR\": [\n                {\n                    \"agg_device\": \"iosxr1\",\n                    \"RR_ipv4_addr\": \"172.16.21.20\",\n                    \"neighbor_group_name\": \"T-RR-NC\",\n                    \"neighbor_description\": \"Aggregation router 2 in VI\"\n                },\n                {\n                    \"agg_device\": \"iosxr2\",\n                    \"RR_ipv4_addr\": \"172.16.11.10\",\n                    \"neighbor_group_name\": \"T-RR-NC\",\n                    \"neighbor_description\": \"Aggregation router 1 in VI\"\n                }\n            ]\n        }\n    ]\n}\n"
+								},
+								"url": {
+									"raw": "http://{{host}}:8080/restconf/data/inventory:inventory/inventory:qos_policy_maps",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"port": "8080",
+									"path": [
+										"restconf",
+										"data",
+										"inventory:inventory",
+										"inventory:qos_policy_maps"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST ABN Metro3 Area",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "{{password}}",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "{{user}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									},
+									{
+										"key": "Cache-Control",
+										"type": "text",
+										"value": "no-cache"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"METRO3Area\": [\n        {\n        \"metro3_area\": \"ABN\",\n        \"RR\": [\n                {\n                    \"agg_device\": \"iosxr1\",\n                    \"RR_ipv4_addr\": \"172.17.31.20\",\n                    \"neighbor_group_name\": \"T-RR-NC\",\n                    \"neighbor_description\": \"Aggregation router 2 in ABN\"\n                },\n                {\n                    \"agg_device\": \"iosxr2\",\n                    \"RR_ipv4_addr\": \"172.17.41.10\",\n                    \"neighbor_group_name\": \"T-RR-NC\",\n                    \"neighbor_description\": \"Aggregation router 1 in ABN\"\n                }\n            ]\n        }\n    ]\n}\n"
+								},
+								"url": {
+									"raw": "http://{{host}}:8080/restconf/data/inventory:inventory/inventory:METRO3Areas",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"port": "8080",
+									"path": [
+										"restconf",
+										"data",
+										"inventory:inventory",
+										"inventory:METRO3Areas"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DELETE Metro3 Area",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "{{password}}",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "{{user}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									},
+									{
+										"key": "Cache-Control",
+										"type": "text",
+										"value": "no-cache"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://{{host}}:8080/restconf/data/inventory:inventory/inventory:METRO3Areas/inventory:METRO3Area=ABN",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"port": "8080",
+									"path": [
+										"restconf",
+										"data",
+										"inventory:inventory",
+										"inventory:METRO3Areas",
+										"inventory:METRO3Area=ABN"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET one Metro3 Area",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "{{password}}",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "{{user}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									},
+									{
+										"key": "Cache-Control",
+										"type": "text",
+										"value": "no-cache"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://{{host}}:8080/restconf/data/inventory:inventory/inventory:METRO3Areas/inventory:METRO3Area=VI",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"port": "8080",
+									"path": [
+										"restconf",
+										"data",
+										"inventory:inventory",
+										"inventory:METRO3Areas",
+										"inventory:METRO3Area=VI"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET all Metro3 Areas",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "{{password}}",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "{{user}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									},
+									{
+										"key": "Cache-Control",
+										"type": "text",
+										"value": "no-cache"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://{{host}}:8080/restconf/data/inventory:inventory/inventory:METRO3Areas",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"port": "8080",
+									"path": [
+										"restconf",
+										"data",
+										"inventory:inventory",
+										"inventory:METRO3Areas"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Prefix Sets",
+					"item": [
+						{
+							"name": "POST Prefix Set",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "{{password}}",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "{{user}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									},
+									{
+										"key": "Cache-Control",
+										"type": "text",
+										"value": "no-cache"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"prefix_set\": [\n        {\n        \"prefix_set_name\": \"PREFIX_SET1\",\n        \"rpl_prefix_set\": [\n                {\n                    \"prefix_set_ip\": \"10.161.0.0\",\n                    \"prefix_set_mask1\": 16,\n                    \"prefix_set_operator\": \"le\",\n                    \"prefix_set_mask2\": 32\n                },\n                {\n                    \"prefix_set_ip\": \"77.110.255.0\",\n                    \"prefix_set_mask1\": 24,\n                    \"prefix_set_operator\": \"le\",\n                    \"prefix_set_mask2\": 32\n                },\n                {\n                    \"prefix_set_ip\": \"213.167.115.0\",\n                    \"prefix_set_mask1\": 24,\n                    \"prefix_set_operator\": \"le\",\n                    \"prefix_set_mask2\": 32\n                }\n            ]\n        }\n    ]\n}\n"
+								},
+								"url": {
+									"raw": "http://{{host}}:8080/restconf/data/inventory:inventory/inventory:prefix_sets",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"port": "8080",
+									"path": [
+										"restconf",
+										"data",
+										"inventory:inventory",
+										"inventory:prefix_sets"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DELETE Prefix Set",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "{{password}}",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "{{user}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									},
+									{
+										"key": "Cache-Control",
+										"type": "text",
+										"value": "no-cache"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://{{host}}:8080/restconf/data/inventory:inventory/inventory:prefix_sets/inventory:prefix_set=PREFIX_SET_TEST",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"port": "8080",
+									"path": [
+										"restconf",
+										"data",
+										"inventory:inventory",
+										"inventory:prefix_sets",
+										"inventory:prefix_set=PREFIX_SET_TEST"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET one Prefix Set",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "{{password}}",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "{{user}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									},
+									{
+										"key": "Cache-Control",
+										"type": "text",
+										"value": "no-cache"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://{{host}}:8080/restconf/data/inventory:inventory/inventory:prefix_sets/inventory:prefix_set=PREFIX_SET1",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"port": "8080",
+									"path": [
+										"restconf",
+										"data",
+										"inventory:inventory",
+										"inventory:prefix_sets",
+										"inventory:prefix_set=PREFIX_SET1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET all Prefix Sets",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "{{password}}",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "{{user}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									},
+									{
+										"key": "Cache-Control",
+										"type": "text",
+										"value": "no-cache"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://{{host}}:8080/restconf/data/inventory:inventory/inventory:prefix_sets",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"port": "8080",
+									"path": [
+										"restconf",
+										"data",
+										"inventory:inventory",
+										"inventory:prefix_sets"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Community Sets",
+					"item": [
+						{
+							"name": "POST Community Set",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "{{password}}",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "{{user}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									},
+									{
+										"key": "Cache-Control",
+										"type": "text",
+										"value": "no-cache"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"community_set\": [\n        {\n            \"community_set_name\": \"COMMUNITY_SET1\",\n            \"rpl_community_set\": [\n                {\n                    \"part1\": 29695,\n                    \"part2\": 12345\n                }\n            ]\n        }\n    ]\n}\n"
+								},
+								"url": {
+									"raw": "http://{{host}}:8080/restconf/data/inventory:inventory/inventory:community_sets",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"port": "8080",
+									"path": [
+										"restconf",
+										"data",
+										"inventory:inventory",
+										"inventory:community_sets"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DELETE Community Set",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "{{password}}",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "{{user}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									},
+									{
+										"key": "Cache-Control",
+										"type": "text",
+										"value": "no-cache"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://{{host}}:8080/restconf/data/inventory:inventory/inventory:community_sets/inventory:community_set=COMMUNITY_SET_TEST",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"port": "8080",
+									"path": [
+										"restconf",
+										"data",
+										"inventory:inventory",
+										"inventory:community_sets",
+										"inventory:community_set=COMMUNITY_SET_TEST"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET one Community Set",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "{{password}}",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "{{user}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									},
+									{
+										"key": "Cache-Control",
+										"type": "text",
+										"value": "no-cache"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://{{host}}:8080/restconf/data/inventory:inventory/inventory:community_sets/inventory:community_set=COMMUNITY_SET1",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"port": "8080",
+									"path": [
+										"restconf",
+										"data",
+										"inventory:inventory",
+										"inventory:community_sets",
+										"inventory:community_set=COMMUNITY_SET1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET all Community Sets",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "{{password}}",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "{{user}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									},
+									{
+										"key": "Cache-Control",
+										"type": "text",
+										"value": "no-cache"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://{{host}}:8080/restconf/data/inventory:inventory/inventory:community_sets",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"port": "8080",
+									"path": [
+										"restconf",
+										"data",
+										"inventory:inventory",
+										"inventory:community_sets"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "L3VPN",
+			"item": [
+				{
+					"name": "GET all ba_l3vpn instances",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/yang-data+json"
+							},
+							{
+								"key": "Cache-Control",
+								"type": "text",
+								"value": "no-cache"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/yang-data+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{host}}:8080/restconf/data/ba_l3vpn:ba_l3vpn",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "8080",
+							"path": [
+								"restconf",
+								"data",
+								"ba_l3vpn:ba_l3vpn"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET one ba_l3vpn instance",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/yang-data+json"
+							},
+							{
+								"key": "Cache-Control",
+								"type": "text",
+								"value": "no-cache"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/yang-data+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{host}}:8080/restconf/data/ba_l3vpn:ba_l3vpn=VPN101",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "8080",
+							"path": [
+								"restconf",
+								"data",
+								"ba_l3vpn:ba_l3vpn=VPN101"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST a ba_l3vpn",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/yang-data+json"
+							},
+							{
+								"key": "Cache-Control",
+								"type": "text",
+								"value": "no-cache"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/yang-data+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"ba_l3vpn:ba_l3vpn\": [\n        {\n            \"vrf_name\": \"VPN101\",\n            \"endpoint\": [\n                {\n                    \"id\": \"VPN101-1\",\n                    \"as_number\": 29695,\n                    \"rd\": 12345678,\n                    \"vlan\": 101,\n                    \"csr\": {\n                        \"device\": \"iosxr0\",\n                        \"local\": {\n                            \"interface_name\": \"TenGigE\",\n                            \"interface_number\": \"0/0/0/23\",\n                            \"ipv4_address\": \"192.168.12.1\",\n                            \"ipv4_mask\": \"255.255.255.0\"\n                        },\n                        \"link\": {\n                            \"interface_name\": \"TenGigE\",\n                            \"interface_number\": \"0/0/0/21\",\n                            \"ipv4_address\": \"10.10.10.11\",\n                            \"ipv4_mask\": \"255.255.255.0\"\n                        },\n                        \"community_set_umpls\": \"COMMUNITY_SET1\",\n                        \"prefix_set_umpls\": \"PREFIX_SET1\",\n                        \"vrf_policy_map\": \"BA-ACCESS\",\n                        \"uplink_policy_map\": \"CORE-IN\",\n                        \"paths_route_policy\": \"RPL-uMPLS_PIC_INSTALL\",\n                        \"networks_route_policy\": \"RPL-uMPLS_ADVERTISE\",\n                        \"ng_route_policy_in\": \"RPL-uMPLS_IN\",\n                        \"ng_route_policy_out\": \"RPL-uMPLS_OUT\",\n                        \"mgmt_ipv4_address\": \"12.12.12.12\",\n                        \"m3_area\": \"VI\"\n                    },\n                    \"er\": {\n                        \"device\": \"iosxr1\",\n                        \"downlink_policy_map\": \"CORE-IN\",\n                        \"link\": {\n                            \"interface_name\": \"TenGigE\",\n                            \"interface_number\": \"0/0/0/2\",\n                            \"ipv4_address\": \"10.10.10.10\",\n                            \"ipv4_mask\": \"255.255.255.0\"\n                        }\n                    }\n                }\n            ]\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}:8080/restconf/data",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "8080",
+							"path": [
+								"restconf",
+								"data"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE a ba_l3vpn instance",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/yang-data+json"
+							},
+							{
+								"key": "Cache-Control",
+								"type": "text",
+								"value": "no-cache"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/yang-data+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{host}}:8080/restconf/data/ba_l3vpn:ba_l3vpn=VPN101",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "8080",
+							"path": [
+								"restconf",
+								"data",
+								"ba_l3vpn:ba_l3vpn=VPN101"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

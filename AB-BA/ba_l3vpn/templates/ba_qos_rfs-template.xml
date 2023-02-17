@@ -1,0 +1,7 @@
+<config-template xmlns="http://tail-f.com/ns/config/1.0">
+  <ba_qos xmlns="http://example.com/ba_qos">
+    <name>{$name}</name>
+    <device>{$device}</device>
+    <policy_map_name>{$policy_map_name}</policy_map_name>
+  </ba_qos>
+</config-template>
