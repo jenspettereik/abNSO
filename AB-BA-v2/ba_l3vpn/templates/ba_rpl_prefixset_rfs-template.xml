@@ -1,0 +1,11 @@
+<config-template xmlns="http://tail-f.com/ns/config/1.0">
+  <ba_prefixsets xmlns="http://example.com/ba_prefixsets">
+    <name>{$name}</name>
+    <device>{$csr_device}</device>
+    <!-- <prefix_set_umpls>{$prefix_set_umpls}</prefix_set_umpls>
+    <prefix_set_ip>{$prefix_set_ip}</prefix_set_ip>
+    <prefix_set_mask1>{$prefix_set_mask1}</prefix_set_mask1>
+    <prefix_set_operator>{$prefix_set_operator}</prefix_set_operator>
+    <prefix_set_mask2>{$prefix_set_mask2}</prefix_set_mask2> -->
+  </ba_prefixsets>
+</config-template>

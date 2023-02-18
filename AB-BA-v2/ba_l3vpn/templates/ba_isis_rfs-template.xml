@@ -1,0 +1,26 @@
+<config-template xmlns="http://tail-f.com/ns/config/1.0">
+  <ba_isis xmlns="http://example.com/ba_isis">
+    <name>{$name}</name>
+    <net_id>{$net_id}</net_id>
+    <isis>
+      <csr>
+        <device>{$csr_device}</device>
+        <isis_interface>
+          <interface_name>{$csr_ul_interface_name}</interface_name>
+          <interface_number>{$csr_ul_interface_number}</interface_number>
+          <ipv4_address>{$csr_ul_ipv4_address}</ipv4_address>
+          <ipv4_mask>{$csr_ul_ipv4_mask}</ipv4_mask>
+        </isis_interface>
+      </csr>
+      <er>
+        <device>{$er_device}</device>
+        <isis_interface>
+          <interface_name>{$er_interface_name}</interface_name>
+          <interface_number>{$er_interface_number}</interface_number>
+          <ipv4_address>{$er_ipv4_address}</ipv4_address>
+          <ipv4_mask>{$er_ipv4_mask}</ipv4_mask>
+        </isis_interface>
+      </er>
+    </isis>
+  </ba_isis>
+</config-template>

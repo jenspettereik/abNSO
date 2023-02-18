@@ -1,0 +1,24 @@
+<config-template xmlns="http://tail-f.com/ns/config/1.0">
+  <devices xmlns="http://tail-f.com/ns/ncs">
+    <device>
+      <name>{$device}</name>
+      <config>
+        <routing-policy xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-route-policy-cfg">
+          <sets>
+            <community-sets>
+              <community-set>
+                <!-- set-name C-uMPLS, community set 29695:33107 -->
+                <set-name>C-uMPLS</set-name>
+                <!-- <set-name>{community_set_umpls}</set-name> -->
+                <rpl-community-set>community-set C-uMPLS
+                    {$as_number}:{$set_number}
+                  end-set
+                </rpl-community-set>
+              </community-set>
+            </community-sets>
+          </sets>
+        </routing-policy>
+      </config>
+    </device>
+  </devices>
+</config-template>

@@ -1,0 +1,27 @@
+<config-template xmlns="http://tail-f.com/ns/config/1.0">
+  <devices xmlns="http://tail-f.com/ns/ncs">
+    <device>
+      <name>{device}</name>
+      <config>
+        <!-- qos på uplink og downlink interface config:
+        PS! interface skal skal ikke slettes selv om QOS slettes
+
+        uplink:
+        RP/0/RP0/CPU0:S400123321-CSR0#sh run int tenGigE 0/0/0/21 | xml     
+        Tue Jan 24 10:26:51.508 UTC
+        -->
+        <interfaces xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-interface-cfg">
+          <interface>
+            <interface-name>{interface/interface_name}{interface/interface_number}</interface-name>
+            <mtu>9080</mtu>
+            <service-policy xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-if-service-policy-qos-cfg">
+              <input>
+                <service-policy-name>{/policy_map_name}</service-policy-name>
+              </input>
+            </service-policy>
+          </interface>
+        </interfaces>
+      </config>
+    </device>
+  </devices>
+</config-template>

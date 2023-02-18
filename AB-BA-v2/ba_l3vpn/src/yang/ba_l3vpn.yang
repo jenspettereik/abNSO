@@ -1,0 +1,174 @@
+module ba_l3vpn {
+
+  namespace "http://example.com/ba_l3vpn";
+  prefix ba_l3vpn;
+
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import tailf-common {
+    prefix tailf;
+  }
+  import tailf-ncs {
+    prefix ncs;
+  }
+  import inventory {
+    prefix inventory;
+  }
+
+  description
+    "The Customer Facing Service CFS for doing BA L3VPN Services";
+
+  revision 2023-01-31 {
+    description
+      "Initial revision.";
+  }
+
+  grouping endpoint_grouping {
+    leaf interface_name {
+      tailf:info "Interface name. For example FastEthernet.";
+      type enumeration {
+        enum FastEthernet;
+        enum GigabitEthernet;
+        enum TenGigE;
+        enum TwentyFiveGigE;
+        enum FortyGigE;
+        enum FiftyGigE;
+        enum HundredGigE;
+        enum TwoHundredGigE;
+        enum FourHundredGigE;
+        enum EightHundredGigE;
+      }
+    }
+    leaf interface_number {
+      tailf:info "Interface number. For example 0 or 1/0";
+      type string {
+        pattern "[0-9]{1,2}(/[0-9]{1,2}){1,4}";
+      }
+    }
+    leaf ipv4_address {
+      tailf:info "Local interface address.";
+      type inet:ipv4-address;
+    }
+    leaf ipv4_mask {
+      tailf:info "Local interface mask.";
+      type inet:ipv4-address;
+    }
+  }
+
+  list ba_l3vpn {
+    description "This is an RFS skeleton service";
+
+    key vrf_name;
+    leaf vrf_name {
+      tailf:info "Unique VPN service id";
+      tailf:cli-allow-range;
+      type string;
+    }
+
+    uses ncs:service-data;
+    ncs:servicepoint ba_l3vpn-servicepoint;
+
+    list endpoint {
+      key "id";
+      leaf id {
+        tailf:info "Endpoint identifier";
+        type string;
+      }
+      leaf as_number {
+        description "AS used within all VRF of the VPN, 29695";
+        tailf:info "MPLS VPN AS number.";
+        type uint32;
+        default 29695;
+      }
+      leaf rd {
+        type uint32;
+        tailf:info "Route Distinguisher";
+        mandatory true;
+      }
+      leaf vlan {
+        type uint32;
+        mandatory true;
+      }
+      container csr {
+        leaf device {
+          type leafref {
+            path "/ncs:devices/ncs:device/ncs:name";
+          }
+        }
+        container local {
+          uses endpoint_grouping;
+        }
+        container link {
+          uses endpoint_grouping;
+        }
+        /* leaf community_set_umpls {
+          type leafref {
+            path "/inventory:inventory/inventory:community_sets/inventory:community_set/inventory:community_set_name";
+          }
+        }
+        leaf prefix_set_umpls {
+          type leafref {
+            path "/inventory:inventory/inventory:prefix_sets/inventory:prefix_set/inventory:prefix_set_name";
+          }
+        }
+        leaf vrf_policy_map {
+          type leafref {
+            path "/inventory:inventory/inventory:qos_policy_maps/inventory:qos_policy_map/inventory:qos_policy_map_name";
+          }
+        }
+        leaf uplink_policy_map {
+          type leafref {
+            path "/inventory:inventory/inventory:qos_policy_maps/inventory:qos_policy_map/inventory:qos_policy_map_name";
+          }
+        } */
+        leaf mgmt_ipv4_address {
+          tailf:info "IP address of a Loopback interface";
+          type inet:ipv4-address;
+        }
+        /* leaf paths_route_policy {
+          tailf:info "ex RPL-uMPLS_PIC_INSTALL";
+          type string;
+          default "RPL-uMPLS_PIC_INSTALL";
+        }
+        leaf networks_route_policy {
+          tailf:info "ex RPL-uMPLS_ADVERTISE";
+          type string;
+          default "RPL-uMPLS_ADVERTISE";
+        }
+        leaf ng_route_policy_in {
+          tailf:info "ex RPL-uMPLS_IN";
+          type string;
+          default "RPL-uMPLS_IN";
+        }
+        leaf ng_route_policy_out {
+          tailf:info "ex RPL-uMPLS_OUT";
+          type string;
+          default "RPL-uMPLS_OUT";
+        } */
+        leaf m3_area {
+          tailf:info "Get the list of RR neighbors for the metro area";
+          type leafref {
+            path "/inventory:inventory/inventory:METRO3Areas/inventory:METRO3Area/inventory:metro3_area";
+          }
+        }
+      }
+
+      container er {
+        leaf device {
+          type leafref {
+            path "/ncs:devices/ncs:device/ncs:name";
+          }
+        }
+        leaf downlink_policy_map {
+          type leafref {
+            path "/inventory:inventory/inventory:qos_policy_maps/inventory:qos_policy_map/inventory:qos_policy_map_name";
+          }
+        }
+        container link {
+          uses endpoint_grouping;
+        }
+      }
+    }
+  }
+}

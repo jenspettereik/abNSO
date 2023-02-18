@@ -1,0 +1,65 @@
+<config-template xmlns="http://tail-f.com/ns/config/1.0">
+  <devices xmlns="http://tail-f.com/ns/ncs">
+    <device>
+      <name>{$device}</name>
+      <config>
+        <policy-map xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-policymap-classmap-cfg">
+          <type>
+            <qos>
+              <policy-map-name>{$qos_policy_map_name}</policy-map-name>
+              <description>{$policy_map_description}</description>
+              <class>
+                <name>{$class_name}</name>
+                <type>{$class_type}</type> <!-- qos or traffic -->
+                <?if {$class_operation_name = 'set'}?>
+                  <set>                      <!-- set or police or a lot of other options-->
+                    <?if {$set_subject = 'qos-group'}?>
+                      <qos-group>{$qos_group_value}</qos-group>
+                    <?end?>
+                    <?if {$set_subject = 'traffic-class'}?>
+                      <traffic-class>{$traffic_class_value}</traffic-class>
+                    <?end?>
+                    <?if {$set_subject = 'discard-class'}?>
+                      <discard-class>{$discard_class_value}</discard-class>
+                    <?end?>
+                  </set>
+                <?end?>
+                <?if {$class_operation_name = 'police'}?>
+                  <police>
+                    <rate>
+                      <value>{$police_value}</value>
+                      <unit>{$police_unit}</unit>
+                    </rate>
+                  </police>
+                <?end?>
+              </class>
+            </qos>
+          </type>
+        </policy-map>
+
+        <!-- <policy-map xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-policymap-classmap-cfg">
+          <type>
+            <qos>
+              <policy-map-name>BA-ACCESS-IN</policy-map-name>
+              <class>
+                <name>class-default</name>
+                <type>qos</type>
+                <service-policy>
+                  <type>qos</type>
+                  <name>BA-ACCESS</name>
+                </service-policy>
+                <police>
+                  <rate>
+                    <value>{bandwidth}</value>
+                    <unit>mbps</unit>
+                  </rate>
+                </police>
+              </class>
+            </qos>
+          </type>
+        </policy-map> -->
+
+      </config>
+    </device>
+  </devices>
+</config-template>

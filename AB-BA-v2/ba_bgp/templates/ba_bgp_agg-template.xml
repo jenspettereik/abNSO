@@ -1,0 +1,32 @@
+<!-- ba_bgp_agg_rfs config
+Dette er konfig for route-reflektor (agg ruter)
+PS! BGP asn skal aldri bli slettet av denne RFSn, den skal kun slette peering
+
+
+AGG#1, then AGG#2
+ -->
+<config-template xmlns="http://tail-f.com/ns/config/1.0">
+  <devices xmlns="http://tail-f.com/ns/ncs">
+    <device>
+      <name>{$agg_device}</name>
+      <config>
+        <router xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-bgp-cfg">
+          <bgp>
+            <as>
+              <as-number>{$as_number}</as-number>
+              <neighbors>
+                <neighbor>
+                  <neighbor-address>{$agg_neighbor_ipv4_address}</neighbor-address>
+                  <use>
+                    <neighbor-group>{$agg_neighbor_group_name}</neighbor-group>
+                  </use>
+                  <description>{$agg_neighbor_description}</description>
+                </neighbor>
+              </neighbors>
+            </as>
+          </bgp>
+        </router>
+      </config>
+    </device>
+  </devices>
+</config-template>

@@ -1,0 +1,8 @@
+<config-template xmlns="http://tail-f.com/ns/config/1.0">
+  <ba_rpl_bgp xmlns="http://example.com/ba_rpl_bgp">
+    <name>{$name}</name>
+    <device>{$csr_device}</device>
+    <!-- <community_set_umpls>{$community_set_umpls}</community_set_umpls>
+    <prefix_set_umpls>{$prefix_set_umpls}</prefix_set_umpls> -->
+  </ba_rpl_bgp>
+</config-template>

@@ -1,0 +1,29 @@
+<!-- RFS for rpl_csr
+
+RP/0/RP0/CPU0:S400123321-CSR0#sh run route-policy CONNECTED2ISIS-CSR | xml
+Tue Jan 24 09:10:23.241 UTC
+ -->
+<config-template xmlns="http://tail-f.com/ns/config/1.0">
+  <devices xmlns="http://tail-f.com/ns/ncs">
+    <device>
+      <name>{/device}</name>
+      <config>
+        <routing-policy xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-route-policy-cfg">
+          <route-policies>
+            <route-policy>
+              <route-policy-name>CONNECTED2ISIS-CSR</route-policy-name>
+              <rpl-route-policy>route-policy CONNECTED2ISIS-CSR
+                  if destination in PARTNER_ENV then
+                    pass
+                  else
+                    drop
+                  endif
+                end-policy
+              </rpl-route-policy>
+            </route-policy>
+          </route-policies>
+        </routing-policy>
+      </config>
+    </device>
+  </devices>
+</config-template>

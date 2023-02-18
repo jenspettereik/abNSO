@@ -1,0 +1,81 @@
+module ba_mpls {
+
+  namespace "http://example.com/ba_mpls";
+  prefix ba_mpls;
+
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import tailf-common {
+    prefix tailf;
+  }
+  import tailf-ncs {
+    prefix ncs;
+  }
+
+  description
+    "Bla bla...";
+
+  revision 2023-02-01 {
+    description
+      "Initial revision.";
+  }
+
+  list ba_mpls {
+    description "This is an RFS skeleton service";
+
+    key name;
+    leaf name {
+      tailf:info "Unique service id";
+      tailf:cli-allow-range;
+      type string;
+    }
+
+    uses ncs:service-data;
+    ncs:servicepoint ba_mpls-servicepoint;
+
+    container mpls {
+      container csr {
+        leaf device {
+          type leafref {
+            path "/ncs:devices/ncs:device/ncs:name";
+          }
+        }
+        leaf mgmt_ipv4_address {
+          type inet:ipv4-address;
+        }        
+        leaf interface_name {
+          type enumeration {
+            enum TenGigE;
+            enum GigabitEthernet;
+          } 
+        }  
+        leaf interface_number {
+          tailf:info "Metro interface number eg 0/0/0/21";
+          type string {
+            pattern "[0-9]{1,2}(/[0-9]{1,2}){1,4}";
+          }
+        }
+      }
+      container er {
+        leaf device {
+          type leafref {
+            path "/ncs:devices/ncs:device/ncs:name";
+          }
+        }
+        leaf interface_name {
+          type enumeration {
+            enum TenGigE;
+            enum GigabitEthernet;
+          } 
+        }  
+        leaf interface_number {
+          tailf:info "Metro interface number eg 0/0/0/21";
+          type string {
+            pattern "[0-9]{1,2}(/[0-9]{1,2}){1,4}";
+          }
+        }
+      }
+    }
+  }
+}

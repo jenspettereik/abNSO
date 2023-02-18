@@ -1,0 +1,18 @@
+<config-template xmlns="http://tail-f.com/ns/config/1.0">
+  <ba_mpls xmlns="http://example.com/ba_mpls">
+    <name>{$name}</name>
+    <mpls>
+      <csr>
+        <device>{$csr_device}</device>
+        <mgmt_ipv4_address>{$csr_mgmt_ipv4_address}</mgmt_ipv4_address>
+        <interface_name>{$csr_ul_interface_name}</interface_name>
+        <interface_number>{$csr_ul_interface_number}</interface_number>
+      </csr>
+      <er>
+        <device>{$er_device}</device>
+        <interface_name>{$er_interface_name}</interface_name>
+        <interface_number>{$er_interface_number}</interface_number>
+      </er>
+    </mpls>
+  </ba_mpls>
+</config-template>
