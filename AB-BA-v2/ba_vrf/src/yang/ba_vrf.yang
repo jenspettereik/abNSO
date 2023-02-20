@@ -1,0 +1,120 @@
+module ba_vrf {
+
+  namespace "http://example.com/ba_vrf";
+  prefix ba_vrf;
+
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import tailf-common {
+    prefix tailf;
+  }
+  import tailf-ncs {
+    prefix ncs;
+  }
+
+  description
+    "The BA L3VPN RFS";
+
+  revision 2023-01-31 {
+    description
+      "Initial revision.";
+  }
+
+  grouping endpoint_grouping {
+    leaf interface_name {
+      tailf:info "Interface name. For example FastEthernet.";
+      type enumeration {
+        enum FastEthernet;
+        enum GigabitEthernet;
+        enum TenGigE;
+        enum TwentyFiveGigE;
+        enum FortyGigE;
+        enum FiftyGigE;
+        enum HundredGigE;
+        enum TwoHundredGigE;
+        enum FourHundredGigE;
+        enum EightHundredGigE;
+      }
+    }
+    leaf interface_number {
+      tailf:info "Interface number. For example 0 or 1/0";
+      type string {
+        pattern "[0-9]{1,2}(/[0-9]{1,2}){1,4}";
+      }
+    }
+    leaf ipv4_address {
+      tailf:info "Local interface address.";
+      type inet:ipv4-address;
+    }
+    leaf ipv4_mask {
+      tailf:info "Local interface mask.";
+      type inet:ipv4-address;
+    }
+    leaf interface_description {
+      type string;
+    }
+  }
+
+  list ba_vrf {
+    description "This is an RFS skeleton service";
+
+    key vrf_name;
+    leaf vrf_name {
+      tailf:info "Unique VPN service id";
+      tailf:cli-allow-range;
+      type string;
+    }
+
+    uses ncs:service-data;
+    ncs:servicepoint ba_vrf-servicepoint;
+
+    container endpoint {
+      leaf id {
+        tailf:info "Endpoint identifier";
+        type string;
+      }
+      leaf as_number {
+        description "AS used within all VRF of the VPN, 29695";
+        tailf:info "MPLS VPN AS number.";
+        type uint32;
+        default 29695;
+      }
+      leaf rd {
+        type uint32;
+        tailf:info "Route Distinguisher";
+        mandatory true;
+      }
+      leaf vlan {
+        type uint32;
+        mandatory true;
+      }
+      container csr {
+        leaf device {
+          type leafref {
+            path "/ncs:devices/ncs:device/ncs:name";
+          }
+        }
+        container local {
+          uses endpoint_grouping;
+        }
+        // Uplink interfaces are handled by the ISIS RFS.
+        /* container link {
+          uses endpoint_grouping;
+        } */
+      }
+
+      // Uplink interfaces are handled by the ISIS RFS.
+      /* container er {
+        leaf device {
+          type leafref {
+            path "/ncs:devices/ncs:device/ncs:name";
+          }
+        }
+        container link {
+          uses endpoint_grouping;
+        }
+      } */
+    }
+  }
+}
