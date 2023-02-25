@@ -16,6 +16,16 @@ module ba_vrf {
   description
     "The BA L3VPN RFS";
 
+  revision 2023-02-24 {
+    description
+      "Added import and export route targets.";
+  }
+
+  revision 2023-02-18 {
+    description
+      "The uplink interfaces and ER interfaces are handled by ba_isis.";
+  }
+
   revision 2023-01-31 {
     description
       "Initial revision.";
@@ -84,6 +94,46 @@ module ba_vrf {
         type uint32;
         tailf:info "Route Distinguisher";
         mandatory true;
+      }
+      leaf import_rt_index_1 {
+        type uint32;
+        tailf:info "Index of the import Route Target 1";
+      }
+      leaf import_rt_index_2 {
+        type uint32;
+        tailf:info "Index of the import Route Target 2";
+      }
+      leaf import_rt_index_3 {
+        type uint32;
+        tailf:info "Index of the import Route Target 3";
+      }
+      leaf import_rt_index_4 {
+        type uint32;
+        tailf:info "Index of the import Route Target 4";
+      }
+      leaf import_rt_index_5 {
+        type uint32;
+        tailf:info "Index of the import Route Target 5";
+      }
+      leaf export_rt_index_1 {
+        type uint32;
+        tailf:info "Index of the export Route Target 1";
+      }
+      leaf export_rt_index_2 {
+        type uint32;
+        tailf:info "Index of the export Route Target 2";
+      }
+      leaf export_rt_index_3 {
+        type uint32;
+        tailf:info "Index of the export Route Target 3";
+      }
+      leaf export_rt_index_4 {
+        type uint32;
+        tailf:info "Index of the export Route Target 4";
+      }
+      leaf export_rt_index_5 {
+        type uint32;
+        tailf:info "Index of the export Route Target 5";
       }
       leaf vlan {
         type uint32;

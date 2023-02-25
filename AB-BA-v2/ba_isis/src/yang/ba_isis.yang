@@ -16,6 +16,11 @@ module ba_isis {
   description
     "RFS for ISIS configuration of ER CSR pairs";
 
+  revision 2023-02-24 {
+    description
+      "only_CSR added.";
+  }
+
   revision 2023-02-02 {
     description
       "Initial revision.";
@@ -64,6 +69,12 @@ module ba_isis {
       tailf:info "Unique service id";
       tailf:cli-allow-range;
       type string;
+    }
+
+    leaf only_CSR {
+      tailf:info "true if only CSR should be configured, not ER and AGG. false if also ER and AGG should be configured.";
+      type boolean;
+      default false;
     }
 
     leaf net_id {

@@ -21,19 +21,6 @@ class ServiceCallbacks(Service):
         self.log.info('CSR DEVICE: ', service.bgp.csr.device)
         vars.add('csr_device', service.bgp.csr.device)
         vars.add('csr_mgmt_ipv4_address', service.bgp.csr.mgmt_ipv4_address)
-        """ vars.add('csr_paths_route_policy', service.bgp.csr.paths_route_policy)
-        vars.add('csr_networks_route_policy', service.bgp.csr.networks_route_policy)
-        vars.add('csr_ng_route_policy_in', service.bgp.csr.ng_route_policy_in)
-        vars.add('csr_ng_route_policy_out', service.bgp.csr.ng_route_policy_out)
-        vars.add('csr_neighbor_ipv4_address', service.bgp.csr.neighbor_ipv4_address)
-        vars.add('csr_neighbor_group_name', service.bgp.csr.neighbor_group_name)
-        vars.add('csr_neighbor_description', service.bgp.csr.neighbor_description)
-
-        self.log.info('AGG DEVICE: ', service.bgp.agg.device)
-        vars.add('agg_device', service.bgp.agg.device)
-        vars.add('agg_neighbor_ipv4_address', service.bgp.agg.neighbor_ipv4_address)
-        vars.add('agg_neighbor_group_name', service.bgp.agg.neighbor_group_name)
-        vars.add('agg_neighbor_description', service.bgp.agg.neighbor_description) """
 
         for rr in root.inventory.METRO3Areas.METRO3Area[service.m3_area].RR:
             self.log.info('RR address: ', rr.RR_ipv4_addr)
@@ -41,15 +28,13 @@ class ServiceCallbacks(Service):
             vars.add('csr_neighbor_group_name', rr.neighbor_group_name)
             vars.add('csr_neighbor_description', rr.neighbor_description)
             template.apply('ba_bgp_csr-template', vars)
-            vars.add('agg_device', rr.agg_device)
-            self.log.info('AGG DEVICE: ', rr.agg_device)
-            vars.add('agg_neighbor_ipv4_address', service.bgp.csr.mgmt_ipv4_address)
-            vars.add('agg_neighbor_group_name', rr.neighbor_group_name)
-            vars.add('agg_neighbor_description', rr.neighbor_description)
-            template.apply('ba_bgp_agg-template', vars)
-
-        """ template.apply('ba_bgp_csr-template', vars)
-        template.apply('ba_bgp_agg-template', vars) """
+            if not service.only_CSR:
+                vars.add('agg_device', rr.agg_device)
+                self.log.info('AGG DEVICE: ', rr.agg_device)
+                vars.add('agg_neighbor_ipv4_address', service.bgp.csr.mgmt_ipv4_address)
+                vars.add('agg_neighbor_group_name', rr.neighbor_group_name)
+                vars.add('agg_neighbor_description', rr.neighbor_description)
+                template.apply('ba_bgp_agg-template', vars)
 
     # The pre_modification() and post_modification() callbacks are optional,
     # and are invoked outside FASTMAP. pre_modification() is invoked before

@@ -39,24 +39,9 @@ module ba_prefixsets {
         path "/ncs:devices/ncs:device/ncs:name";
       }
     }
-
-    /* leaf prefix_set_umpls {
+    leaf set_name {
       type string;
+      default "PFX-uMPLS_LOOPBACKS";
     }
-    leaf prefix_set_ip {
-      type inet:ipv4-address;
-    }
-    leaf prefix_set_mask1 {
-      tailf:info "E.g. 16";
-      type uint16;
-    }
-    leaf prefix_set_operator {
-      tailf:info "E.g. le";
-      type string;
-    }
-    leaf prefix_set_mask2 {
-      tailf:info "E.g. 32";
-      type uint16;
-    } */
   }
 }

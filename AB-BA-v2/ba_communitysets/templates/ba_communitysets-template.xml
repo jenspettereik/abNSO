@@ -8,11 +8,8 @@
             <community-sets>
               <community-set>
                 <!-- set-name C-uMPLS, community set 29695:33107 -->
-                <set-name>C-uMPLS</set-name>
-                <!-- <set-name>{community_set_umpls}</set-name> -->
-                <rpl-community-set>community-set C-uMPLS
-                    {$as_number}:{$set_number}
-                  end-set
+                <set-name>{set_name}</set-name>
+                <rpl-community-set>{$community_set_str}
                 </rpl-community-set>
               </community-set>
             </community-sets>

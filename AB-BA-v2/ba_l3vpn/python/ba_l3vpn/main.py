@@ -17,9 +17,10 @@ class ServiceCallbacks(Service):
         vars = ncs.template.Variables()
         template = ncs.template.Template(service)
 
-        # BA VRF Section
         vars.add('vrf_name', service.vrf_name)
+        vars.add('only_CSR', service.only_CSR)
         for endpoint in service.endpoint:
+            # Collecting all the interface data, which are used by several RFS's
             vars.add('endpoint_id', endpoint.id)
             vars.add('as_number', endpoint.as_number)
             vars.add('rd', endpoint.rd)
@@ -39,11 +40,11 @@ class ServiceCallbacks(Service):
             ul_interface = str(endpoint.csr.link.interface_name) + str(endpoint.csr.link.interface_number)
             # self.log.info('CSR UL INTERFACE: ', ul_interface)
             vars.add('csr_ul_interface', ul_interface)
+            vars.add('csr_ul_ipv4_address', endpoint.csr.link.ipv4_address)
+            vars.add('csr_ul_ipv4_mask', endpoint.csr.link.ipv4_mask)
             # "link to PE / {$PE} - {$PE_INT_NAME}</description>"
             ul_interface_description = endpoint.er.device + " - " + str(endpoint.er.link.interface_name) + str(endpoint.er.link.interface_number)
             vars.add('csr_ul_interface_description', ul_interface_description)
-            vars.add('csr_ul_ipv4_address', endpoint.csr.link.ipv4_address)
-            vars.add('csr_ul_ipv4_mask', endpoint.csr.link.ipv4_mask)
 
             # self.log.info('ER DEVICE: ', endpoint.er.device)
             vars.add('er_device', endpoint.er.device)
@@ -55,18 +56,36 @@ class ServiceCallbacks(Service):
             vars.add('er_ipv4_address', endpoint.er.link.ipv4_address)
             vars.add('er_ipv4_mask', endpoint.er.link.ipv4_mask)
 
+            # "link to PE / {$PE} - {$PE_INT_NAME}</description>"
+            """ ul_interface_description = endpoint.er.device + " - " + str(endpoint.er.link.interface_name) + str(endpoint.er.link.interface_number)
+            vars.add('csr_ul_interface_description', ul_interface_description)
+            else:
+                vars.add('er_device', "DUMMY-DEV")
+                vars.add('er_interface_name', "GigabitEthernet")
+                vars.add('er_interface_number', "0/0/0/0")
+                vars.add('er_interface_description', "DUMMY-DESC")
+                vars.add('er_ipv4_address', "255.255.255.254")
+                vars.add('er_ipv4_mask', "255.255.255.255")
+                # "link to PE / {$PE} - {$PE_INT_NAME}</description>"
+                ul_interface_description = "To some ER not known at this point"
+                vars.add('csr_ul_interface_description', ul_interface_description) """
+
             ########## COMMUNITY SET SECTION ########
-            self.log.info('Adding Community Sets: ', endpoint.csr.device)
             name = "Communityset"+endpoint.csr.device
             vars.add('name', name)
+            self.log.info('Adding Community Sets: ', name)
             template.apply('ba_rpl_communityset_rfs-template', vars)
 
             ########## PREFIX SET SECTION ########
-            self.log.info('Adding Prefix Sets: ', endpoint.csr.device)
             name = "Prefixset"+endpoint.csr.device
             vars.add('name', name)
+            self.log.info('Adding Prefix Sets: ', name)
             template.apply('ba_rpl_prefixset_rfs-template', vars)
 
+            ########## RPL SECTION ########
+            name = "RPL"+endpoint.csr.device
+            vars.add('name', name)
+            self.log.info('Adding RPLs: ', name)
             template.apply('ba_rpl_bgp_rfs-template', vars)
 
             ########## ba-bgp SECTION ########
@@ -95,16 +114,17 @@ class ServiceCallbacks(Service):
             ########## QOS SECTION - CLASS MAPS and POLICY MAPS ########
             ########## INTERFACE POLICY SECTION ########
             vars.add('device', endpoint.csr.device)
-            vars.add('policy_map_name', "BA-ACCESS")
+            vars.add('policy_map_name', "BA-ACCESS-IN")
             vars.add('interface_name', endpoint.csr.local.interface_name)
             vars.add('interface_number', endpoint.csr.local.interface_number)
-            name = "BA-ACCESS-"+endpoint.csr.device+"-"+str(endpoint.id)
+            name = "BA-ACCESS-IN-"+endpoint.csr.device+"-"+str(endpoint.id)
             vars.add('name', name)
-            self.log.info('DOING Policy Map BA Access: ', name)
+            # The Policy Maps BA-ACCESS-IN and BA-ACCESS and all the Class Maps they use must be present in the invemtory before this
+            self.log.info('DOING Policy Map BA-ACCESS-IN: ', name)
             template.apply('ba_qos_rfs-template', vars)
-            name = "BA-ACCESS_INTERFACE_POLICY-"+endpoint.csr.device+"-"+str(endpoint.id)
+            name = "BA-ACCESS-IN_INTERFACE_POLICY-"+endpoint.csr.device+"-"+str(endpoint.id)
             vars.add('name', name)
-            self.log.info('Attaching Policy Map BA-ACCESS to csr IF: ', name)
+            self.log.info('Attaching Policy Map BA-ACCESS-IN to csr IF: ', name)
             template.apply('ba_interface_qos_rfs-template', vars)
 
             vars.add('policy_map_name', "CORE-IN")
@@ -112,6 +132,7 @@ class ServiceCallbacks(Service):
             vars.add('interface_number', endpoint.csr.link.interface_number)
             name = "CORE-IN-"+endpoint.csr.device+"-"+str(endpoint.id)
             vars.add('name', name)
+            # The Policy Map CORE-IN and all the Class Maps it uses must be present in the invemtory before this
             self.log.info('DOING Policy Map CORE-IN: ', name)
             template.apply('ba_qos_rfs-template', vars)
             name = "CORE-IN_INTERFACE_POLICY-"+endpoint.csr.device+"-"+str(endpoint.id)
@@ -119,20 +140,67 @@ class ServiceCallbacks(Service):
             self.log.info('Attaching Policy Map CORE-IN to csr IF: ', name)
             template.apply('ba_interface_qos_rfs-template', vars)
 
-            vars.add('device', endpoint.er.device)
-            vars.add('policy_map_name', "CORE-IN")
-            vars.add('interface_name', endpoint.er.link.interface_name)
-            vars.add('interface_number', endpoint.er.link.interface_number)
-            name = "DL_CM_PM-"+endpoint.er.device+"-"+str(endpoint.id)
-            vars.add('name', name)
-            self.log.info('DOING Policy Map CORE-IN: ', name)
-            template.apply('ba_qos_rfs-template', vars)
-            name = "DL_INTERFACE_POLICY-"+endpoint.er.device+"-"+str(endpoint.id)
-            vars.add('name', name)
-            self.log.info('Attaching Policy Map CORE-IN to csr IF: ', name)
-            template.apply('ba_interface_qos_rfs-template', vars)
+            if not service.only_CSR:
+                vars.add('device', endpoint.er.device)
+                vars.add('policy_map_name', "CORE-IN")
+                vars.add('interface_name', endpoint.er.link.interface_name)
+                vars.add('interface_number', endpoint.er.link.interface_number)
+                name = "DL_CM_PM-"+endpoint.er.device+"-"+str(endpoint.id)
+                vars.add('name', name)
+                self.log.info('DOING Policy Map CORE-IN: ', name)
+                template.apply('ba_qos_rfs-template', vars)
+                name = "DL_INTERFACE_POLICY-"+endpoint.er.device+"-"+str(endpoint.id)
+                vars.add('name', name)
+                self.log.info('Attaching Policy Map CORE-IN to csr IF: ', name)
+                template.apply('ba_interface_qos_rfs-template', vars)
 
-            ########## L3VPN SECTION ########
+            ########## L3VPN, ba-vrf SECTION ########
+            import_rt_index_1 = 0
+            import_rt_index_2 = 0
+            import_rt_index_3 = 0
+            import_rt_index_4 = 0
+            import_rt_index_5 = 0
+            export_rt_index_1 = 0
+            export_rt_index_2 = 0
+            export_rt_index_3 = 0
+            export_rt_index_4 = 0
+            export_rt_index_5 = 0
+            rt_count = 1
+            for irti in endpoint.imprti:
+                if rt_count == 1:
+                    import_rt_index_1 = irti.import_rt_index
+                if rt_count == 2:
+                    import_rt_index_2 = irti.import_rt_index
+                if rt_count == 3:
+                    import_rt_index_3 = irti.import_rt_index
+                if rt_count == 4:
+                    import_rt_index_4 = irti.import_rt_index
+                if rt_count == 5:
+                    import_rt_index_5 = irti.import_rt_index
+                rt_count += 1
+            rt_count = 1
+            for erti in endpoint.exprti:
+                if rt_count == 1:
+                    export_rt_index_1 = erti.export_rt_index
+                if rt_count == 2:
+                    export_rt_index_2 = erti.export_rt_index
+                if rt_count == 3:
+                    export_rt_index_3 = erti.export_rt_index
+                if rt_count == 4:
+                    export_rt_index_4 = erti.export_rt_index
+                if rt_count == 5:
+                    export_rt_index_5 = erti.export_rt_index
+                rt_count += 1
+            vars.add('import_rt_index_1', import_rt_index_1)
+            vars.add('import_rt_index_2', import_rt_index_2)
+            vars.add('import_rt_index_3', import_rt_index_3)
+            vars.add('import_rt_index_4', import_rt_index_4)
+            vars.add('import_rt_index_5', import_rt_index_5)
+            vars.add('export_rt_index_1', export_rt_index_1)
+            vars.add('export_rt_index_2', export_rt_index_2)
+            vars.add('export_rt_index_3', export_rt_index_3)
+            vars.add('export_rt_index_4', export_rt_index_4)
+            vars.add('export_rt_index_5', export_rt_index_5)
             template.apply('ba_vrf_rfs-template', vars)
 
     # The pre_modification() and post_modification() callbacks are optional,

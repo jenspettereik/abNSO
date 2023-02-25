@@ -39,18 +39,9 @@ module ba_communitysets {
         path "/ncs:devices/ncs:device/ncs:name";
       }
     }
-
-    /* leaf community_set_umpls {
+    leaf set_name {
       type string;
+      default "C-uMPLS";
     }
-    leaf as_number {
-      tailf:info "Autonomous System number eg 29695 set as default";
-      type uint16;
-      default 29695;
-    }
-    leaf set_number {
-      tailf:info "For the community set";
-      type uint16;
-    } */
   }
 }

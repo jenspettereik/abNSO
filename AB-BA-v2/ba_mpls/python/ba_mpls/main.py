@@ -17,7 +17,7 @@ class ServiceCallbacks(Service):
         vars = ncs.template.Variables()
         template = ncs.template.Template(service)
 
-        vars.add('name', service.name)
+        # vars.add('name', service.name)
         # self.log.info('CSR DEVICE: ', service.mpls.csr.device)
         # self.log.info('Mgmt IPv4 Address: ', service.mpls.csr.mgmt_ipv4_address)
         # self.log.info('IF name: ', service.mpls.csr.interface_name)
@@ -25,16 +25,14 @@ class ServiceCallbacks(Service):
         vars.add('mgmt_ipv4_address', service.mpls.csr.mgmt_ipv4_address)
         vars.add('interface_name', service.mpls.csr.interface_name)
         vars.add('interface_number', service.mpls.csr.interface_number)
-        
         template.apply('ba_mpls_ldp_csr-template', vars)
-        
-        vars.add('name', service.name)
-        vars.add('device', service.mpls.er.device)
-        vars.add('interface_name', service.mpls.er.interface_name)
-        vars.add('interface_number', service.mpls.er.interface_number)
-        
-        template.apply('ba_mpls_ldp_er-template', vars)
-        # template.apply('ba_mpls-template', vars)
+
+        if not service.only_CSR:
+            # vars.add('name', service.name)
+            vars.add('device', service.mpls.er.device)
+            vars.add('interface_name', service.mpls.er.interface_name)
+            vars.add('interface_number', service.mpls.er.interface_number)
+            template.apply('ba_mpls_ldp_er-template', vars)
 
     # The pre_modification() and post_modification() callbacks are optional,
     # and are invoked outside FASTMAP. pre_modification() is invoked before

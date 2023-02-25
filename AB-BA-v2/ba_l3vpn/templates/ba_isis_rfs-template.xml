@@ -1,6 +1,7 @@
 <config-template xmlns="http://tail-f.com/ns/config/1.0">
   <ba_isis xmlns="http://example.com/ba_isis">
     <name>{$name}</name>
+    <only_CSR>{$only_CSR}</only_CSR>
     <net_id>{$net_id}</net_id>
     <isis>
       <csr>

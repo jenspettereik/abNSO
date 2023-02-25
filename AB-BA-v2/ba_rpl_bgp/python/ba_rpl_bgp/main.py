@@ -15,7 +15,6 @@ class ServiceCallbacks(Service):
         self.log.info('Service create(service=', service._path, ')')
 
         vars = ncs.template.Variables()
-        vars.add('DUMMY', '127.0.0.1')
         template = ncs.template.Template(service)
         template.apply('ba_rpl_bgp-template', vars)
 

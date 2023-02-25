@@ -31,6 +31,37 @@ class ServiceCallbacks(Service):
         vars.add('csr_interface_description', interface_description)
         vars.add('csr_ipv4_address', service.endpoint.csr.local.ipv4_address)
         vars.add('csr_ipv4_mask', service.endpoint.csr.local.ipv4_mask)
+        template.apply('ba_vrf_csr-template', vars)
+        if service.endpoint.import_rt_index_1 != 0:
+            vars.add('import_rt_index', service.endpoint.import_rt_index_1)
+            template.apply('ba_vrf_csr_irt-template', vars)
+        if service.endpoint.import_rt_index_2 != 0:
+            vars.add('import_rt_index', service.endpoint.import_rt_index_2)
+            template.apply('ba_vrf_csr_irt-template', vars)
+        if service.endpoint.import_rt_index_3 != 0:
+            vars.add('import_rt_index', service.endpoint.import_rt_index_3)
+            template.apply('ba_vrf_csr_irt-template', vars)
+        if service.endpoint.import_rt_index_4 != 0:
+            vars.add('import_rt_index', service.endpoint.import_rt_index_4)
+            template.apply('ba_vrf_csr_irt-template', vars)
+        if service.endpoint.import_rt_index_5 != 0:
+            vars.add('import_rt_index', service.endpoint.import_rt_index_5)
+            template.apply('ba_vrf_csr_irt-template', vars)
+        if service.endpoint.export_rt_index_1 != 0:
+            vars.add('export_rt_index', service.endpoint.export_rt_index_1)
+            template.apply('ba_vrf_csr_ert-template', vars)
+        if service.endpoint.export_rt_index_2 != 0:
+            vars.add('export_rt_index', service.endpoint.export_rt_index_2)
+            template.apply('ba_vrf_csr_ert-template', vars)
+        if service.endpoint.export_rt_index_3 != 0:
+            vars.add('export_rt_index', service.endpoint.export_rt_index_3)
+            template.apply('ba_vrf_csr_ert-template', vars)
+        if service.endpoint.export_rt_index_4 != 0:
+            vars.add('export_rt_index', service.endpoint.export_rt_index_4)
+            template.apply('ba_vrf_csr_ert-template', vars)
+        if service.endpoint.export_rt_index_5 != 0:
+            vars.add('export_rt_index', service.endpoint.export_rt_index_5)
+            template.apply('ba_vrf_csr_ert-template', vars)
 
         # Uplink interfaces are handled by the ISIS RFS:
         """ vars.add('csr_ul_interface_name', service.endpoint.csr.link.interface_name)

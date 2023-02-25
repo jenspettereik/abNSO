@@ -1,6 +1,7 @@
 <config-template xmlns="http://tail-f.com/ns/config/1.0">
   <ba_bgp xmlns="http://example.com/ba_bgp">
     <name>{$name}</name>
+    <only_CSR>{$only_CSR}</only_CSR>
     <as_number>{$as_number}</as_number>
     <m3_area>{$m3_area}</m3_area>
     <bgp>

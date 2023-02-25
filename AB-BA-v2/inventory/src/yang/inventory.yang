@@ -16,6 +16,11 @@ module inventory {
   description
     "Inventory for the BA L3VPN Service";
 
+  revision 2023-02-24 {
+    description
+      "Policy maps section updated to be able to handle a nested policy map.";
+  }
+
   revision 2023-01-31 {
     description
       "Initial revision.";
@@ -88,7 +93,7 @@ module inventory {
           type string;
         }
         list rpl_community_set {
-          key part1;
+          key part2;
           leaf part1 {
             type uint16;
           }
@@ -134,7 +139,14 @@ module inventory {
                   enum police;
                   enum shape;
                   enum bandwidth;
+                  enum service-policy;
                   // The list is not complete
+                }
+              }
+              leaf service_policy {
+                tailf:display-when "../class_operation_name = 'service-policy'";
+                type leafref {
+                  path "../../../../../../qos_policy_maps/qos_policy_map/qos_policy_map_name";
                 }
               }
               leaf set_subject {

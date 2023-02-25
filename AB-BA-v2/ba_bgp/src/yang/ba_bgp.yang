@@ -19,6 +19,16 @@ module ba_bgp {
   description
     "RFS to do BGP configuration";
 
+  revision 2023-02-24 {
+    description
+      "only_CSR added.";
+  }
+
+  revision 2023-02-18 {
+    description
+      "Community sets, prefix sets, policy maps and RPL's made static.";
+  }
+
   revision 2023-02-01 {
     description
       "Initial revision.";
@@ -36,6 +46,12 @@ module ba_bgp {
 
     uses ncs:service-data;
     ncs:servicepoint ba_bgp-servicepoint;
+
+    leaf only_CSR {
+      tailf:info "true if only CSR should be configured, not ER and AGG. false if also ER and AGG should be configured.";
+      type boolean;
+      default false;
+    }
 
     leaf as_number {
       tailf:info "Autonomous System number eg 29695 set as default";

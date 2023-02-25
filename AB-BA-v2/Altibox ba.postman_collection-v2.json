@@ -754,6 +754,62 @@
 							"response": []
 						},
 						{
+							"name": "POST BA-ACCESS-IN Policy Map",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "{{password}}",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "{{user}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									},
+									{
+										"key": "Cache-Control",
+										"type": "text",
+										"value": "no-cache"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"inventory:qos_policy_map\": [\n        {\n            \"qos_policy_map_name\": \"BA-ACCESS-IN\",\n            \"description\": \"BA-ACCESS-IN\",\n            \"policy_classes\": {\n                \"policy_class\": [\n                    {\n                        \"class_name\": \"class-default\",\n                        \"class_type\": \"qos\",\n                        \"class_operation\": [\n                            {\n                                \"operation_name\": \"cd-op1\",\n                                \"class_operation_name\": \"service-policy\",\n                                \"service_policy\": \"BA-ACCESS\"\n                            },\n                            {\n                                \"operation_name\": \"cd-op2\",\n                                \"class_operation_name\": \"police\",\n                                \"police_subject\": \"police_rate\",\n                                \"police_value\": \"50\",\n                                \"police_unit\": \"mbps\"\n                            }\n                        ]\n                    }\n                ]\n            }\n        }\n    ]\n}"
+								},
+								"url": {
+									"raw": "http://{{host}}:8080/restconf/data/inventory:inventory/inventory:qos_policy_maps",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"port": "8080",
+									"path": [
+										"restconf",
+										"data",
+										"inventory:inventory",
+										"inventory:qos_policy_maps"
+									]
+								}
+							},
+							"response": []
+						},
+						{
 							"name": "DELETE a Policy Map",
 							"request": {
 								"auth": {
@@ -1521,6 +1577,62 @@
 							"response": []
 						},
 						{
+							"name": "POST Community Set multiple entries",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "{{password}}",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "{{user}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									},
+									{
+										"key": "Cache-Control",
+										"type": "text",
+										"value": "no-cache"
+									},
+									{
+										"key": "Accept",
+										"type": "text",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"community_set\": [\n        {\n            \"community_set_name\": \"Testing_multiple_entries\",\n            \"rpl_community_set\": [\n                {\n                    \"part1\": 29695,\n                    \"part2\": 12345\n                },\n                {\n                    \"part1\": 29695,\n                    \"part2\": 61000\n                },\n                {\n                    \"part1\": 29695,\n                    \"part2\": 24680\n                }\n            ]\n        }\n    ]\n}\n"
+								},
+								"url": {
+									"raw": "http://{{host}}:8080/restconf/data/inventory:inventory/inventory:community_sets",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"port": "8080",
+									"path": [
+										"restconf",
+										"data",
+										"inventory:inventory",
+										"inventory:community_sets"
+									]
+								}
+							},
+							"response": []
+						},
+						{
 							"name": "DELETE Community Set",
 							"request": {
 								"auth": {
@@ -1560,7 +1672,7 @@
 									"raw": ""
 								},
 								"url": {
-									"raw": "http://{{host}}:8080/restconf/data/inventory:inventory/inventory:community_sets/inventory:community_set=COMMUNITY_SET_TEST",
+									"raw": "http://{{host}}:8080/restconf/data/inventory:inventory/inventory:community_sets/inventory:community_set=C-uMPLS",
 									"protocol": "http",
 									"host": [
 										"{{host}}"
@@ -1571,7 +1683,7 @@
 										"data",
 										"inventory:inventory",
 										"inventory:community_sets",
-										"inventory:community_set=COMMUNITY_SET_TEST"
+										"inventory:community_set=C-uMPLS"
 									]
 								}
 							},
@@ -1856,7 +1968,61 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"ba_l3vpn:ba_l3vpn\": [\n        {\n            \"vrf_name\": \"VPN101\",\n            \"endpoint\": [\n                {\n                    \"id\": \"VPN101-1\",\n                    \"as_number\": 29695,\n                    \"rd\": 12345678,\n                    \"vlan\": 101,\n                    \"csr\": {\n                        \"device\": \"csr1\",\n                        \"local\": {\n                            \"interface_name\": \"TenGigE\",\n                            \"interface_number\": \"0/0/0/23\",\n                            \"ipv4_address\": \"192.168.12.1\",\n                            \"ipv4_mask\": \"255.255.255.0\"\n                        },\n                        \"link\": {\n                            \"interface_name\": \"TenGigE\",\n                            \"interface_number\": \"0/0/0/21\",\n                            \"ipv4_address\": \"10.10.10.11\",\n                            \"ipv4_mask\": \"255.255.255.0\"\n                        },\n                        \"mgmt_ipv4_address\": \"12.12.12.12\",\n                        \"m3_area\": \"VI\"\n                    },\n                    \"er\": {\n                        \"device\": \"er1\",\n                        \"link\": {\n                            \"interface_name\": \"TenGigE\",\n                            \"interface_number\": \"0/0/0/2\",\n                            \"ipv4_address\": \"10.10.10.10\",\n                            \"ipv4_mask\": \"255.255.255.0\"\n                        }\n                    }\n                }\n            ]\n        }\n    ]\n}"
+							"raw": "{\n    \"ba_l3vpn:ba_l3vpn\": [\n        {\n            \"vrf_name\": \"MOBILE-V101\",\n            \"only_CSR\": false,\n            \"endpoint\": [\n                {\n                    \"id\": \"MOBILE-V101-12\",\n                    \"as_number\": 29695,\n                    \"rd\": 4000420290,\n                    \"imprti\": [\n                        {\n                            \"import_rt_index\": 996\n                        },\n                        {\n                            \"import_rt_index\": 4000420290\n                        },\n                        {\n                            \"import_rt_index\": 4000420291\n                        }\n                    ],\n                    \"exprti\": [\n                        {\n                            \"export_rt_index\": 4000420290\n                        },\n                        {\n                            \"export_rt_index\": 4000420291\n                        }\n                    ],\n                    \"vlan\": 101,\n                    \"csr\": {\n                        \"device\": \"csr1\",\n                        \"local\": {\n                            \"interface_name\": \"TenGigE\",\n                            \"interface_number\": \"0/0/0/23\",\n                            \"ipv4_address\": \"10.10.10.11\",\n                            \"ipv4_mask\": \"255.255.255.0\"\n                        },\n                        \"link\": {\n                            \"interface_name\": \"TenGigE\",\n                            \"interface_number\": \"0/0/0/21\",\n                            \"ipv4_address\": \"192.168.12.23\",\n                            \"ipv4_mask\": \"255.255.255.0\"\n                        },\n                        \"mgmt_ipv4_address\": \"13.14.15.16\",\n                        \"m3_area\": \"VI\"\n                    },\n                    \"er\": {\n                        \"device\": \"er1\",\n                        \"link\": {\n                            \"interface_name\": \"TenGigE\",\n                            \"interface_number\": \"0/0/0/2\",\n                            \"ipv4_address\": \"10.10.10.10\",\n                            \"ipv4_mask\": \"255.255.255.0\"\n                        }\n                    }\n                }\n            ]\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}:8080/restconf/data",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "8080",
+							"path": [
+								"restconf",
+								"data"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST a ba_l3vpn, only CRS",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/yang-data+json"
+							},
+							{
+								"key": "Cache-Control",
+								"type": "text",
+								"value": "no-cache"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/yang-data+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"ba_l3vpn:ba_l3vpn\": [\n        {\n            \"vrf_name\": \"MOBILE-V201\",\n            \"only_CSR\": true,\n            \"endpoint\": [\n                {\n                    \"id\": \"MOBILE-V201-12\",\n                    \"as_number\": 29695,\n                    \"rd\": 4000420292,\n                    \"imprti\": [\n                        {\n                            \"import_rt_index\": 4000420292\n                        },\n                        {\n                            \"import_rt_index\": 4000420293\n                        },\n                        {\n                            \"import_rt_index\": 4000420294\n                        },\n                        {\n                            \"import_rt_index\": 4000420295\n                        },\n                        {\n                            \"import_rt_index\": 4000420296\n                        }\n                    ],\n                    \"exprti\": [\n                        {\n                            \"export_rt_index\": 4000420292\n                        }\n                    ],\n                    \"vlan\": 101,\n                    \"csr\": {\n                        \"device\": \"csr2\",\n                        \"local\": {\n                            \"interface_name\": \"TenGigE\",\n                            \"interface_number\": \"0/0/0/23\",\n                            \"ipv4_address\": \"20.20.20.21\",\n                            \"ipv4_mask\": \"255.255.255.0\"\n                        },\n                        \"link\": {\n                            \"interface_name\": \"TenGigE\",\n                            \"interface_number\": \"0/0/0/21\",\n                            \"ipv4_address\": \"192.168.12.23\",\n                            \"ipv4_mask\": \"255.255.255.0\"\n                        },\n                        \"mgmt_ipv4_address\": \"23.14.15.16\",\n                        \"m3_area\": \"VI\"\n                    },\n                    \"er\": {\n                        \"device\": \"er2\",\n                        \"link\": {\n                            \"interface_name\": \"TenGigE\",\n                            \"interface_number\": \"0/0/0/2\",\n                            \"ipv4_address\": \"10.10.10.10\",\n                            \"ipv4_mask\": \"255.255.255.0\"\n                        }\n                    }\n                }\n            ]\n        }\n    ]\n}"
 						},
 						"url": {
 							"raw": "http://{{host}}:8080/restconf/data",
@@ -1965,7 +2131,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"ba_l3vpn:ba_l3vpn\": [\n        {\n            \"vrf_name\": \"VPN101\",\n            \"endpoint\": [\n                {\n                    \"id\": \"VPN101-2\",\n                    \"as_number\": 29695,\n                    \"rd\": 12345678,\n                    \"vlan\": 101,\n                    \"csr\": {\n                        \"device\": \"csr2\",\n                        \"local\": {\n                            \"interface_name\": \"TenGigE\",\n                            \"interface_number\": \"0/0/0/23\",\n                            \"ipv4_address\": \"192.168.22.2\",\n                            \"ipv4_mask\": \"255.255.255.0\"\n                        },\n                        \"link\": {\n                            \"interface_name\": \"TenGigE\",\n                            \"interface_number\": \"0/0/0/21\",\n                            \"ipv4_address\": \"12.12.12.11\",\n                            \"ipv4_mask\": \"255.255.255.0\"\n                        },\n                        \"mgmt_ipv4_address\": \"22.22.22.22\",\n                        \"m3_area\": \"VI\"\n                    },\n                    \"er\": {\n                        \"device\": \"er2\",\n                        \"link\": {\n                            \"interface_name\": \"TenGigE\",\n                            \"interface_number\": \"0/0/0/2\",\n                            \"ipv4_address\": \"12.12.12.12\",\n                            \"ipv4_mask\": \"255.255.255.0\"\n                        }\n                    }\n                }\n            ]\n        }\n    ]\n}"
+							"raw": "{\n    \"ba_l3vpn:ba_l3vpn\": [\n        {\n            \"vrf_name\": \"MOBILE-V101\",\n            \"endpoint\": [\n                {\n                    \"id\": \"MOBILE-V101-20\",\n                    \"as_number\": 29695,\n                    \"rd\": 4000420290,\n                    \"vlan\": 101,\n                    \"csr\": {\n                        \"device\": \"csr3\",\n                        \"local\": {\n                            \"interface_name\": \"TenGigE\",\n                            \"interface_number\": \"0/0/0/23\",\n                            \"ipv4_address\": \"192.168.22.2\",\n                            \"ipv4_mask\": \"255.255.255.0\"\n                        },\n                        \"link\": {\n                            \"interface_name\": \"TenGigE\",\n                            \"interface_number\": \"0/0/0/21\",\n                            \"ipv4_address\": \"12.12.12.11\",\n                            \"ipv4_mask\": \"255.255.255.0\"\n                        },\n                        \"mgmt_ipv4_address\": \"22.22.22.22\",\n                        \"m3_area\": \"VI\"\n                    },\n                    \"er\": {\n                        \"device\": \"er2\",\n                        \"link\": {\n                            \"interface_name\": \"TenGigE\",\n                            \"interface_number\": \"0/0/0/2\",\n                            \"ipv4_address\": \"12.12.12.12\",\n                            \"ipv4_mask\": \"255.255.255.0\"\n                        }\n                    }\n                }\n            ]\n        }\n    ]\n}"
 						},
 						"url": {
 							"raw": "http://{{host}}:8080/restconf/data",
@@ -2019,7 +2185,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "<ba_l3vpn xmlns=\"http://example.com/ba_l3vpn\">\n    <vrf_name>VPN101</vrf_name>\n        <endpoint xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\"\n                nc:operation=\"delete\">\n        <id>VPN101-1</id>\n    </endpoint>\n</ba_l3vpn>\n"
+							"raw": "<ba_l3vpn xmlns=\"http://example.com/ba_l3vpn\">\n    <vrf_name>MOBILE-V101</vrf_name>\n        <endpoint xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\"\n                nc:operation=\"delete\">\n        <id>MOBILE-V101-20</id>\n    </endpoint>\n</ba_l3vpn>\n"
 						},
 						"url": {
 							"raw": "http://{{host}}:8080/restconf/data/ba_l3vpn:ba_l3vpn=VPN101",

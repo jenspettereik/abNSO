@@ -19,8 +19,8 @@ class ServiceCallbacks(Service):
 
         vars.add('device', service.device)
         count = 0
-        prefix_set_str = "prefix-set PFX-uMPLS_LOOPBACKS\n"
-        for ps in root.inventory.prefix_sets.prefix_set["PFX-uMPLS_LOOPBACKS"].rpl_prefix_set:
+        prefix_set_str = "prefix-set "+service.set_name+"\n"
+        for ps in root.inventory.prefix_sets.prefix_set[service.set_name].rpl_prefix_set:
             count += 1
             prefix_set_str += ps.prefix_set_ip+"/"+str(ps.prefix_set_mask1)+" "+ps.prefix_set_operator+" "+str(ps.prefix_set_mask2)+"\n"
         prefix_set_str += "end-set"

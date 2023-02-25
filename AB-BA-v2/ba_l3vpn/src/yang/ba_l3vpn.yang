@@ -19,6 +19,16 @@ module ba_l3vpn {
   description
     "The Customer Facing Service CFS for doing BA L3VPN Services";
 
+  revision 2023-02-24 {
+    description
+      "only_CSR added. Added support for VRF import and export route-targets";
+  }
+
+  revision 2023-02-18 {
+    description
+      "Community sets, prefix sets, policy maps and RPL's made static.";
+  }
+
   revision 2023-01-31 {
     description
       "Initial revision.";
@@ -66,6 +76,12 @@ module ba_l3vpn {
       type string;
     }
 
+    leaf only_CSR {
+      tailf:info "true if only CSR should be configured, not ER and AGG. false if also ER and AGG should be configured.";
+      type boolean;
+      default false;
+    }
+
     uses ncs:service-data;
     ncs:servicepoint ba_l3vpn-servicepoint;
 
@@ -85,6 +101,20 @@ module ba_l3vpn {
         type uint32;
         tailf:info "Route Distinguisher";
         mandatory true;
+      }
+      list imprti {
+        key import_rt_index;
+        leaf import_rt_index {
+          type uint32;
+          tailf:info "Index of the import Route Target";
+        }
+      }
+      list exprti {
+        key export_rt_index;
+        leaf export_rt_index {
+          type uint32;
+          tailf:info "Index of the export Route Target";
+        }
       }
       leaf vlan {
         type uint32;
@@ -160,11 +190,11 @@ module ba_l3vpn {
             path "/ncs:devices/ncs:device/ncs:name";
           }
         }
-        leaf downlink_policy_map {
+        /* leaf downlink_policy_map {
           type leafref {
             path "/inventory:inventory/inventory:qos_policy_maps/inventory:qos_policy_map/inventory:qos_policy_map_name";
           }
-        }
+        } */
         container link {
           uses endpoint_grouping;
         }

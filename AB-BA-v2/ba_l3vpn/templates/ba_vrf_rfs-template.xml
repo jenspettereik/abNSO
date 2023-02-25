@@ -5,6 +5,16 @@
       <id>{$endpoint_id}</id>
       <as_number>{$as_number}</as_number>
       <rd>{$rd}</rd>
+      <import_rt_index_1>{$import_rt_index_1}</import_rt_index_1>
+      <import_rt_index_2>{$import_rt_index_2}</import_rt_index_2>
+      <import_rt_index_3>{$import_rt_index_3}</import_rt_index_3>
+      <import_rt_index_4>{$import_rt_index_4}</import_rt_index_4>
+      <import_rt_index_5>{$import_rt_index_5}</import_rt_index_5>
+      <export_rt_index_1>{$export_rt_index_1}</export_rt_index_1>
+      <export_rt_index_2>{$export_rt_index_2}</export_rt_index_2>
+      <export_rt_index_3>{$export_rt_index_3}</export_rt_index_3>
+      <export_rt_index_4>{$export_rt_index_4}</export_rt_index_4>
+      <export_rt_index_5>{$export_rt_index_5}</export_rt_index_5>
       <vlan>{$vlan}</vlan>
       <csr>
         <device>{$csr_device}</device>

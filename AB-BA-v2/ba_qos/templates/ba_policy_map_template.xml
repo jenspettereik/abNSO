@@ -32,33 +32,16 @@
                     </rate>
                   </police>
                 <?end?>
+                <?if {$class_operation_name = 'service-policy'}?>
+                  <service-policy>
+                    <name>{$service_policy}</name>
+                    <type>qos</type>
+                  </service-policy>
+                <?end?>
               </class>
             </qos>
           </type>
         </policy-map>
-
-        <!-- <policy-map xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-policymap-classmap-cfg">
-          <type>
-            <qos>
-              <policy-map-name>BA-ACCESS-IN</policy-map-name>
-              <class>
-                <name>class-default</name>
-                <type>qos</type>
-                <service-policy>
-                  <type>qos</type>
-                  <name>BA-ACCESS</name>
-                </service-policy>
-                <police>
-                  <rate>
-                    <value>{bandwidth}</value>
-                    <unit>mbps</unit>
-                  </rate>
-                </police>
-              </class>
-            </qos>
-          </type>
-        </policy-map> -->
-
       </config>
     </device>
   </devices>

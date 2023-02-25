@@ -22,7 +22,6 @@
               <two-byte-as>
                 <as-number>{$as_number}</as-number>
                 <index>{$rd}</index>
-                <!-- <stitching>false</stitching> -->
               </two-byte-as>
             </rd>
           </vrf>

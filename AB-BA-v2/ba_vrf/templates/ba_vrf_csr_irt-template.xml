@@ -1,0 +1,31 @@
+<config-template xmlns="http://tail-f.com/ns/config/1.0">
+  <devices xmlns="http://tail-f.com/ns/ncs">
+    <device>
+      <name>{$csr_device}</name>
+      <config>
+        <vrfs xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-vrf-cfg">
+          <vrf>
+          	<vrf-name>{$vrf_name}</vrf-name>
+            <address-family>
+              <ipv4>
+                <unicast>
+                  <import xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-bgp-cfg">
+                    <route-target>
+                      <two-byte-as-rts>
+                        <two-byte-as-rt>
+                          <as-number>{$as_number}</as-number>
+                          <index>{$import_rt_index}</index>
+                          <stitching>false</stitching>
+                        </two-byte-as-rt>
+                      </two-byte-as-rts>
+                    </route-target>
+                  </import>
+                </unicast>
+              </ipv4>
+            </address-family>
+          </vrf>
+        </vrfs>
+      </config>
+    </device>
+  </devices>
+</config-template>

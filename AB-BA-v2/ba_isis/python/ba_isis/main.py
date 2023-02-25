@@ -26,19 +26,19 @@ class ServiceCallbacks(Service):
         vars.add('csr_interface_description', interface_description)
         vars.add('csr_ipv4_address', service.isis.csr.isis_interface.ipv4_address)
         vars.add('csr_ipv4_mask', service.isis.csr.isis_interface.ipv4_mask)
-
-        self.log.info('ER DEVICE: ', service.isis.er.device)
-        vars.add('er_device', service.isis.er.device)
-        vars.add('er_interface_name', service.isis.er.isis_interface.interface_name)
-        vars.add('er_interface_number', service.isis.er.isis_interface.interface_number)
-        # "link to CSR / {$CSR} - {$CSR_INT_NAME}</description>"
-        interface_description = service.isis.csr.device + " - " + str(service.isis.csr.isis_interface.interface_name) + str(service.isis.csr.isis_interface.interface_number)
-        vars.add('er_interface_description', interface_description)
-        vars.add('er_ipv4_address', service.isis.er.isis_interface.ipv4_address)
-        vars.add('er_ipv4_mask', service.isis.er.isis_interface.ipv4_mask)
-
         template.apply('ba_isis_csr-template', vars)
-        template.apply('ba_isis_er-template', vars)
+
+        if not service.only_CSR:
+            self.log.info('ER DEVICE: ', service.isis.er.device)
+            vars.add('er_device', service.isis.er.device)
+            vars.add('er_interface_name', service.isis.er.isis_interface.interface_name)
+            vars.add('er_interface_number', service.isis.er.isis_interface.interface_number)
+            # "link to CSR / {$CSR} - {$CSR_INT_NAME}</description>"
+            interface_description = service.isis.csr.device + " - " + str(service.isis.csr.isis_interface.interface_name) + str(service.isis.csr.isis_interface.interface_number)
+            vars.add('er_interface_description', interface_description)
+            vars.add('er_ipv4_address', service.isis.er.isis_interface.ipv4_address)
+            vars.add('er_ipv4_mask', service.isis.er.isis_interface.ipv4_mask)
+            template.apply('ba_isis_er-template', vars)
 
     # The pre_modification() and post_modification() callbacks are optional,
     # and are invoked outside FASTMAP. pre_modification() is invoked before

@@ -7,7 +7,7 @@
           <sets>
             <prefix-sets>
               <prefix-set>
-                <set-name>PFX-uMPLS_LOOPBACKS</set-name>
+                <set-name>{set_name}</set-name>
                 <rpl-prefix-set> {$prefix_set_str}
                 </rpl-prefix-set>
               </prefix-set>

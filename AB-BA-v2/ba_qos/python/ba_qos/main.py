@@ -22,10 +22,12 @@ class ServiceCallbacks(Service):
         vars.add('qos_policy_map_name', service.policy_map_name)
         vars.add('policy_map_description', root.inventory.qos_policy_maps.qos_policy_map[service.policy_map_name].description)
         vars.add('qos_group_value', 0)
+        vars.add('set_subject', "NA")
         vars.add('traffic_class_value', 0)
         vars.add('discard_class_value', 0)
         vars.add('police_value', 0)
         vars.add('police_unit', "percent")
+        vars.add('service_policy', "BA-ACCESS")
         for p_class in root.inventory.qos_policy_maps.qos_policy_map[service.policy_map_name].policy_classes.policy_class:
 
             vars.add('qos_class_map_name', p_class.class_name)
@@ -67,6 +69,9 @@ class ServiceCallbacks(Service):
                     vars.add('police_subject', co.police_subject)
                     vars.add('police_value', co.police_value)
                     vars.add('police_unit', co.police_unit)
+                    template.apply('ba_policy_map_template', vars)
+                elif co.class_operation_name == "service-policy":
+                    vars.add('service_policy', co.service_policy)
                     template.apply('ba_policy_map_template', vars)
 
     # The pre_modification() and post_modification() callbacks are optional,
