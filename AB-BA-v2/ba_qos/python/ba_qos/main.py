@@ -23,11 +23,20 @@ class ServiceCallbacks(Service):
         vars.add('policy_map_description', root.inventory.qos_policy_maps.qos_policy_map[service.policy_map_name].description)
         vars.add('qos_group_value', 0)
         vars.add('set_subject', "NA")
+        vars.add('cos_value', 0)
+        vars.add('dscp_value', 0)
         vars.add('traffic_class_value', 0)
         vars.add('discard_class_value', 0)
         vars.add('police_value', 0)
         vars.add('police_unit', "percent")
         vars.add('service_policy', "BA-ACCESS")
+        vars.add('disposition_string', "HELLO_WORLD")
+        vars.add('mpls_disposition', "class_map")
+        vars.add('mpls_disposition_af', "ipv4")
+        vars.add('mpls_experimental', "topmost")
+        vars.add('mpls_label', 5)
+        vars.add('mpls_subject1', "experimental")
+        vars.add('vlan_id', 1000)
         for p_class in root.inventory.qos_policy_maps.qos_policy_map[service.policy_map_name].policy_classes.policy_class:
 
             vars.add('qos_class_map_name', p_class.class_name)
@@ -35,20 +44,31 @@ class ServiceCallbacks(Service):
             vars.add('match_statement', root.inventory.qos_class_maps.qos_class_map[p_class.class_name].match_statement)
             for me in root.inventory.qos_class_maps.qos_class_map[p_class.class_name].match_elements.match_element:
                 self.log.info('match_subject: ', me.match_subject)
+                vars.add('match_subject', me.match_subject)
                 if me.match_subject == "cos":
                     for cv in me.cos.cos_values:
                         vars.add('cos_value', cv.cos_value)
-                        template.apply('ba_class_map_cos_template', vars)
+                        template.apply('ba_class_map_template', vars)
                 elif me.match_subject == "dscp":
                     for dv in me.dscp.dscp_values:
                         vars.add('dscp_value', dv.dscp_value)
-                        template.apply('ba_class_map_dscp_template', vars)
+                        template.apply('ba_class_map_template', vars)
+                elif me.match_subject == "vlan":
+                    for dv in me.vlan.vlan_ids:
+                        vars.add('vlan_id', dv.vlan_id)
+                        template.apply('ba_class_map_template', vars)
                 elif me.match_subject == "mpls":
                     vars.add('mpls_subject1', me.mpls.mpls_subject1)
-                    vars.add('mpls_subject2', me.mpls.mpls_subject2)
-                    for m in me.mpls.mpls_labels:
-                        vars.add('mpls_label', m.mpls_label)
-                        template.apply('ba_class_map_mpls_template', vars)
+                    if me.mpls.mpls_subject1 == "disposition":
+                        vars.add('mpls_disposition', me.mpls.mpls_disposition)
+                        vars.add('mpls_disposition_af', me.mpls.mpls_disposition_af)
+                        vars.add('disposition_string', me.mpls.disposition_string)
+                        template.apply('ba_class_map_template', vars)
+                    if me.mpls.mpls_subject1 == "experimental":
+                        vars.add('mpls_experimental', me.mpls.mpls_experimental)
+                        for m in me.mpls.mpls_labels:
+                            vars.add('mpls_label', m.mpls_label)
+                            template.apply('ba_class_map_template', vars)
             
             vars.add('class_name', p_class.class_name)
             vars.add('class_type', p_class.class_type)

@@ -114,12 +114,19 @@ class ServiceCallbacks(Service):
             ########## QOS SECTION - CLASS MAPS and POLICY MAPS ########
             ########## INTERFACE POLICY SECTION ########
             vars.add('device', endpoint.csr.device)
-            vars.add('policy_map_name', "BA-ACCESS-IN")
             vars.add('interface_name', endpoint.csr.local.interface_name)
             vars.add('interface_number', endpoint.csr.local.interface_number)
+            # The Policy Maps BA-ACCESS-IN and BA-ACCESS and all the Class Maps they use must be present in the invemtory before this
+            # Add BA-ACCESS
+            vars.add('policy_map_name', "BA-ACCESS")
+            name = "BA-ACCESS-"+endpoint.csr.device+"-"+str(endpoint.id)
+            vars.add('name', name)
+            self.log.info('DOING Policy Map BA-ACCESS: ', name)
+            template.apply('ba_qos_rfs-template', vars)
+            # Add BA-ACCESS-IN
+            vars.add('policy_map_name', "BA-ACCESS-IN")
             name = "BA-ACCESS-IN-"+endpoint.csr.device+"-"+str(endpoint.id)
             vars.add('name', name)
-            # The Policy Maps BA-ACCESS-IN and BA-ACCESS and all the Class Maps they use must be present in the invemtory before this
             self.log.info('DOING Policy Map BA-ACCESS-IN: ', name)
             template.apply('ba_qos_rfs-template', vars)
             name = "BA-ACCESS-IN_INTERFACE_POLICY-"+endpoint.csr.device+"-"+str(endpoint.id)

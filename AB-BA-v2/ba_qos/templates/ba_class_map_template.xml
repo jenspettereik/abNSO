@@ -1,0 +1,70 @@
+<config-template xmlns="http://tail-f.com/ns/config/1.0">
+  <devices xmlns="http://tail-f.com/ns/ncs">
+    <device>
+      <name>{$device}</name>
+      <config>
+        <class-map xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-policymap-classmap-cfg">
+          <type>
+            <qos>
+              <class-map-name>{$qos_class_map_name}</class-map-name>
+              <match-any/>
+              <description>{$class_map_description}</description>
+              <match>
+                <?if {$match_subject = 'cos'}?>
+                  <cos>
+                    <value>{$cos_value}</value>
+                  </cos>
+                <?end?>
+                <?if {$match_subject = 'dscp'}?>
+                  <dscp>
+                    <value>{$dscp_value}</value>
+                  </dscp>
+                <?end?>
+                <?if {$match_subject = 'vlan'}?>
+                  <vlan>
+                    <vlan-id>{$vlan_id}</vlan-id>
+                  </vlan>
+                <?end?>
+                <?if {$match_subject = 'mpls'}?>
+                  <mpls>
+                    <?if {$mpls_subject1 = 'experimental'}?>
+                      <experimental>
+                        <?if {$mpls_experimental = 'topmost'}?>
+                          <topmost>
+                            <label>{$mpls_label}</label>
+                          </topmost>
+                        <?end?>
+                        <?if {$mpls_experimental = 'imposition'}?>
+                          <imposition>
+                            <label>{$mpls_label}</label>
+                          </imposition>
+                        <?end?>
+                      </experimental>
+                    <?end?>
+                    <?if {$mpls_subject1 = 'disposition'}?>
+                      <disposition>
+                        <?if {$mpls_disposition = 'access-group'}?>
+                          <access-group>
+                            <?if {$mpls_disposition_af = 'ipv4'}?>
+                              <ipv4>{$disposition_string}</ipv4>
+                            <?end?>
+                            <?if {$mpls_disposition_af = 'ipv6'}?>
+                              <ipv4>{$disposition_string}</ipv4>
+                            <?end?>
+                          </access-group>
+                        <?end?>
+                        <?if {$mpls_disposition = 'class-map'}?>
+                          <class-map>TESTCM</class-map>
+                        <?end?>
+                      </disposition>
+                    <?end?>
+                  </mpls>
+                <?end?>
+              </match>
+            </qos>
+          </type>
+        </class-map>
+      </config>
+    </device>
+  </devices>
+</config-template>

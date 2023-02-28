@@ -252,7 +252,7 @@ module inventory {
                   enum disposition;
                 }
               }
-              leaf mpls_subject2 {
+              leaf mpls_experimental {
                 tailf:display-when "../mpls_subject1 = 'experimental'";
                 type enumeration {
                   enum imposition;
@@ -260,12 +260,31 @@ module inventory {
                 }
               }
               list mpls_labels {
+                tailf:display-when "../mpls_subject1 = 'experimental'";
                 key mpls_label;
                 leaf mpls_label {
                   type uint8 {
                     range "1..7";
                   }
                 }
+              }
+              leaf mpls_disposition {
+                tailf:display-when "../mpls_subject1 = 'disposition'";
+                type enumeration {
+                  enum access-group;
+                  enum class-map;
+                }
+              }
+              leaf mpls_disposition_af {
+                tailf:display-when "../mpls_subject1 = 'disposition'";
+                type enumeration {
+                  enum ipv4;
+                  enum ipv6;
+                }
+              }
+              leaf disposition_string {
+                tailf:display-when "../mpls_subject1 = 'disposition'";
+                type string;
               }
             }
             container dscp {
@@ -306,6 +325,17 @@ module inventory {
                 leaf cos_value {
                   type uint8 {
                     range "1..7";
+                  }
+                }
+              }
+            }
+            container vlan {
+              tailf:display-when "../match_subject = 'vlan'";
+              list vlan_ids {
+                key vlan_id;
+                leaf vlan_id {
+                  type uint16 {
+                    range "1..4095";
                   }
                 }
               }
