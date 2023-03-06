@@ -87,8 +87,8 @@ class ServiceCallbacks(Service):
                         template.apply('ba_policy_map_template', vars)
                 elif co.class_operation_name == "police":
                     vars.add('police_subject', co.police_subject)
-                    vars.add('police_value', co.police_value)
-                    vars.add('police_unit', co.police_unit)
+                    vars.add('police_value', service.police_value)
+                    vars.add('police_unit', service.police_unit)
                     template.apply('ba_policy_map_template', vars)
                 elif co.class_operation_name == "service-policy":
                     vars.add('service_policy', co.service_policy)

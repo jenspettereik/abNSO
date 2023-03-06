@@ -56,20 +56,6 @@ class ServiceCallbacks(Service):
             vars.add('er_ipv4_address', endpoint.er.link.ipv4_address)
             vars.add('er_ipv4_mask', endpoint.er.link.ipv4_mask)
 
-            # "link to PE / {$PE} - {$PE_INT_NAME}</description>"
-            """ ul_interface_description = endpoint.er.device + " - " + str(endpoint.er.link.interface_name) + str(endpoint.er.link.interface_number)
-            vars.add('csr_ul_interface_description', ul_interface_description)
-            else:
-                vars.add('er_device', "DUMMY-DEV")
-                vars.add('er_interface_name', "GigabitEthernet")
-                vars.add('er_interface_number', "0/0/0/0")
-                vars.add('er_interface_description', "DUMMY-DESC")
-                vars.add('er_ipv4_address', "255.255.255.254")
-                vars.add('er_ipv4_mask', "255.255.255.255")
-                # "link to PE / {$PE} - {$PE_INT_NAME}</description>"
-                ul_interface_description = "To some ER not known at this point"
-                vars.add('csr_ul_interface_description', ul_interface_description) """
-
             ########## COMMUNITY SET SECTION ########
             name = "Communityset"+endpoint.csr.device
             vars.add('name', name)
@@ -116,6 +102,8 @@ class ServiceCallbacks(Service):
             vars.add('device', endpoint.csr.device)
             vars.add('interface_name', endpoint.csr.local.interface_name)
             vars.add('interface_number', endpoint.csr.local.interface_number)
+            vars.add('police_value', endpoint.csr.police_value)
+            vars.add('police_unit', endpoint.csr.police_unit)
             # The Policy Maps BA-ACCESS-IN and BA-ACCESS and all the Class Maps they use must be present in the invemtory before this
             # Add BA-ACCESS
             vars.add('policy_map_name', "BA-ACCESS")
@@ -129,6 +117,7 @@ class ServiceCallbacks(Service):
             vars.add('name', name)
             self.log.info('DOING Policy Map BA-ACCESS-IN: ', name)
             template.apply('ba_qos_rfs-template', vars)
+            # Add BA-ACCESS-IN to the interface
             name = "BA-ACCESS-IN_INTERFACE_POLICY-"+endpoint.csr.device+"-"+str(endpoint.id)
             vars.add('name', name)
             self.log.info('Attaching Policy Map BA-ACCESS-IN to csr IF: ', name)
@@ -152,10 +141,10 @@ class ServiceCallbacks(Service):
                 vars.add('policy_map_name', "CORE-IN")
                 vars.add('interface_name', endpoint.er.link.interface_name)
                 vars.add('interface_number', endpoint.er.link.interface_number)
-                name = "DL_CM_PM-"+endpoint.er.device+"-"+str(endpoint.id)
+                """ name = "DL_CM_PM-"+endpoint.er.device+"-"+str(endpoint.id)
                 vars.add('name', name)
                 self.log.info('DOING Policy Map CORE-IN: ', name)
-                template.apply('ba_qos_rfs-template', vars)
+                template.apply('ba_qos_rfs-template', vars) """
                 name = "DL_INTERFACE_POLICY-"+endpoint.er.device+"-"+str(endpoint.id)
                 vars.add('name', name)
                 self.log.info('Attaching Policy Map CORE-IN to csr IF: ', name)

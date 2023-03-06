@@ -3,5 +3,7 @@
     <name>{$name}</name>
     <device>{$device}</device>
     <policy_map_name>{$policy_map_name}</policy_map_name>
+    <police_value>{$police_value}</police_value>
+    <police_unit>{$police_unit}</police_unit>
   </ba_qos>
 </config-template>

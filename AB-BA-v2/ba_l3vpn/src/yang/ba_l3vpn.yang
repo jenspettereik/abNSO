@@ -156,6 +156,24 @@ module ba_l3vpn {
           tailf:info "IP address of a Loopback interface";
           type inet:ipv4-address;
         }
+        leaf police_value {
+          tailf:info "Bandwidth to be policed on the VRF interface";
+          type uint64;
+        }
+        leaf police_unit {
+          tailf:info "Unit for the bandwidth to be policed on the VRF interface";
+          type enumeration {
+            enum percent;
+            enum bps;
+            enum cellsps;
+            enum kbps;
+            enum mbps;
+            enum gbps;
+            enum pps;
+            enum per-million;
+            enum per-thousand;
+          }
+        }
         /* leaf paths_route_policy {
           tailf:info "ex RPL-uMPLS_PIC_INSTALL";
           type string;
