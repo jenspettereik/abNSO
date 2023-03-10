@@ -10,14 +10,14 @@
         <vrfs xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-vrf-cfg">
           <vrf>
           	<vrf-name>{$vrf_name}</vrf-name>
-            <address-family>
+            <!-- <address-family>
               <ipv4>
                 <unicast/>
               </ipv4>
               <ipv6>
                 <unicast/>
               </ipv6>
-            </address-family>
+            </address-family> -->
             <rd xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-bgp-cfg">
               <two-byte-as>
                 <as-number>{$as_number}</as-number>

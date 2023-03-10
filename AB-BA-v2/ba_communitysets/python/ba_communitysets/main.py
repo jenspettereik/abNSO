@@ -20,17 +20,18 @@ class ServiceCallbacks(Service):
         vars.add('device', service.device)
         # name = "Communityset"+service.device+"-C-uMPLS"
         count = 0
+        cs_length = len(root.inventory.community_sets.community_set[service.set_name].rpl_community_set)
         community_set_str = "community-set "+service.set_name+"\n"
         for cs in root.inventory.community_sets.community_set[service.set_name].rpl_community_set:
             count += 1
-            community_set_str += str(cs.part1)+":"+str(cs.part2)+"\n"
+            community_set_str += str(cs.part1)+":"+str(cs.part2)
+            if not count == cs_length:
+                community_set_str += ", \n"
+            else:
+                community_set_str += " \n"
         community_set_str += "end-set"
         vars.add('community_set_str', community_set_str)
         template.apply('ba_communitysets-template', vars)
-        """ for cs in root.inventory.community_sets.community_set["C-uMPLS"].rpl_community_set:
-            vars.add('as_number', cs.part1)
-            vars.add('set_number', cs.part2)
-            template.apply('ba_communitysets-template', vars) """
 
     # The pre_modification() and post_modification() callbacks are optional,
     # and are invoked outside FASTMAP. pre_modification() is invoked before

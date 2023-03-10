@@ -12,6 +12,9 @@ module ba_mpls {
   import tailf-ncs {
     prefix ncs;
   }
+  import inventory {
+    prefix inventory;
+  }
 
   description
     "Bla bla...";
@@ -43,6 +46,14 @@ module ba_mpls {
       tailf:info "true if only CSR should be configured, not ER and AGG. false if also ER and AGG should be configured.";
       type boolean;
       default false;
+    }
+
+    leaf acl_name {
+      tailf:info "The ACL to be used with mpls";
+      type leafref {
+        path "/inventory:inventory/inventory:access_lists/inventory:access_list/inventory:acl_name";
+      }
+      default "MPLS_LOOPBACKS";   // This ACL must be present in the inventory!!
     }
 
     container mpls {

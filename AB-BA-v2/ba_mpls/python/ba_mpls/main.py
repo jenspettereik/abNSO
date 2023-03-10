@@ -17,18 +17,28 @@ class ServiceCallbacks(Service):
         vars = ncs.template.Variables()
         template = ncs.template.Template(service)
 
-        # vars.add('name', service.name)
-        # self.log.info('CSR DEVICE: ', service.mpls.csr.device)
-        # self.log.info('Mgmt IPv4 Address: ', service.mpls.csr.mgmt_ipv4_address)
-        # self.log.info('IF name: ', service.mpls.csr.interface_name)
+        # Start by adding the MPLS_LOOPBACKS ACL on csr and er
+        vars.add('acl_name', service.acl_name)
+        for seq in root.inventory.access_lists.access_list[service.acl_name].sequence:
+            vars.add('sequence_number', seq.sequence_number)
+            vars.add('protocol', seq.protocol)
+            vars.add('ipv4_addr', seq.ipv4_addr)
+            vars.add('prefix_length', seq.prefix_length)
+            vars.add('device', service.mpls.csr.device)
+            template.apply('ba_mpls_acl-template', vars)
+            if not service.only_CSR:
+                vars.add('device', service.mpls.er.device)
+                template.apply('ba_mpls_acl-template', vars)
+
+        # Add MPLS configuration to the csr
         vars.add('device', service.mpls.csr.device)
         vars.add('mgmt_ipv4_address', service.mpls.csr.mgmt_ipv4_address)
         vars.add('interface_name', service.mpls.csr.interface_name)
         vars.add('interface_number', service.mpls.csr.interface_number)
         template.apply('ba_mpls_ldp_csr-template', vars)
 
+        # Add MPLS configuration to the er
         if not service.only_CSR:
-            # vars.add('name', service.name)
             vars.add('device', service.mpls.er.device)
             vars.add('interface_name', service.mpls.er.interface_name)
             vars.add('interface_number', service.mpls.er.interface_number)

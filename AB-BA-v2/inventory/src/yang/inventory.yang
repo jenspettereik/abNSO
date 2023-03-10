@@ -104,6 +104,36 @@ module inventory {
       }
     }
 
+    container access_lists {
+      list access_list {
+        key acl_name;
+        leaf acl_name {
+          type string;
+        }
+        list sequence {
+          key sequence_number;
+          leaf sequence_number {
+            type uint16;
+          }
+          leaf permit_or_deny {
+            type enumeration {
+              enum permit;
+              enum deny;
+            }
+          }
+          leaf protocol {
+            type string;
+          }
+          leaf ipv4_addr {
+            type inet:ipv4-address;
+          }
+          leaf prefix-length {
+            type uint16;
+          }
+        }
+      }
+    }
+
     container qos_policy_maps {
       list qos_policy_map {
         key qos_policy_map_name;

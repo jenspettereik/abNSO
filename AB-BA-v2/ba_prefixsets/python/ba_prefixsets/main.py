@@ -20,9 +20,14 @@ class ServiceCallbacks(Service):
         vars.add('device', service.device)
         count = 0
         prefix_set_str = "prefix-set "+service.set_name+"\n"
+        ps_length = len(root.inventory.prefix_sets.prefix_set[service.set_name].rpl_prefix_set)
         for ps in root.inventory.prefix_sets.prefix_set[service.set_name].rpl_prefix_set:
             count += 1
-            prefix_set_str += ps.prefix_set_ip+"/"+str(ps.prefix_set_mask1)+" "+ps.prefix_set_operator+" "+str(ps.prefix_set_mask2)+"\n"
+            prefix_set_str += ps.prefix_set_ip+"/"+str(ps.prefix_set_mask1)+" "+ps.prefix_set_operator+" "+str(ps.prefix_set_mask2)
+            if not count == ps_length:
+                prefix_set_str += ", \n"
+            else:
+                prefix_set_str += " \n"
         prefix_set_str += "end-set"
         vars.add('prefix_set_str', prefix_set_str)
         template.apply('ba_prefixsets-template', vars)
