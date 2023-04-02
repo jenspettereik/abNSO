@@ -1,0 +1,12 @@
+<config-template xmlns="http://tail-f.com/ns/config/1.0">
+  <ba_base_conf xmlns="http://example.com/ba_base_conf">
+    <name>{$name}</name>
+    <base_conf>
+      <csr>
+        <device>{$csr_device}</device>
+        <hostname>{$csr_hostname}</hostname>
+        <mgmt_ipv4_address>{$csr_mgmt_ipv4_address}</mgmt_ipv4_address>
+      </csr>
+    </base_conf>
+  </ba_base_conf>
+</config-template>

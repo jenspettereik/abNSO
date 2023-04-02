@@ -1,0 +1,1504 @@
+<config-template xmlns="http://tail-f.com/ns/config/1.0">
+  <devices xmlns="http://tail-f.com/ns/ncs">
+    <device>
+      <name>{base_conf/csr/device}</name>
+      <config>
+        <ssh xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-ssh-cfg">
+          <server>
+            <dscp>48</dscp>
+            <logging/>
+            <rate-limit>120</rate-limit>
+            <session-limit>100</session-limit>
+            <v2/>
+            <vrfs>
+              <vrf>
+                <vrf-name>default</vrf-name>
+                <ipv4>
+                  <access-list>MGMT_CTRL</access-list>
+                </ipv4>
+              </vrf>
+            </vrfs>
+            <netconf>
+              <vrfs>
+                <vrf>
+                  <vrf-name>default</vrf-name>
+                </vrf>
+              </vrfs>
+            </netconf>
+          </server>
+        </ssh>
+        <lldp xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-lldp-cfg"/>
+
+        <!-- SHOULD THE HOSTNAME BE A VARIBLE? -->
+        <hostname xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-hostname-cfg">
+          <!-- Name of the device, e.g. mobile-03340-csr1 -->
+          <system-network-name>{base_conf/csr/hostname}</system-network-name>
+        </hostname>
+        <fpd xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-8000-fpd-cfg">
+          <auto-upgrade>
+            <enable/>
+          </auto-upgrade>
+        </fpd>
+        <routing-policy xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-route-policy-cfg">
+          <sets>
+            <prefix-sets>
+              <prefix-set>
+                <set-name>PARTNER_ENV</set-name>
+                <rpl-prefix-set>prefix-set PARTNER_ENV
+                  end-set
+                </rpl-prefix-set>
+              </prefix-set>
+              <prefix-set>
+                <set-name>PARTNER_AR_MGMT</set-name>
+                <rpl-prefix-set>prefix-set PARTNER_AR_MGMT
+                  end-set
+                </rpl-prefix-set>
+              </prefix-set>
+
+              <!-- <prefix-set>
+                <set-name>PFX-uMPLS_LOOPBACKS</set-name>
+                <rpl-prefix-set>prefix-set PFX-uMPLS_LOOPBACKS
+                    10.161.0.0/16 le 32,
+                    77.110.255.0/24 le 32,
+                    213.167.115.0/24 le 32
+                  end-set
+                </rpl-prefix-set>
+              </prefix-set> -->
+
+            </prefix-sets>
+
+            <!-- <community-sets>
+              <community-set>
+                <set-name>C-uMPLS</set-name>
+                <rpl-community-set>community-set C-uMPLS
+                    29695:33107
+                  end-set
+                </rpl-community-set>
+              </community-set>
+            </community-sets> -->
+
+          </sets>
+          <route-policies>
+
+            <!-- <route-policy>
+              <route-policy-name>RPL-uMPLS_IN</route-policy-name>
+              <rpl-route-policy>route-policy RPL-uMPLS_IN
+                if destination in PFX-uMPLS_LOOPBACKS then
+                  if community matches-any C-uMPLS then
+                    set local-preference 3107
+                    pass
+                  else
+                    drop
+                  endif
+                else
+                  drop
+                endif
+              end-policy
+              </rpl-route-policy>
+            </route-policy>
+            <route-policy>
+              <route-policy-name>RPL-uMPLS_OUT</route-policy-name>
+              <rpl-route-policy>route-policy RPL-uMPLS_OUT
+                if destination in PFX-uMPLS_LOOPBACKS then
+                  if community matches-any C-uMPLS then
+                    set local-preference 3107
+                    pass
+                  else
+                    drop
+                  endif
+                else
+                  drop
+                endif
+              end-policy
+              </rpl-route-policy>
+            </route-policy> -->
+
+            <route-policy>
+              <route-policy-name>CONNECTED2ISIS</route-policy-name>
+              <rpl-route-policy>route-policy CONNECTED2ISIS
+                if destination in PARTNER_AR_MGMT then
+                  pass
+                elseif destination in PARTNER_ENV then
+                  pass
+                else
+                  drop
+                endif
+              end-policy
+              </rpl-route-policy>
+            </route-policy>
+
+            <!-- <route-policy>
+              <route-policy-name>RPL-uMPLS_ADVERTISE</route-policy-name>
+              <rpl-route-policy>route-policy RPL-uMPLS_ADVERTISE
+                set community C-uMPLS additive
+                set local-preference 3107
+              end-policy
+              </rpl-route-policy>
+            </route-policy>
+            <route-policy>
+              <route-policy-name>RPL-uMPLS_PIC_INSTALL</route-policy-name>
+              <rpl-route-policy>route-policy RPL-uMPLS_PIC_INSTALL
+                if community matches-any C-uMPLS then
+                  set path-selection backup 1 install
+                endif
+              end-policy
+              </rpl-route-policy>
+            </route-policy> -->
+
+          </route-policies>
+        </routing-policy>
+        <clock xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-clock-cfg">
+          <timezone>
+          <Europe-Oslo/>
+          </timezone>
+        </clock>
+        <service xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-service-timestamps-cfg">
+          <timestamps>
+            <log>
+              <datetime>
+                <msec/>
+              </datetime>
+            </log>
+            <debug>
+              <datetime>
+                <msec/>
+              </datetime>
+            </debug>
+          </timestamps>
+        </service>
+
+        <!-- SOME SNMP SETTINGS THAT SHOULD BE VARIABLES? -->
+        <snmp-server-mibs xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-snmp-server-cfg">
+          <ifmib xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-mibs-ifmib-cfg">
+            <ifalias>
+              <long/>
+            </ifalias>
+          </ifmib>
+          <ifindex xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-mibs-ifmib-cfg">
+            <persist/>
+          </ifindex>
+        </snmp-server-mibs>
+        <snmp-server xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-snmp-server-cfg">
+          <hosts>
+            <host>
+              <address>213.167.97.130</address>
+              <traps>
+                <unencrypted>
+                  <unencrypted-string>
+                  <community-string>lytefri</community-string>
+                  <version>
+                    <v2c/>
+                  </version>
+                  <dying-gasp/>
+                  </unencrypted-string>
+                </unencrypted>
+              </traps>
+            </host>
+          </hosts>
+          <ipv4>
+            <dscp>cs6</dscp>
+          </ipv4>
+          <community>
+            <unencrypted>
+              <unencrypted-string>
+              <community-string>lytefri</community-string>
+              <ro/>
+              <ipv4>SNMP_READ</ipv4>
+              </unencrypted-string>
+            </unencrypted>
+          </community>
+          <queue-length>1000</queue-length>
+          <traps>
+            <rf xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-mibs-rfmib-cfg"/>
+            <bfd xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-bfd-sbfd-cfg"/>
+            <bgp xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-bgp-cfg">
+              <cbgp2/>
+              <bgp4-mib/>
+            </bgp>
+            <cfm xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-ethernet-cfm-cfg"/>
+            <ntp xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-ntp-cfg"/>
+            <ethernet xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-ethernet-oam-cfg">
+              <oam>
+                <events/>
+              </oam>
+            </ethernet>
+            <otn xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-traps-otn-cfg"/>
+            <pki xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-crypto-cfg"/>
+            <copy-complete xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-traps-config-copy-cfg"/>
+            <ipsla xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-traps-ipsla-cfg"/>
+            <snmp>
+              <linkup/>
+              <linkdown/>
+              <coldstart/>
+              <warmstart/>
+              <authentication/>
+            </snmp>
+            <flash xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-traps-flash-cfg">
+              <removal/>
+              <insertion/>
+            </flash>
+            <alarm xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-traps-alarm-cfg"/>
+            <ipsec xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-traps-ipsec-cfg">
+              <tunnel>
+                <stop/>
+                <start/>
+              </tunnel>
+            </ipsec>
+            <power xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-traps-power-cfg"/>
+            <config xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-cfg-mibs-cfg"/>
+            <entity xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-traps-entity-cfg"/>
+            <isakmp xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-traps-ipsec-cfg">
+              <tunnel>
+                <stop/>
+                <start/>
+              </tunnel>
+            </isakmp>
+            <sensor xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-mibs-sensormib-cfg"/>
+            <selective-vrf-download xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-traps-selective-vrf-download-cfg">
+              <role-change/>
+            </selective-vrf-download>
+            <syslog xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-traps-syslog-cfg"/>
+            <system xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-traps-system-cfg"/>
+            <frequency xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-frequency-synchronization-cfg">
+              <synchronization/>
+            </frequency>
+            <bridgemib xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-traps-bridgemib-cfg"/>
+            <fru-ctrl xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-traps-fru-ctrl-cfg"/>
+            <optical xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-cont-optics-cfg"/>
+            <addrpool xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-pool-cfg">
+              <low/>
+              <high/>
+            </addrpool>
+            <cisco-entity-ext xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-traps-entity-cfg"/>
+            <entity-state xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-traps-entity-state-cfg">
+              <operstatus/>
+              <switchover/>
+            </entity-state>
+            <entity-redundancy xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-traps-entity-redundancy-cfg">
+              <all/>
+              <status/>
+              <switchover/>
+            </entity-redundancy>
+          </traps>
+          <contact>aoc-drift@altibox.no / +47 51908015</contact>
+          <location>CS-03340</location>
+          <trap-source>
+          <both>Loopback0</both>
+          </trap-source>
+        </snmp-server>
+
+        <!-- ################ NTP ############### -->
+        <ntp xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-ntp-cfg">
+          <authentication-keys>
+            <authentication-key>
+              <key-number>9</key-number>
+              <md5>
+              <encrypted>140933575F231B246D3909032D49353909086C0952</encrypted>
+              </md5>
+            </authentication-key>
+          </authentication-keys>
+          <authenticate/>
+          <trusted-keys>
+            <trusted-key>
+              <key-number>9</key-number>
+            </trusted-key>
+          </trusted-keys>
+          <peer-server>
+            <ipv4>
+              <ipv4-peer-server>
+                <address>45.14.53.21</address>
+                <type>server</type>
+                <key>9</key>
+              </ipv4-peer-server>
+              <ipv4-peer-server>
+                <address>45.14.53.22</address>
+                <type>server</type>
+                <key>9</key>
+              </ipv4-peer-server>
+              <ipv4-peer-server>
+                <address>92.220.227.21</address>
+                <type>server</type>
+                <key>9</key>
+              </ipv4-peer-server>
+              <ipv4-peer-server>
+                <address>92.220.227.22</address>
+                <type>server</type>
+                <key>9</key>
+              </ipv4-peer-server>
+              <ipv4-peer-server>
+                <address>109.247.114.21</address>
+                <type>server</type>
+                <key>9</key>
+              </ipv4-peer-server>
+              <ipv4-peer-server>
+                <address>109.247.114.22</address>
+                <type>server</type>
+                <key>9</key>
+              </ipv4-peer-server>
+            </ipv4>
+          </peer-server>
+          <access-group>
+          <ipv4>
+            <peer>81</peer>
+            <serve>80</serve>
+            <query-only>80</query-only>
+          </ipv4>
+          </access-group>
+          <source>
+          <interface-name>Loopback0</interface-name>
+          </source>
+          <update-calendar/>
+        </ntp>
+
+        <!-- ####################### CALL-HOME ###################### -->
+        <call-home xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-call-home-cfg">
+          <service>
+            <active/>
+          </service>
+          <contact>
+            <smart-licensing/>
+          </contact>
+          <source-interface>Loopback0</source-interface>
+          <profiles>
+            <profile>
+              <profile-name>altibox-anb-license</profile-name>
+              <active/>
+              <destination>
+              <addresses>
+                <address>
+                  <address-type>http</address-type>
+                  <destination-address>http://92.220.228.39:80/Transportgateway/services/DeviceRequestHandler</destination-address>
+                </address>
+              </addresses>
+              <transport-method>
+                <http/>
+              </transport-method>
+              </destination>
+              <reporting>
+                <smart-licensing-data/>
+              </reporting>
+            </profile>
+          </profiles>
+        </call-home>
+
+        <netconf xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-xml-agent-cfg">
+          <agent>
+            <tty/>
+          </agent>
+        </netconf>
+        <yang-server xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-yang-server-cfg">
+          <module-set>UM-preferred</module-set>
+        </yang-server>
+        <ipv4 xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-config-display-cfg">
+          <netmask-format>
+            <bit-count/>
+          </netmask-format>
+        </ipv4>
+        <tcp xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-tcp-cfg">
+          <path-mtu-discovery/>
+        </tcp>
+        <vty-pool xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-vty-pool-cfg">
+          <default>
+            <first-vty-number>0</first-vty-number>
+            <last-vty-number>99</last-vty-number>
+          </default>
+        </vty-pool>
+
+        <!-- ###################### AAA ###################### -->
+        <aaa xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-aaa-cfg">
+          <tacacs xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-aaa-tacacs-server-cfg">
+          <source-interface>Loopback0</source-interface>
+          </tacacs>
+          <tacacs-server xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-aaa-tacacs-server-cfg">
+          <hosts>
+            <host>
+            <ordering-index>0</ordering-index>
+            <address>92.220.228.56</address>
+            <port>49</port>
+            <key>
+              <seven>09626E1C01221940340B06183C350C670C</seven>
+            </key>
+            </host>
+            <host>
+            <ordering-index>1</ordering-index>
+            <address>45.14.53.170</address>
+            <port>49</port>
+            <key>
+              <seven>09626E1C01221940340B06183C350C670C</seven>
+            </key>
+            </host>
+          </hosts>
+          </tacacs-server>
+          <usernames xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-aaa-task-user-cfg">
+          <username>
+            <ordering-index>0</ordering-index>
+            <name>admin</name>
+            <group>
+            <root-lr/>
+            </group>
+            <password>070E25414707</password>
+          </username>
+          </usernames>
+          <accounting>
+          <exec>
+            <accounting-list>
+            <list-name>default</list-name>
+            <start-stop/>
+            <groups>
+              <group-1>
+              <tacacs/>
+              </group-1>
+            </groups>
+            </accounting-list>
+          </exec>
+          <commands>
+            <accounting-list>
+            <list-name>default</list-name>
+            <start-stop/>
+            <groups>
+              <group-1>
+              <tacacs/>
+              </group-1>
+            </groups>
+            </accounting-list>
+          </commands>
+          </accounting>
+          <authorization>
+          <exec>
+            <authorization-list>
+            <list-name>default</list-name>
+            <groups>
+              <group-1>
+              <tacacs/>
+              </group-1>
+              <group-2>
+              <local/>
+              </group-2>
+            </groups>
+            </authorization-list>
+          </exec>
+          <commands>
+            <authorization-list>
+            <list-name>default</list-name>
+            <groups>
+              <group-1>
+              <tacacs/>
+              </group-1>
+              <group-2>
+              <none/>
+              </group-2>
+            </groups>
+            </authorization-list>
+            <authorization-list>
+            <list-name>eem-method</list-name>
+            <none/>
+            </authorization-list>
+          </commands>
+          <eventmanager>
+            <authorization-list>
+            <list-name>default</list-name>
+            <local/>
+            </authorization-list>
+          </eventmanager>
+          </authorization>
+          <authentication>
+          <login>
+            <authentication-list>
+            <list-name>default</list-name>
+            <groups>
+              <group-1>
+              <tacacs/>
+              </group-1>
+              <group-2>
+              <local/>
+              </group-2>
+            </groups>
+            </authentication-list>
+          </login>
+          </authentication>
+        </aaa>
+
+        <!-- ###################### ACCESS-LISTS ##################### -->
+        <ipv4 xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-ipv4-access-list-cfg">
+          <access-lists>
+          <access-list>
+            <access-list-name>80</access-list-name>
+            <sequences>
+            <sequence>
+              <sequence-number>10</sequence-number>
+              <remark>utility ACL to block everything</remark>
+            </sequence>
+            <sequence>
+              <sequence-number>20</sequence-number>
+              <deny>
+              <protocol>ipv4</protocol>
+              <source>
+                <any/>
+              </source>
+              <destination>
+                <any/>
+              </destination>
+              </deny>
+            </sequence>
+            </sequences>
+          </access-list>
+          <access-list>
+            <access-list-name>81</access-list-name>
+            <sequences>
+            <sequence>
+              <sequence-number>10</sequence-number>
+              <remark>NTP peers/servers we sync to/with</remark>
+            </sequence>
+            <sequence>
+              <sequence-number>20</sequence-number>
+              <permit>
+              <protocol>ipv4</protocol>
+              <source>
+                <host>109.247.114.21</host>
+              </source>
+              <destination>
+                <any/>
+              </destination>
+              </permit>
+            </sequence>
+            <sequence>
+              <sequence-number>30</sequence-number>
+              <permit>
+              <protocol>ipv4</protocol>
+              <source>
+                <host>92.220.227.21</host>
+              </source>
+              <destination>
+                <any/>
+              </destination>
+              </permit>
+            </sequence>
+            <sequence>
+              <sequence-number>40</sequence-number>
+              <permit>
+              <protocol>ipv4</protocol>
+              <source>
+                <host>109.247.114.22</host>
+              </source>
+              <destination>
+                <any/>
+              </destination>
+              </permit>
+            </sequence>
+            <sequence>
+              <sequence-number>50</sequence-number>
+              <permit>
+              <protocol>ipv4</protocol>
+              <source>
+                <host>92.220.227.22</host>
+              </source>
+              <destination>
+                <any/>
+              </destination>
+              </permit>
+            </sequence>
+            <sequence>
+              <sequence-number>60</sequence-number>
+              <permit>
+              <protocol>ipv4</protocol>
+              <source>
+                <host>45.14.53.21</host>
+              </source>
+              <destination>
+                <any/>
+              </destination>
+              </permit>
+            </sequence>
+            <sequence>
+              <sequence-number>70</sequence-number>
+              <permit>
+              <protocol>ipv4</protocol>
+              <source>
+                <host>45.14.53.22</host>
+              </source>
+              <destination>
+                <any/>
+              </destination>
+              </permit>
+            </sequence>
+            <sequence>
+              <sequence-number>80</sequence-number>
+              <deny>
+              <protocol>ipv4</protocol>
+              <source>
+                <any/>
+              </source>
+              <destination>
+                <any/>
+              </destination>
+              </deny>
+            </sequence>
+            </sequences>
+          </access-list>
+          <access-list>
+            <access-list-name>MGMT_CTRL</access-list-name>
+            <sequences>
+            <sequence>
+              <sequence-number>20</sequence-number>
+              <permit>
+              <protocol>ipv4</protocol>
+              <source>
+                <address>213.167.97.128</address>
+                <prefix-length>26</prefix-length>
+              </source>
+              <destination>
+                <any/>
+              </destination>
+              </permit>
+            </sequence>
+            <sequence>
+              <sequence-number>30</sequence-number>
+              <permit>
+              <protocol>ipv4</protocol>
+              <source>
+                <address>213.167.97.192</address>
+                <prefix-length>26</prefix-length>
+              </source>
+              <destination>
+                <any/>
+              </destination>
+              </permit>
+            </sequence>
+            <sequence>
+              <sequence-number>40</sequence-number>
+              <permit>
+              <protocol>ipv4</protocol>
+              <source>
+                <address>109.247.116.96</address>
+                <prefix-length>27</prefix-length>
+              </source>
+              <destination>
+                <any/>
+              </destination>
+              </permit>
+            </sequence>
+            <sequence>
+              <sequence-number>50</sequence-number>
+              <permit>
+              <protocol>ipv4</protocol>
+              <source>
+                <address>92.220.228.32</address>
+                <prefix-length>27</prefix-length>
+              </source>
+              <destination>
+                <any/>
+              </destination>
+              </permit>
+            </sequence>
+            <sequence>
+              <sequence-number>60</sequence-number>
+              <permit>
+              <protocol>ipv4</protocol>
+              <source>
+                <address>92.220.230.96</address>
+                <prefix-length>27</prefix-length>
+              </source>
+              <destination>
+                <any/>
+              </destination>
+              </permit>
+            </sequence>
+            <sequence>
+              <sequence-number>70</sequence-number>
+              <permit>
+              <protocol>ipv4</protocol>
+              <source>
+                <address>109.247.116.224</address>
+                <prefix-length>27</prefix-length>
+              </source>
+              <destination>
+                <any/>
+              </destination>
+              </permit>
+            </sequence>
+            <sequence>
+              <sequence-number>80</sequence-number>
+              <permit>
+              <protocol>ipv4</protocol>
+              <source>
+                <host>92.220.226.32</host>
+              </source>
+              <destination>
+                <any/>
+              </destination>
+              </permit>
+            </sequence>
+            <sequence>
+              <sequence-number>90</sequence-number>
+              <permit>
+              <protocol>ipv4</protocol>
+              <source>
+                <host>192.168.111.5</host>
+              </source>
+              <destination>
+                <any/>
+              </destination>
+              </permit>
+            </sequence>
+            <sequence>
+              <sequence-number>100</sequence-number>
+              <permit>
+              <protocol>ipv4</protocol>
+              <source>
+                <host>79.161.80.21</host>
+              </source>
+              <destination>
+                <any/>
+              </destination>
+              </permit>
+            </sequence>
+            <sequence>
+              <sequence-number>101</sequence-number>
+              <permit>
+              <protocol>ipv4</protocol>
+              <source>
+                <host>192.168.111.5</host>
+              </source>
+              <destination>
+                <any/>
+              </destination>
+              </permit>
+            </sequence>
+            </sequences>
+          </access-list>
+          <access-list>
+            <access-list-name>SNMP_READ</access-list-name>
+            <sequences>
+            <sequence>
+              <sequence-number>10</sequence-number>
+              <remark>### Altibox Mgmt ###</remark>
+            </sequence>
+            <sequence>
+              <sequence-number>20</sequence-number>
+              <permit>
+              <protocol>ipv4</protocol>
+              <source>
+                <address>213.167.97.128</address>
+                <prefix-length>26</prefix-length>
+              </source>
+              <destination>
+                <any/>
+              </destination>
+              </permit>
+            </sequence>
+            <sequence>
+              <sequence-number>30</sequence-number>
+              <permit>
+              <protocol>ipv4</protocol>
+              <source>
+                <address>213.167.97.192</address>
+                <prefix-length>26</prefix-length>
+              </source>
+              <destination>
+                <any/>
+              </destination>
+              </permit>
+            </sequence>
+            <sequence>
+              <sequence-number>40</sequence-number>
+              <permit>
+              <protocol>ipv4</protocol>
+              <source>
+                <address>109.247.116.96</address>
+                <prefix-length>27</prefix-length>
+              </source>
+              <destination>
+                <any/>
+              </destination>
+              </permit>
+            </sequence>
+            <sequence>
+              <sequence-number>50</sequence-number>
+              <permit>
+              <protocol>ipv4</protocol>
+              <source>
+                <address>92.220.228.32</address>
+                <prefix-length>27</prefix-length>
+              </source>
+              <destination>
+                <any/>
+              </destination>
+              </permit>
+            </sequence>
+            <sequence>
+              <sequence-number>60</sequence-number>
+              <permit>
+              <protocol>ipv4</protocol>
+              <source>
+                <address>92.220.230.96</address>
+                <prefix-length>27</prefix-length>
+              </source>
+              <destination>
+                <any/>
+              </destination>
+              </permit>
+            </sequence>
+            <sequence>
+              <sequence-number>70</sequence-number>
+              <permit>
+              <protocol>ipv4</protocol>
+              <source>
+                <address>109.247.116.224</address>
+                <prefix-length>27</prefix-length>
+              </source>
+              <destination>
+                <any/>
+              </destination>
+              </permit>
+            </sequence>
+            </sequences>
+          </access-list>
+
+          <!-- <access-list>
+            <access-list-name>MPLS_LOOPBACKS</access-list-name>
+            <sequences>
+            <sequence>
+              <sequence-number>10</sequence-number>
+              <permit>
+              <protocol>ipv4</protocol>
+              <source>
+                <address>10.161.0.0</address>
+                <prefix-length>16</prefix-length>
+              </source>
+              <destination>
+                <any/>
+              </destination>
+              </permit>
+            </sequence>
+            <sequence>
+              <sequence-number>20</sequence-number>
+              <permit>
+              <protocol>ipv4</protocol>
+              <source>
+                <address>213.167.115.0</address>
+                <prefix-length>24</prefix-length>
+              </source>
+              <destination>
+                <any/>
+              </destination>
+              </permit>
+            </sequence>
+            <sequence>
+              <sequence-number>30</sequence-number>
+              <permit>
+              <protocol>ipv4</protocol>
+              <source>
+                <address>77.110.255.0</address>
+                <prefix-length>24</prefix-length>
+              </source>
+              <destination>
+                <any/>
+              </destination>
+              </permit>
+            </sequence>
+            </sequences>
+          </access-list> -->
+
+          </access-lists>
+        </ipv4>
+
+        <!-- ######################## LINES & VTY ######################## -->
+        <line xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-line-cfg">
+          <console>
+          <password xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-aaa-task-user-cfg">
+            <seven>11081D081E1C</seven>
+          </password>
+          <users xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-aaa-task-user-cfg">
+            <group>
+            <group-name>root-lr</group-name>
+            </group>
+          </users>
+          <authorization xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-aaa-task-user-cfg">
+            <exec>default</exec>
+          </authorization>
+          <login xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-aaa-task-user-cfg">
+            <authentication>default</authentication>
+          </login>
+          </console>
+          <default>
+          <exec-timeout xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-line-exec-timeout-cfg">
+            <timeout-in-minutes>0</timeout-in-minutes>
+            <timeout-in-seconds>0</timeout-in-seconds>
+          </exec-timeout>
+          <absolute-timeout xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-line-general-cfg">10000</absolute-timeout>
+          <session-timeout>
+            <timeout-interval>30000</timeout-interval>
+          </session-timeout>
+          <transport>
+            <input>
+            <all/>
+            </input>
+          </transport>
+          </default>
+        </line>
+
+        <hw-module xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-ncs-lindt-hw-module-profile-cfg">
+          <profile-qos>
+          <hqos-enable/>
+          </profile-qos>
+        </hw-module>
+        <http xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-http-client-cfg">
+          <client>
+          <source-interface>
+            <ipv4>
+            <interface>Loopback0</interface>
+            </ipv4>
+          </source-interface>
+          </client>
+        </http>
+
+        <object-group xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-object-group-cfg">
+          <network>
+          <ipv4s>
+            <ipv4>
+            <ipv4-object-group-name>OG_AiB_PUBLIC_MGMT</ipv4-object-group-name>
+            <ip-addresses>
+              <ip-address>
+              <address>79.160.115.53</address>
+              <length>32</length>
+              </ip-address>
+              <ip-address>
+              <address>79.160.115.57</address>
+              <length>32</length>
+              </ip-address>
+              <ip-address>
+              <address>79.160.115.69</address>
+              <length>32</length>
+              </ip-address>
+              <ip-address>
+              <address>92.220.228.32</address>
+              <length>27</length>
+              </ip-address>
+              <ip-address>
+              <address>92.220.230.96</address>
+              <length>27</length>
+              </ip-address>
+              <ip-address>
+              <address>109.247.116.96</address>
+              <length>27</length>
+              </ip-address>
+              <ip-address>
+              <address>109.247.116.224</address>
+              <length>27</length>
+              </ip-address>
+              <ip-address>
+              <address>213.167.97.128</address>
+              <length>26</length>
+              </ip-address>
+              <ip-address>
+              <address>213.167.97.192</address>
+              <length>26</length>
+              </ip-address>
+              <ip-address>
+              <address>213.167.105.16</address>
+              <length>28</length>
+              </ip-address>
+              <ip-address>
+              <address>213.167.105.80</address>
+              <length>28</length>
+              </ip-address>
+              <ip-address>
+              <address>213.167.114.230</address>
+              <length>32</length>
+              </ip-address>
+            </ip-addresses>
+            </ipv4>
+          </ipv4s>
+          </network>
+        </object-group>
+
+        <netconf-yang xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-netconf-yang-cfg">
+          <agent>
+          <ssh/>
+          </agent>
+        </netconf-yang>
+
+        <!-- ###################### CONTROL-PLANE ####################### -->
+        <control-plane xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-control-plane-cfg">
+          <management-plane>
+          <inband>
+            <interfaces>
+            <all>
+              <allow>
+              <ssh-peer>
+                <address>
+                <ipv4>
+                  <ipv4-addresses>
+                  <ipv4-address>
+                    <address>192.168.111.5</address>
+                  </ipv4-address>
+                  </ipv4-addresses>
+                  <ipv4-address-prefixes>
+                  <ipv4-address-prefix>
+                    <address>92.220.228.32</address>
+                    <length>27</length>
+                  </ipv4-address-prefix>
+                  <ipv4-address-prefix>
+                    <address>92.220.230.96</address>
+                    <length>27</length>
+                  </ipv4-address-prefix>
+                  <ipv4-address-prefix>
+                    <address>109.247.116.96</address>
+                    <length>27</length>
+                  </ipv4-address-prefix>
+                  <ipv4-address-prefix>
+                    <address>109.247.116.224</address>
+                    <length>27</length>
+                  </ipv4-address-prefix>
+                  <ipv4-address-prefix>
+                    <address>213.167.97.128</address>
+                    <length>26</length>
+                  </ipv4-address-prefix>
+                  <ipv4-address-prefix>
+                    <address>213.167.97.192</address>
+                    <length>26</length>
+                  </ipv4-address-prefix>
+                  </ipv4-address-prefixes>
+                </ipv4>
+                </address>
+              </ssh-peer>
+              <snmp-peer>
+                <address>
+                <ipv4>
+                  <ipv4-addresses>
+                  <ipv4-address>
+                    <address>92.220.226.44</address>
+                  </ipv4-address>
+                  </ipv4-addresses>
+                  <ipv4-address-prefixes>
+                  <ipv4-address-prefix>
+                    <address>92.220.228.32</address>
+                    <length>27</length>
+                  </ipv4-address-prefix>
+                  <ipv4-address-prefix>
+                    <address>92.220.230.96</address>
+                    <length>27</length>
+                  </ipv4-address-prefix>
+                  <ipv4-address-prefix>
+                    <address>109.247.116.96</address>
+                    <length>27</length>
+                  </ipv4-address-prefix>
+                  <ipv4-address-prefix>
+                    <address>109.247.116.224</address>
+                    <length>27</length>
+                  </ipv4-address-prefix>
+                  <ipv4-address-prefix>
+                    <address>213.167.97.128</address>
+                    <length>26</length>
+                  </ipv4-address-prefix>
+                  <ipv4-address-prefix>
+                    <address>213.167.97.192</address>
+                    <length>26</length>
+                  </ipv4-address-prefix>
+                  </ipv4-address-prefixes>
+                </ipv4>
+                </address>
+              </snmp-peer>
+              <netconf-peer>
+                <address>
+                <ipv4>
+                  <ipv4-addresses>
+                  <ipv4-address>
+                    <address>192.168.111.5</address>
+                  </ipv4-address>
+                  </ipv4-addresses>
+                </ipv4>
+                </address>
+              </netconf-peer>
+              </allow>
+            </all>
+            </interfaces>
+          </inband>
+          </management-plane>
+        </control-plane>
+
+        <!-- ######################### INTERFACES ########################## -->
+        <interfaces xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-interface-cfg">
+          <interface>
+            <interface-name>Loopback0</interface-name>
+            <description>Loopback-IGP</description>
+            <ipv4>
+              <addresses xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-if-ip-address-cfg">
+                <address>
+                  <address>{$mgmt_ipv4_address}</address>
+                  <netmask>255.255.255.255</netmask>
+                </address>
+              </addresses>
+            </ipv4>
+          </interface>
+          <interface>
+
+          <!-- SHOULD THIS INTERFACE ADDRESS AND DESCRIPTION BE VARIABLES? -->
+          <interface-name>Loopback100</interface-name>
+          <vrf xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-if-vrf-cfg">mobile-101</vrf>
+          <ipv4>
+            <addresses xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-if-ip-address-cfg">
+              <address>
+                <address>10.254.10.2</address>
+                <netmask>255.255.255.255</netmask>
+              </address>
+            </addresses>
+          </ipv4>
+          </interface>
+          <interface>
+          <interface-name>TenGigE0/0/0/24</interface-name>
+          <description>ID: S400093075</description>
+          <mtu>9180</mtu>
+          </interface>
+
+          <!-- HOW SHOULD THIS INTERFACE BE HANDLED? -->
+          <interface>
+            <interface-name>TenGigE0/0/0/31</interface-name>
+            <description>TO: WAN LID: 48005006</description>
+            <mtu>9180</mtu>
+            <ipv4>
+              <addresses xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-if-ip-address-cfg">
+                <address>
+                  <address>10.162.165.1</address>
+                  <netmask>255.255.255.254</netmask>
+                </address>
+              </addresses>
+            </ipv4>
+            <lldp xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-lldp-cfg">
+              <enable/>
+            </lldp>
+          </interface>
+          <interface>
+            <interface-name>MgmtEth0/RP0/CPU0/0</interface-name>
+            <shutdown/>
+          </interface>
+        </interfaces>
+        <logging xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-interface-cfg">
+          <events>
+          <link-status>
+            <software-interfaces/>
+          </link-status>
+          </events>
+        </logging>
+
+        <!-- SHOULD IPSLA'S BE PART OF THE VPN CONFIGURATION? -->
+        <ipsla xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-ipsla-cfg">
+          <operations>
+          <operation>
+            <operation-number>1</operation-number>
+            <type>
+            <udp>
+              <echo>
+              <tag>mobile-03340-csr1-best-effort-echo</tag>
+              <vrf>mobile-101</vrf>
+              <source>
+                <address>
+                <ipv4-address>10.254.10.2</ipv4-address>
+                </address>
+                <port>50104</port>
+              </source>
+              <destination>
+                <address>10.254.1.1</address>
+                <port>1342</port>
+              </destination>
+              <tos>0</tos>
+              <frequency>10</frequency>
+              </echo>
+            </udp>
+            </type>
+          </operation>
+          <operation>
+            <operation-number>2</operation-number>
+            <type>
+            <udp>
+              <jitter>
+              <tag>mobile-03340-csr1-udpjitter</tag>
+              <vrf>mobile-101</vrf>
+              <source>
+                <address>
+                <ipv4-address>10.254.10.2</ipv4-address>
+                </address>
+              </source>
+              <destination>
+                <address>10.254.1.1</address>
+                <port>1337</port>
+              </destination>
+              <packet>
+                <count>10</count>
+                <interval>10000</interval>
+              </packet>
+              <frequency>10</frequency>
+              </jitter>
+            </udp>
+            </type>
+          </operation>
+          <operation>
+            <operation-number>3</operation-number>
+            <type>
+            <udp>
+              <echo>
+              <tag>mobile-03340-csr1-voice-updjitter</tag>
+              <vrf>mobile-101</vrf>
+              <source>
+                <address>
+                <ipv4-address>10.254.10.2</ipv4-address>
+                </address>
+                <port>50101</port>
+              </source>
+              <destination>
+                <address>10.254.1.1</address>
+                <port>1338</port>
+              </destination>
+              <tos>184</tos>
+              <frequency>10</frequency>
+              </echo>
+            </udp>
+            </type>
+          </operation>
+          <operation>
+            <operation-number>4</operation-number>
+            <type>
+            <udp>
+              <jitter>
+              <tag>mobile-03340-csr1-voice-jitter</tag>
+              <vrf>mobile-101</vrf>
+              <source>
+                <address>
+                <ipv4-address>10.254.10.2</ipv4-address>
+                </address>
+                <port>50100</port>
+              </source>
+              <destination>
+                <address>10.254.1.1</address>
+                <port>1339</port>
+              </destination>
+              <tos>184</tos>
+              <frequency>10</frequency>
+              <statistics>
+                <intervals>
+                <interval>
+                  <interval-time>3600</interval-time>
+                  <buckets>24</buckets>
+                </interval>
+                </intervals>
+              </statistics>
+              <verify-data/>
+              </jitter>
+            </udp>
+            </type>
+          </operation>
+          <operation>
+            <operation-number>5</operation-number>
+            <type>
+            <udp>
+              <echo>
+              <tag>mobile-03340-csr1-video-echo</tag>
+              <vrf>mobile-101</vrf>
+              <source>
+                <address>
+                <ipv4-address>10.254.10.2</ipv4-address>
+                </address>
+                <port>50102</port>
+              </source>
+              <destination>
+                <address>10.254.1.1</address>
+                <port>1340</port>
+              </destination>
+              <tos>136</tos>
+              <frequency>10</frequency>
+              </echo>
+            </udp>
+            </type>
+          </operation>
+          <operation>
+            <operation-number>6</operation-number>
+            <type>
+            <udp>
+              <echo>
+              <tag>mobile-03340-csr1-business-echo</tag>
+              <vrf>mobile-101</vrf>
+              <source>
+                <address>
+                <ipv4-address>10.254.10.2</ipv4-address>
+                </address>
+                <port>50103</port>
+              </source>
+              <destination>
+                <address>10.254.1.1</address>
+                <port>1341</port>
+              </destination>
+              <tos>104</tos>
+              <frequency>10</frequency>
+              </echo>
+            </udp>
+            </type>
+          </operation>
+          </operations>
+          <schedule>
+          <operations>
+            <operation>
+            <operation-number>1</operation-number>
+            <start-time>
+              <now/>
+            </start-time>
+            <life>
+              <forever/>
+            </life>
+            </operation>
+            <operation>
+            <operation-number>2</operation-number>
+            <start-time>
+              <now/>
+            </start-time>
+            <life>
+              <forever/>
+            </life>
+            </operation>
+            <operation>
+            <operation-number>3</operation-number>
+            <start-time>
+              <now/>
+            </start-time>
+            <life>
+              <forever/>
+            </life>
+            </operation>
+            <operation>
+            <operation-number>4</operation-number>
+            <start-time>
+              <now/>
+            </start-time>
+            <life>
+              <forever/>
+            </life>
+            </operation>
+            <operation>
+            <operation-number>5</operation-number>
+            <start-time>
+              <now/>
+            </start-time>
+            <life>
+              <forever/>
+            </life>
+            </operation>
+            <operation>
+            <operation-number>6</operation-number>
+            <start-time>
+              <now/>
+            </start-time>
+            <life>
+              <forever/>
+            </life>
+            </operation>
+          </operations>
+          </schedule>
+        </ipsla>
+
+        <!-- SHOULD THE STATIC ROUTE ADDRESS BE A VARIABLE? -->
+        <router xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-static-cfg">
+          <static>
+          <address-family>
+            <ipv4>
+            <unicast>
+              <prefixes>
+              <prefix>
+                <prefix-address>0.0.0.0</prefix-address>
+                <prefix-length>0</prefix-length>
+                <nexthop-addresses>
+                <nexthop-address>
+                  <address>10.162.165.0</address>
+                </nexthop-address>
+                </nexthop-addresses>
+              </prefix>
+              </prefixes>
+            </unicast>
+            </ipv4>
+          </address-family>
+          </static>
+        </router>
+        <ftp xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-ftp-tftp-cfg">
+          <client>
+          <vrfs>
+            <vrf>
+            <vrf-name>default</vrf-name>
+            <passive/>
+            <source-interface>Loopback0</source-interface>
+            </vrf>
+          </vrfs>
+          </client>
+        </ftp>
+        <tftp-fs xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-ftp-tftp-cfg">
+          <client>
+          <vrfs>
+            <vrf>
+            <vrf-name>default</vrf-name>
+            <timeout>256</timeout>
+            <source-interface>Loopback0</source-interface>
+            </vrf>
+          </vrfs>
+          </client>
+        </tftp-fs>
+        <banners xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-banner-cfg">
+          <banner>
+          <banner-type>login</banner-type>
+          <line>@
+
+        =================================================================
+
+        This system is for the use of authorized users only. Individuals
+        using this computer system without authority, or in excess of their
+        authority, are subject to having all of their activities on this
+        system monitored and recorded by system personnel.
+        In the course of monitoring individuals improperly using this
+        system, or in the course of system maintenance, the activities of
+        authorized users may also be monitored.
+        Anyone using this system expressly consents to such monitoring and
+        is advised that if such monitoring reveals possible evidence of
+        criminal activity, system personnel may provide the evidence of
+        such monitoring to law enforcement officials.
+
+        =================================================================
+        @</line>
+          </banner>
+        </banners>
+        <mpls xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-mpls-lsd-cfg">
+          <ip-ttl-propagate>
+          <disable/>
+          </ip-ttl-propagate>
+        </mpls>
+        <logging xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-logging-cfg">
+          <trap>debugging</trap>
+          <console>debugging</console>
+          <monitor>debugging</monitor>
+          <buffered>
+          <logging-buffer-size>125000000</logging-buffer-size>
+          </buffered>
+          <vrfs>
+          <vrf>
+            <vrf-name>default</vrf-name>
+            <host-ipv4-addresses>
+            <host-ipv4-address>
+              <ipv4-address>213.167.97.170</ipv4-address>
+              <severity>info</severity>
+              <port>514</port>
+            </host-ipv4-address>
+            </host-ipv4-addresses>
+          </vrf>
+          </vrfs>
+          <source-interfaces>
+          <source-interface>
+            <source-interface-name>Loopback0</source-interface-name>
+            <vrfs>
+            <vrf>
+              <vrf-name>default</vrf-name>
+            </vrf>
+            </vrfs>
+          </source-interface>
+          </source-interfaces>
+        </logging>
+
+
+      </config>
+    </device>
+  </devices>
+</config-template>

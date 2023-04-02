@@ -56,6 +56,15 @@ class ServiceCallbacks(Service):
             vars.add('er_ipv4_address', endpoint.er.link.ipv4_address)
             vars.add('er_ipv4_mask', endpoint.er.link.ipv4_mask)
 
+            ########## BASE CONFIGURATION SECTION ########
+            csr_mgmt_ip = endpoint.csr.mgmt_ipv4_address
+            vars.add('csr_mgmt_ipv4_address', csr_mgmt_ip)
+            name = "Base_Config"+endpoint.csr.device
+            vars.add('name', name)
+            vars.add('csr_hostname', "mobile-"+service.name+"-csr1") # Probably this needs to be improved?
+            self.log.info('Adding Base Configuration: ', name)
+            template.apply('ba_base_conf_rfs-template', vars)
+
             ########## COMMUNITY SET SECTION ########
             name = "Communityset"+endpoint.csr.device
             vars.add('name', name)
@@ -75,8 +84,6 @@ class ServiceCallbacks(Service):
             template.apply('ba_rpl_bgp_rfs-template', vars)
 
             ########## ba-bgp SECTION ########
-            csr_mgmt_ip = endpoint.csr.mgmt_ipv4_address
-            vars.add('csr_mgmt_ipv4_address', csr_mgmt_ip)
             vars.add('m3_area', endpoint.csr.m3_area)
             name = "BGP-"+endpoint.csr.m3_area+"-"+endpoint.csr.device
             vars.add('name', name)
