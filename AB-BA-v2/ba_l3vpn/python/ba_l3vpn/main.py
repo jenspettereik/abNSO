@@ -59,33 +59,39 @@ class ServiceCallbacks(Service):
             ########## BASE CONFIGURATION SECTION ########
             csr_mgmt_ip = endpoint.csr.mgmt_ipv4_address
             vars.add('csr_mgmt_ipv4_address', csr_mgmt_ip)
-            name = "Base_Config"+endpoint.csr.device
+            vars.add('ipsla_mgmt_address', endpoint.csr.ipsla_mgmt_address)
+            name = "Base_Config"+endpoint.csr.device+"-"+endpoint.id
             vars.add('name', name)
-            vars.add('csr_hostname', "mobile-"+service.name+"-csr1") # Probably this needs to be improved?
+            vars.add('csr_hostname', "mobile-"+endpoint.id+"-csr1") # Probably this needs to be improved?
             self.log.info('Adding Base Configuration: ', name)
             template.apply('ba_base_conf_rfs-template', vars)
 
             ########## COMMUNITY SET SECTION ########
-            name = "Communityset"+endpoint.csr.device
+            name = "Communityset"+endpoint.csr.device+"-"+endpoint.id
             vars.add('name', name)
             self.log.info('Adding Community Sets: ', name)
             template.apply('ba_rpl_communityset_rfs-template', vars)
 
             ########## PREFIX SET SECTION ########
-            name = "Prefixset"+endpoint.csr.device
+            name = "Prefixset"+endpoint.csr.device+"-"+endpoint.id
             vars.add('name', name)
             self.log.info('Adding Prefix Sets: ', name)
             template.apply('ba_rpl_prefixset_rfs-template', vars)
 
             ########## RPL SECTION ########
-            name = "RPL"+endpoint.csr.device
+            name = "RPL"+endpoint.csr.device+"-"+endpoint.id
             vars.add('name', name)
             self.log.info('Adding RPLs: ', name)
             template.apply('ba_rpl_bgp_rfs-template', vars)
 
             ########## ba-bgp SECTION ########
-            vars.add('m3_area', endpoint.csr.m3_area)
-            name = "BGP-"+endpoint.csr.m3_area+"-"+endpoint.csr.device
+            # vars.add('m3_area', endpoint.csr.m3_area)
+            vars.add('rr1_device_name', endpoint.csr.rr1_device_name)
+            vars.add('rr1_ipv4_address', endpoint.csr.rr1_ipv4_address)
+            vars.add('rr2_device_name', endpoint.csr.rr2_device_name)
+            vars.add('rr2_ipv4_address', endpoint.csr.rr2_ipv4_address)
+            # name = "BGP-"+endpoint.csr.m3_area+"-"+endpoint.csr.device
+            name = "BGP-"+endpoint.csr.device+"-"+endpoint.id
             vars.add('name', name)
             self.log.info('DOING BGP: ', name)
             template.apply('ba_bgp_rfs-template', vars)
@@ -205,6 +211,10 @@ class ServiceCallbacks(Service):
             vars.add('export_rt_index_4', export_rt_index_4)
             vars.add('export_rt_index_5', export_rt_index_5)
             template.apply('ba_vrf_rfs-template', vars)
+
+            ########## IPSLA SECTION ########
+            name = "IPSLA-"+endpoint.csr.device+"-"+str(endpoint.id)
+            template.apply('ba_ipsla_rfs-template', vars)
 
     # The pre_modification() and post_modification() callbacks are optional,
     # and are invoked outside FASTMAP. pre_modification() is invoked before

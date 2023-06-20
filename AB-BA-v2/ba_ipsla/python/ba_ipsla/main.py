@@ -16,44 +16,49 @@ class ServiceCallbacks(Service):
 
         vars = ncs.template.Variables()
         template = ncs.template.Template(service)
-
-        vars.add('as_number', service.as_number)
-        self.log.info('CSR DEVICE: ', service.bgp.csr.device)
-        vars.add('csr_device', service.bgp.csr.device)
-        vars.add('csr_mgmt_ipv4_address', service.bgp.csr.mgmt_ipv4_address)
-        vars.add('csr_neighbor_group_name', "T-RR-NC")
-        vars.add('rr1_ipv4_address', service.bgp.csr.rr1_ipv4_address)
-        vars.add('rr1_neighbor_description', "RR1 is device "+service.bgp.csr.rr1_device_name)
-        vars.add('rr2_ipv4_address', service.bgp.csr.rr2_ipv4_address)
-        vars.add('rr2_neighbor_description', "RR2 is device "+service.bgp.csr.rr2_device_name)
-        template.apply('ba_bgp_csr-template', vars)
-
-        vars.add('agg_neighbor_ipv4_address', service.bgp.csr.mgmt_ipv4_address)
-        vars.add('agg_neighbor_group_name', "T-RR-NC")
-        vars.add('agg_device', service.bgp.csr.rr1_device_name)
-        vars.add('agg_neighbor_description', "I am RR1 for CSR " + service.bgp.csr.device)
-        template.apply('ba_bgp_agg-template', vars)
-        vars.add('agg_device', service.bgp.csr.rr2_device_name)
-        vars.add('agg_neighbor_description', "I am RR2 for CSR " + service.bgp.csr.device)
-        template.apply('ba_bgp_agg-template', vars)
-
-        # 1: i steden for å lage inventory på METRO ring, så vil det i API kallet komme:
-        # hostanvn/device navn på RR1 og RR2 (AGG1 og AGG2)
-        # peer ip adresse på RR1 og RR2 (RR1 på AGG1 og AGG2)
-
-        """ for rr in root.inventory.METRO3Areas.METRO3Area[service.m3_area].RR:
-            self.log.info('RR address: ', rr.RR_ipv4_addr)
-            vars.add('csr_neighbor_ipv4_address', rr.RR_ipv4_addr)
-            vars.add('csr_neighbor_group_name', rr.neighbor_group_name)
-            vars.add('csr_neighbor_description', rr.neighbor_description)
-            template.apply('ba_bgp_csr-template', vars)
-            if not service.only_CSR:
-                vars.add('agg_device', rr.agg_device)
-                self.log.info('AGG DEVICE: ', rr.agg_device)
-                vars.add('agg_neighbor_ipv4_address', service.bgp.csr.mgmt_ipv4_address)
-                vars.add('agg_neighbor_group_name', rr.neighbor_group_name)
-                vars.add('agg_neighbor_description', rr.neighbor_description)
-                template.apply('ba_bgp_agg-template', vars) """
+        vars.add('tos', 0)
+        vars.add('device', service.device)
+        vars.add('count', 1)
+        vars.add('interval', 1)
+        vars.add('buckets', 1)
+        vars.add('interval_time', 1)
+        vars.add('source_port', 65000)
+        vars.add('destination_port', 65000)
+        hostname = service.hostname
+        ipsla_mgmt_address = service.ipsla_mgmt_address
+        for ipsla_op in root.inventory.ipsla_operations.ipsla_operation:
+            vars.add('operation_number', ipsla_op.operation_number)
+            vars.add('operation_type', ipsla_op.operation_type)
+            vars.add('udp_operation_type', ipsla_op.udp_operation_type)
+            vars.add('operation_tag', hostname + "-" + ipsla_op.operation_tag)
+            vars.add('vrf', ipsla_op.vrf)
+            vars.add('source_address', ipsla_mgmt_address)
+            vars.add('set_source_port', ipsla_op.set_source_port)
+            if ipsla_op.set_source_port:
+                vars.add('source_port', ipsla_op.source_port)
+            vars.add('destination_address', ipsla_op.destination_address)
+            vars.add('set_destination_port', ipsla_op.set_destination_port)
+            if ipsla_op.set_destination_port:
+                vars.add('destination_port', ipsla_op.destination_port)
+            vars.add('frequency', ipsla_op.frequency)
+            if ipsla_op.tos_or_not.set_tos:
+                vars.add('set_tos', True)
+                vars.add('tos', ipsla_op.tos_or_not.tos)
+            else:
+                vars.add('set_tos', False)
+            if ipsla_op.jitter_options.packet.set_packet:
+                vars.add('set_packet', True)
+                vars.add('count', ipsla_op.jitter_options.packet.count)
+                vars.add('interval', ipsla_op.jitter_options.packet.interval)
+            else:
+                vars.add('set_packet', False)
+            if ipsla_op.jitter_options.statistics.set_stats:
+                vars.add('set_stats', True)
+                vars.add('buckets', ipsla_op.jitter_options.statistics.buckets)
+                vars.add('interval_time', ipsla_op.jitter_options.statistics.interval_time)
+            else:
+                vars.add('set_stats', False)
+            template.apply('ba_ipsla-template', vars)
 
     # The pre_modification() and post_modification() callbacks are optional,
     # and are invoked outside FASTMAP. pre_modification() is invoked before
@@ -89,7 +94,7 @@ class Main(ncs.application.Application):
         # Service callbacks require a registration for a 'service point',
         # as specified in the corresponding data model.
         #
-        self.register_service('ba_bgp-servicepoint', ServiceCallbacks)
+        self.register_service('ba_ipsla-servicepoint', ServiceCallbacks)
 
         # If we registered any callback(s) above, the Application class
         # took care of creating a daemon (related to the service/action point).

@@ -32,121 +32,16 @@
         <!-- SHOULD THE HOSTNAME BE A VARIBLE? -->
         <hostname xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-hostname-cfg">
           <!-- Name of the device, e.g. mobile-03340-csr1 -->
-          <system-network-name>{base_conf/csr/hostname}</system-network-name>
+          <system-network-name>{/base_conf/csr/hostname}</system-network-name>
         </hostname>
         <fpd xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-8000-fpd-cfg">
           <auto-upgrade>
             <enable/>
           </auto-upgrade>
         </fpd>
-        <routing-policy xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-route-policy-cfg">
-          <sets>
-            <prefix-sets>
-              <prefix-set>
-                <set-name>PARTNER_ENV</set-name>
-                <rpl-prefix-set>prefix-set PARTNER_ENV
-                  end-set
-                </rpl-prefix-set>
-              </prefix-set>
-              <prefix-set>
-                <set-name>PARTNER_AR_MGMT</set-name>
-                <rpl-prefix-set>prefix-set PARTNER_AR_MGMT
-                  end-set
-                </rpl-prefix-set>
-              </prefix-set>
 
-              <!-- <prefix-set>
-                <set-name>PFX-uMPLS_LOOPBACKS</set-name>
-                <rpl-prefix-set>prefix-set PFX-uMPLS_LOOPBACKS
-                    10.161.0.0/16 le 32,
-                    77.110.255.0/24 le 32,
-                    213.167.115.0/24 le 32
-                  end-set
-                </rpl-prefix-set>
-              </prefix-set> -->
+        <!-- 2: fjerne route-policy CONNECTED2ISIS fra config (skal ikke brukes), samme med PARTNER_ENV -->
 
-            </prefix-sets>
-
-            <!-- <community-sets>
-              <community-set>
-                <set-name>C-uMPLS</set-name>
-                <rpl-community-set>community-set C-uMPLS
-                    29695:33107
-                  end-set
-                </rpl-community-set>
-              </community-set>
-            </community-sets> -->
-
-          </sets>
-          <route-policies>
-
-            <!-- <route-policy>
-              <route-policy-name>RPL-uMPLS_IN</route-policy-name>
-              <rpl-route-policy>route-policy RPL-uMPLS_IN
-                if destination in PFX-uMPLS_LOOPBACKS then
-                  if community matches-any C-uMPLS then
-                    set local-preference 3107
-                    pass
-                  else
-                    drop
-                  endif
-                else
-                  drop
-                endif
-              end-policy
-              </rpl-route-policy>
-            </route-policy>
-            <route-policy>
-              <route-policy-name>RPL-uMPLS_OUT</route-policy-name>
-              <rpl-route-policy>route-policy RPL-uMPLS_OUT
-                if destination in PFX-uMPLS_LOOPBACKS then
-                  if community matches-any C-uMPLS then
-                    set local-preference 3107
-                    pass
-                  else
-                    drop
-                  endif
-                else
-                  drop
-                endif
-              end-policy
-              </rpl-route-policy>
-            </route-policy> -->
-
-            <route-policy>
-              <route-policy-name>CONNECTED2ISIS</route-policy-name>
-              <rpl-route-policy>route-policy CONNECTED2ISIS
-                if destination in PARTNER_AR_MGMT then
-                  pass
-                elseif destination in PARTNER_ENV then
-                  pass
-                else
-                  drop
-                endif
-              end-policy
-              </rpl-route-policy>
-            </route-policy>
-
-            <!-- <route-policy>
-              <route-policy-name>RPL-uMPLS_ADVERTISE</route-policy-name>
-              <rpl-route-policy>route-policy RPL-uMPLS_ADVERTISE
-                set community C-uMPLS additive
-                set local-preference 3107
-              end-policy
-              </rpl-route-policy>
-            </route-policy>
-            <route-policy>
-              <route-policy-name>RPL-uMPLS_PIC_INSTALL</route-policy-name>
-              <rpl-route-policy>route-policy RPL-uMPLS_PIC_INSTALL
-                if community matches-any C-uMPLS then
-                  set path-selection backup 1 install
-                endif
-              end-policy
-              </rpl-route-policy>
-            </route-policy> -->
-
-          </route-policies>
-        </routing-policy>
         <clock xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-clock-cfg">
           <timezone>
           <Europe-Oslo/>
@@ -1133,13 +1028,14 @@
           </interface>
           <interface>
 
-          <!-- SHOULD THIS INTERFACE ADDRESS AND DESCRIPTION BE VARIABLES? -->
+          <!-- 6: Loopback 100 vil komme fra L3VPN API kall (ip adresse) "ex ip sla mgmt" -->
           <interface-name>Loopback100</interface-name>
           <vrf xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-if-vrf-cfg">mobile-101</vrf>
           <ipv4>
             <addresses xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-if-ip-address-cfg">
               <address>
-                <address>10.254.10.2</address>
+                <!-- <address>10.254.10.2</address> -->
+                <address>{$ipsla_mgmt_address}</address>
                 <netmask>255.255.255.255</netmask>
               </address>
             </addresses>
@@ -1147,12 +1043,12 @@
           </interface>
           <interface>
           <interface-name>TenGigE0/0/0/24</interface-name>
-          <description>ID: S400093075</description>
-          <mtu>9180</mtu>
+            <description>ID: S400093075</description>
+            <mtu>9180</mtu>
           </interface>
 
-          <!-- HOW SHOULD THIS INTERFACE BE HANDLED? -->
-          <interface>
+          <!-- 5: fjerne uplink config fra bases -->
+          <!-- <interface>
             <interface-name>TenGigE0/0/0/31</interface-name>
             <description>TO: WAN LID: 48005006</description>
             <mtu>9180</mtu>
@@ -1167,7 +1063,7 @@
             <lldp xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-lldp-cfg">
               <enable/>
             </lldp>
-          </interface>
+          </interface> -->
           <interface>
             <interface-name>MgmtEth0/RP0/CPU0/0</interface-name>
             <shutdown/>
@@ -1181,8 +1077,8 @@
           </events>
         </logging>
 
-        <!-- SHOULD IPSLA'S BE PART OF THE VPN CONFIGURATION? -->
-        <ipsla xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-ipsla-cfg">
+        <!-- ipsla is moved to the RFS ba_ipsla. Point 7 in the 8 point list -->
+        <!-- <ipsla xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-ipsla-cfg">
           <operations>
           <operation>
             <operation-number>1</operation-number>
@@ -1193,12 +1089,12 @@
               <vrf>mobile-101</vrf>
               <source>
                 <address>
-                <ipv4-address>10.254.10.2</ipv4-address>
+                <ipv4-address>{$ipsla_mgmt_address}</ipv4-address>
                 </address>
-                <port>50104</port>
+                <port>{$source_port_1}</port>
               </source>
               <destination>
-                <address>10.254.1.1</address>
+                <address>{$dest_address_1}</address>
                 <port>1342</port>
               </destination>
               <tos>0</tos>
@@ -1392,30 +1288,10 @@
             </operation>
           </operations>
           </schedule>
-        </ipsla>
+        </ipsla> -->
 
-        <!-- SHOULD THE STATIC ROUTE ADDRESS BE A VARIABLE? -->
-        <router xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-router-static-cfg">
-          <static>
-          <address-family>
-            <ipv4>
-            <unicast>
-              <prefixes>
-              <prefix>
-                <prefix-address>0.0.0.0</prefix-address>
-                <prefix-length>0</prefix-length>
-                <nexthop-addresses>
-                <nexthop-address>
-                  <address>10.162.165.0</address>
-                </nexthop-address>
-                </nexthop-addresses>
-              </prefix>
-              </prefixes>
-            </unicast>
-            </ipv4>
-          </address-family>
-          </static>
-        </router>
+        <!-- 4: fjerne statis rute fra base -->
+
         <ftp xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-ftp-tftp-cfg">
           <client>
           <vrfs>

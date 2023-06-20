@@ -6,6 +6,7 @@
         <device>{$csr_device}</device>
         <hostname>{$csr_hostname}</hostname>
         <mgmt_ipv4_address>{$csr_mgmt_ipv4_address}</mgmt_ipv4_address>
+        <ipsla_mgmt_address>{$ipsla_mgmt_address}</ipsla_mgmt_address>
       </csr>
     </base_conf>
   </ba_base_conf>

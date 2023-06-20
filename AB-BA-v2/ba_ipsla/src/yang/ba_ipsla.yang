@@ -1,0 +1,52 @@
+module ba_ipsla {
+
+  namespace "http://example.com/ba_ipsla";
+  prefix ba_ipsla;
+
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import tailf-common {
+    prefix tailf;
+  }
+  import tailf-ncs {
+    prefix ncs;
+  }
+
+  description
+    "BA IPSLA configuration";
+
+  revision 2023-06-20 {
+    description
+      "Initial revision.";
+  }
+
+  list ba_ipsla {
+    description "This is an RFS skeleton service";
+
+    key name;
+    leaf name {
+      tailf:info "Unique service id";
+      tailf:cli-allow-range;
+      type string;
+    }
+
+    uses ncs:service-data;
+    ncs:servicepoint ba_ipsla-servicepoint;
+
+    leaf device {
+      type leafref {
+        path "/ncs:devices/ncs:device/ncs:name";
+      }
+    }
+    leaf hostname {
+      type string;
+      mandatory true;
+    }
+    leaf ipsla_mgmt_address {
+      tailf:info "IP address of the Loopback interface used for IPSLA Mgmt";
+      type inet:ipv4-address;
+      mandatory true;
+    }
+  }
+}

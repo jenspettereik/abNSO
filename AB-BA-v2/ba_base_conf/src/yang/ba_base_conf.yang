@@ -45,9 +45,12 @@ module ba_base_conf {
           tailf:info "Name of the device fx mobile-03340-csr1";
           type string;
         }
-
         leaf mgmt_ipv4_address {
-          tailf:info "IP address of a Loopback interface";
+          tailf:info "IP address of Loopback interface 0";
+          type inet:ipv4-address;
+        }
+        leaf ipsla_mgmt_address {
+          tailf:info "IP address of the Loopback interface used for IPSLA Mgmt";
           type inet:ipv4-address;
         }
       }

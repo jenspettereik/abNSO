@@ -1,0 +1,124 @@
+<config-template xmlns="http://tail-f.com/ns/config/1.0">
+  <devices xmlns="http://tail-f.com/ns/ncs">
+    <device>
+      <name>{$device}</name>
+      <config>
+        <ipsla xmlns="http://cisco.com/ns/yang/Cisco-IOS-XR-um-ipsla-cfg">
+          <operations>
+            <operation>
+              <operation-number>{$operation_number}</operation-number>
+              <type>
+                <?if {$operation_type = 'udp'}?>
+                  <udp>
+                    <?if {$udp_operation_type = 'echo'}?>
+                      <echo>
+                        <tag>{$operation_tag}</tag>
+                        <vrf>{$vrf}</vrf>
+                        <source>
+                          <address>
+                            <ipv4-address>{$source_address}</ipv4-address>
+                          </address>
+                          <?if {$set_source_port = "true"}?>
+                            <port>{$source_port}</port>
+                          <?end?>
+                        </source>
+                        <destination>
+                          <address>{$destination_address}</address>
+                          <?if {$set_destination_port = "true"}?>
+                            <port>{$destination_port}</port>
+                          <?end?>
+                        </destination>
+                        <?if {$set_tos = "true"}?>
+                          <tos>{$tos}</tos>
+                        <?end?>
+                        <frequency>{$frequency}</frequency>
+                      </echo>
+                    <?else?>
+                      <jitter>
+                        <tag>{$operation_tag}</tag>
+                        <vrf>{$vrf}</vrf>
+                        <source>
+                          <address>
+                            <ipv4-address>{$source_address}</ipv4-address>
+                          </address>
+                          <?if {$set_source_port = "true"}?>
+                            <port>{$source_port}</port>
+                          <?end?>
+                        </source>
+                        <destination>
+                          <address>{$destination_address}</address>
+                          <?if {$set_destination_port = "true"}?>
+                            <port>{$destination_port}</port>
+                          <?end?>
+                        </destination>
+                        <?if {$set_packet = "true"}?>
+                          <packet>
+                            <count>{$count}</count>
+                            <interval>{$interval}</interval>
+                          </packet>
+                        <?end?>
+                        <?if {$set_stats = "true"}?>
+                          <statistics>
+                            <intervals>
+                              <interval>
+                                <interval-time>{$interval_time}</interval-time>
+                                <buckets>{$buckets}</buckets>
+                              </interval>
+                            </intervals>
+                          </statistics>
+                        <?end?>
+                        <?if {$set_tos = "true"}?>
+                          <tos>{$tos}</tos>
+                        <?end?>
+                        <frequency>{$frequency}</frequency>
+                      </jitter>
+                    <?end?>
+                  </udp>
+                <?end?>
+                <?if {$operation_type = 'icmp'}?>
+                  <icmp>
+                    <?if {$udp_operation_type = 'echo'}?>
+                      <echo>
+                        <!-- NOT IMPLEMENTED -->
+                      </echo>
+                    <?end?>
+                    <?if {$udp_operation_type = 'path-echo'}?>
+                      <path-echo>
+                        <!-- NOT IMPLEMENTED -->
+                      </path-echo>
+                    <?end?>
+                    <?if {$udp_operation_type = 'path-jitter'}?>
+                      <path-jitter>
+                        <!-- NOT IMPLEMENTED -->
+                      </path-jitter>
+                    <?end?>
+                  </icmp>
+                <?end?>
+                <?if {$operation_type = 'mpls'}?>
+                  <mpls>
+                    <lsp>
+                      <!-- NOT IMPLEMENTED -->
+                    </lsp>
+                  </mpls>
+                <?end?>
+              </type>
+            </operation>
+          </operations>
+          <schedule>
+            <operations>
+              <operation>
+                <operation-number>{$operation_number}</operation-number>
+                <start-time>
+                  <now/>
+                </start-time>
+                <life>
+                  <forever/>
+                </life>
+              </operation>
+            </operations>
+          </schedule>
+        </ipsla>
+      </config>
+    </device>
+  </devices>
+</config-template>

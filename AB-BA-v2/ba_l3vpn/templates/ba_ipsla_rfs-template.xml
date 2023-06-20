@@ -1,0 +1,8 @@
+<config-template xmlns="http://tail-f.com/ns/config/1.0">
+  <ba_ipsla xmlns="http://example.com/ba_ipsla">
+    <name>{$name}</name>
+    <device>{$csr_device}</device>
+    <hostname>{$csr_hostname}</hostname>
+    <ipsla_mgmt_address>{$ipsla_mgmt_address}</ipsla_mgmt_address>
+  </ba_ipsla>
+</config-template>

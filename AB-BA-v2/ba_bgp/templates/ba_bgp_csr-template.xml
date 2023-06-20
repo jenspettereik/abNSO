@@ -101,11 +101,18 @@
               </neighbor-groups>
               <neighbors>
                 <neighbor>
-                  <neighbor-address>{$csr_neighbor_ipv4_address}</neighbor-address>
+                  <neighbor-address>{$rr1_ipv4_address}</neighbor-address>
                   <use>
                     <neighbor-group>{$csr_neighbor_group_name}</neighbor-group>
                   </use>
-                  <description>{$csr_neighbor_description}</description>
+                  <description>{$rr1_neighbor_description}</description>
+                </neighbor>
+                <neighbor>
+                  <neighbor-address>{$rr2_ipv4_address}</neighbor-address>
+                  <use>
+                    <neighbor-group>{$csr_neighbor_group_name}</neighbor-group>
+                  </use>
+                  <description>{$rr2_neighbor_description}</description>
                 </neighbor>
               </neighbors>
             </as>

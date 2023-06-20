@@ -16,6 +16,7 @@ class ServiceCallbacks(Service):
 
         vars = ncs.template.Variables()
         template = ncs.template.Template(service)
+        vars.add('ipsla_mgmt_address', service.base_conf.csr.ipsla_mgmt_address)
         vars.add('mgmt_ipv4_address', service.base_conf.csr.mgmt_ipv4_address)
         self.log.info('Mgmt IPv4 Address: ', service.base_conf.csr.mgmt_ipv4_address)
         template.apply('ba_base_conf-template', vars)

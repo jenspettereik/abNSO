@@ -19,11 +19,41 @@ class ServiceCallbacks(Service):
 
         # Start by adding the MPLS_LOOPBACKS ACL on csr and er
         vars.add('acl_name', service.acl_name)
+        vars.add('source_ipv4_addr', "1.2.3.4")
+        vars.add('source_prefix_length', 24)
+        vars.add('dest_ipv4_addr', "4.3.2.1")
+        vars.add('dest_prefix_length', 24)
+        vars.add('source_scope', "any")
+        vars.add('dest_scope', "any")
         for seq in root.inventory.access_lists.access_list[service.acl_name].sequence:
             vars.add('sequence_number', seq.sequence_number)
+            # self.log.info('sequence number: ', seq.sequence_number)
+            vars.add('permit_or_deny', seq.permit_or_deny)
+            # self.log.info('permit_or_deny: ', seq.permit_or_deny)
             vars.add('protocol', seq.protocol)
-            vars.add('ipv4_addr', seq.ipv4_addr)
-            vars.add('prefix_length', seq.prefix_length)
+            # self.log.info('protocol: ', seq.protocol)
+            for statement in seq.statements:
+                subject = statement.subject
+                vars.add('subject', subject)
+                # self.log.info('subject: ', subject)
+                scope = statement.scope
+                # self.log.info('scope: ', scope)
+                if subject == "source":
+                    vars.add('source_scope', scope)
+                    if scope != "any":
+                        vars.add('source_ipv4_addr', statement.ipv4_addr)
+                        # self.log.info('source_ipv4_addr: ', statement.ipv4_addr)
+                        if scope == "address":
+                            vars.add('source_prefix_length', statement.prefix_length)
+                            # self.log.info('source_prefix_length: ', statement.prefix_length)
+                else:
+                    vars.add('dest_scope', scope)
+                    if scope != "any":
+                        vars.add('dest_ipv4_addr', statement.ipv4_addr)
+                        # self.log.info('dest_ipv4_addr: ', statement.ipv4_addr)
+                        if scope == "address":
+                            vars.add('dest_prefix_length', statement.prefix_length)
+                            # self.log.info('dest_prefix_length: ', statement.prefix_length)
             vars.add('device', service.mpls.csr.device)
             template.apply('ba_mpls_acl-template', vars)
             if not service.only_CSR:

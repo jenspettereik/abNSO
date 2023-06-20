@@ -10,16 +10,63 @@
               <sequences>
                 <sequence>
                   <sequence-number>{$sequence_number}</sequence-number>
-                  <permit>
-                    <protocol>{$protocol}</protocol>
-                    <source>
-                      <address>{$ipv4_addr}</address>
-                      <prefix-length>{$prefix_length}</prefix-length>
-                    </source>
-                    <destination>
-                      <any/>
-                    </destination>
-                  </permit>
+                  <?if {$permit_or_deny = 'permit'}?>
+                    <permit>
+                      <protocol>{$protocol}</protocol>
+                      <source>
+                        <?if {$source_scope = 'any'}?>
+                          <any/>
+                        <?else?>
+                          <?if {$source_scope = 'address'}?>
+                            <address>{$source_ipv4_addr}</address>
+                            <prefix-length>{$source_prefix_length}</prefix-length>
+                          <?else?>
+                            <host>{$source_ipv4_addr}</host>
+                          <?end?>
+                        <?end?>
+                      </source>
+                      <destination>
+                        <?if {$dest_scope = 'any'}?>
+                          <any/>
+                        <?else?>
+                          <?if {$dest_scope = 'address'}?>
+                            <address>{$dest_ipv4_addr}</address>
+                            <prefix-length>{$dest_prefix_length}</prefix-length>
+                          <?else?>
+                            <host>{$dest_ipv4_addr}</host>
+                          <?end?>
+                        <?end?>
+                      </destination>
+                    </permit>
+                  <?else?>
+                    <deny>
+                      <protocol>{$protocol}</protocol>
+                      <source>
+                        <?if {$source_scope = 'any'}?>
+                          <any/>
+                        <?else?>
+                          <?if {$source_scope = 'address'}?>
+                            <address>{$source_ipv4_addr}</address>
+                            <prefix-length>{$source_prefix_length}</prefix-length>
+                          <?else?>
+                            <host>{$source_ipv4_addr}</host>
+                          <?end?>
+                        <?end?>
+                      </source>
+                      <destination>
+                        <?if {$dest_scope = 'any'}?>
+                          <any/>
+                        <?else?>
+                          <?if {$dest_scope = 'address'}?>
+                            <address>{$dest_ipv4_addr}</address>
+                            <prefix-length>{$dest_prefix_length}</prefix-length>
+                          <?else?>
+                            <host>{$dest_ipv4_addr}</host>
+                          <?end?>
+                        <?end?>
+                      </destination>
+                    </deny>
+                  <?end?>
                 </sequence>
               </sequences>
             </access-list>

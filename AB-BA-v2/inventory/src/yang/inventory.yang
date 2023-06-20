@@ -104,6 +104,7 @@ module inventory {
       }
     }
 
+    // The access_lists inventory does not at all cover all access-list options in IOS-XR!!
     container access_lists {
       list access_list {
         key acl_name;
@@ -122,13 +123,35 @@ module inventory {
             }
           }
           leaf protocol {
-            type string;
+            type enumeration { // The list is not complete!!
+              enum ipv4;
+              enum tcp;
+              enum udp;
+            }
           }
-          leaf ipv4_addr {
-            type inet:ipv4-address;
-          }
-          leaf prefix-length {
-            type uint16;
+          list statements {
+            key subject;
+            leaf subject {
+              type enumeration { // The list is not complete!!
+                enum source;
+                enum destination;
+              }
+            }
+            leaf scope {
+              type enumeration { // The list is not complete!!
+                enum any;
+                enum address;
+                enum host;
+              }
+            }
+            leaf ipv4_addr {
+              tailf:display-when "../scope != 'any'";
+              type inet:ipv4-address;
+            }
+            leaf prefix-length {
+              tailf:display-when "../scope = 'address'";
+              type uint16;
+            }
           }
         }
       }
@@ -290,7 +313,7 @@ module inventory {
                 }
               }
               list mpls_labels {
-                tailf:display-when "../mpls_subject1 = 'experimental'";
+                // tailf:display-when "../mpls_subject1 = 'experimental'";
                 key mpls_label;
                 leaf mpls_label {
                   type uint8 {
@@ -371,6 +394,124 @@ module inventory {
               }
             }
           }
+        }
+      }
+    }
+
+    container ipsla_operations {
+      list ipsla_operation {
+        key operation_tag;
+        leaf operation_tag {
+          tailf:info "Here only the last part of the tag should be defined, fx 'best-effort-echo'. The hostname will be added by the python logic.";
+          type string;
+        }
+        leaf operation_number {
+          type uint8;
+          mandatory true;
+        }
+        leaf operation_type {
+          type enumeration {
+            enum udp;
+            enum icmp;
+            enum mpls;
+          }
+          mandatory true;
+        }
+        leaf udp_operation_type {
+          tailf:info "If udp is selected as operation_type, select if it should be echo or jitter.";
+          tailf:display-when "../operation_type = 'udp'";
+          type enumeration {
+            enum echo;
+            enum jitter;
+          }
+        }
+        leaf icmp_operation_type {
+          tailf:info "If icmp is selected as operation_type, select between three. NB: ICMP is not implemented in template!!";
+          tailf:display-when "../operation_type = 'icmp'";
+          type enumeration {
+            enum echo;
+            enum path-echo;
+            enum path-jitter;
+          }
+        }
+        leaf mpls_operation_type {
+          tailf:display-when "../operation_type = 'mpls'";
+          tailf:info "If mpls is selected as operation_type, select lsp. NB: MPLS is not implemented in template!!";
+          type enumeration {
+            enum lsp;
+          }
+        }
+        container jitter_options {
+          tailf:info "If udp jitter is selected, you have the option to set packet and/or statistics values.";
+          tailf:display-when "../udp_operation_type = 'jitter'";
+          container packet {
+            leaf set_packet {
+              type boolean;
+              default false;
+            }
+            leaf count {
+              type uint8;
+            }
+            leaf interval {
+              type uint32;
+            }
+          }
+          container statistics {
+            leaf set_stats {
+              type boolean;
+              default false;
+            }
+            leaf buckets {
+              type uint8 {
+                range 1..100;
+              }
+            }
+            leaf interval_time {
+              type uint32;
+            }
+          }
+        }
+        leaf vrf {
+          type string;
+        }
+        leaf source_address {
+          tailf:info "Source address. No matter what you set it to in this inventory, it will be replaced by the ipsla_mgmt_address - Loopback100 address";
+          type inet:ipv4-address;
+        }
+        leaf set_source_port {
+          tailf:info "If the source port is not needed, please set this to false. If you define source port, you do not need to touch set_source_port. Default value is true.";
+          type boolean;
+          default true;
+        }
+        leaf source_port {
+          type uint16;
+          default 0;
+        }
+        leaf destination_address {
+          tailf:info "Destination address. Destination ip is static";
+          type inet:ipv4-address;
+          default 10.254.1.1;
+        }
+        leaf set_destination_port {
+          tailf:info "If the destination port is not needed, please set this to false. If you define destination port, you do not need to touch set_destination_port. Default value is true.";
+          type boolean;
+          default true;
+        }
+        leaf destination_port {
+          type uint16;
+          default 0;
+        }
+        container tos_or_not {
+          leaf set_tos {
+            tailf:info "Please select if tos must be applied.";
+            type boolean;
+          }
+          leaf tos {
+            type uint8;
+          }
+        }
+        leaf frequency {
+          type uint16;
         }
       }
     }

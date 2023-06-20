@@ -19,6 +19,11 @@ module ba_l3vpn {
   description
     "The Customer Facing Service CFS for doing BA L3VPN Services";
 
+  revision 2023-06-16 {
+    description
+      "Implemented the eight point list, incl. Introduced ipsla_mgmt_address for Loopback100 and introduced the IPSLA rfs.";
+  }
+
   revision 2023-04-02 {
     description
       "Introduced a name as service id, ie vrf_name is no longer the service key. Introduced the base configuration RFS, which configures all the remaining configuration not covered by the other RFSs";
@@ -74,17 +79,19 @@ module ba_l3vpn {
   list ba_l3vpn {
     description "This is an RFS skeleton service";
 
-    key name;
+    // 8: gjør om sånn at vi bruker 1 vpn/vrf = 1 service. post kall for å bygge tjenste, patch kal for å legge på endepunkter
+    /* key name;
     leaf name {
       tailf:info "Unique service id";
       tailf:cli-allow-range;
       type string;
-    }
+    } */
 
+    key vrf_name;     // According to point 8.
     leaf vrf_name {
       tailf:info "Unique VPN service id";
       type string;
-      mandatory true;
+      // mandatory true;      // According to point 8.
     }
 
     leaf only_CSR {
@@ -99,7 +106,7 @@ module ba_l3vpn {
     list endpoint {
       key "id";
       leaf id {
-        tailf:info "Endpoint identifier";
+        tailf:info "Endpoint identifier. It should be the number of the mobile CSR, fx '03340'. It will be added to the hostname, so hostname will be fx 'mobile-03340-csr1'";
         type string;
       }
       leaf as_number {
@@ -167,12 +174,16 @@ module ba_l3vpn {
           tailf:info "IP address of a Loopback interface";
           type inet:ipv4-address;
         }
+        leaf ipsla_mgmt_address {
+          tailf:info "IP address of the Loopback interface used for IPSLA Mgmt";
+          type inet:ipv4-address;
+        }
         leaf police_value {
-          tailf:info "Bandwidth to be policed on the VRF interface";
+          tailf:info "Bandwidth to be policed on the VRF interface. This overwrites the value defined in inventory.";
           type uint64;
         }
         leaf police_unit {
-          tailf:info "Unit for the bandwidth to be policed on the VRF interface";
+          tailf:info "Unit for the bandwidth to be policed on the VRF interface. This overwrites the value defined in inventory.";
           type enumeration {
             enum percent;
             enum bps;
@@ -205,11 +216,36 @@ module ba_l3vpn {
           type string;
           default "RPL-uMPLS_OUT";
         } */
-        leaf m3_area {
+        
+        // 1: i steden for å lage inventory på METRO ring, så vil det i API kallet komme:
+        // hostanvn/device navn på RR1 og RR2 (AGG1 og AGG2)
+        // peer ip adresse på RR1 og RR2 (RR1 på AGG1 og AGG2)
+
+        /* leaf m3_area {
           tailf:info "Get the list of RR neighbors for the metro area";
           type leafref {
             path "/inventory:inventory/inventory:METRO3Areas/inventory:METRO3Area/inventory:metro3_area";
           }
+        } */
+        leaf rr1_device_name {
+          tailf:info "Device name of RR1";
+          type leafref {
+            path "/ncs:devices/ncs:device/ncs:name";
+          }
+        }
+        leaf rr1_ipv4_address {
+          tailf:info "IP address of RR1";
+          type inet:ipv4-address;
+        }
+        leaf rr2_device_name {
+          tailf:info "Device name of RR2";
+          type leafref {
+            path "/ncs:devices/ncs:device/ncs:name";
+          }
+        }
+        leaf rr2_ipv4_address {
+          tailf:info "IP address of RR2";
+          type inet:ipv4-address;
         }
       }
 

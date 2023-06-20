@@ -26,14 +26,14 @@
                   <local>
                     <allocate>
                       <for>
-                        <access-list>MPLS_LOOPBACKS</access-list>
+                        <access-list>{$acl_name}</access-list>
                       </for>
                     </allocate>
                     <advertise>
                       <disable/>
                       <for>
                         <access-lists>
-                          <access-list-name>MPLS_LOOPBACKS</access-list-name>
+                          <access-list-name>{$acl_name}</access-list-name>
                         </access-lists>
                       </for>
                       <interfaces>

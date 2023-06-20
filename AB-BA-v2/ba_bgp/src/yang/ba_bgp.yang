@@ -19,6 +19,11 @@ module ba_bgp {
   description
     "RFS to do BGP configuration";
 
+  revision 2023-06-20 {
+    description
+      "1: i steden for å lage inventory på METRO ring, så vil det i API kallet komme: hostanvn/device navn på RR1 og RR2 (AGG1 og AGG2), peer ip adresse på RR1 og RR2 (RR1 på AGG1 og AGG2)";
+  }
+
   revision 2023-02-24 {
     description
       "only_CSR added.";
@@ -58,12 +63,16 @@ module ba_bgp {
       type uint16;
       default 29695;
     }
-    leaf m3_area {
+        // 1: i steden for å lage inventory på METRO ring, så vil det i API kallet komme:
+        // hostanvn/device navn på RR1 og RR2 (AGG1 og AGG2)
+        // peer ip adresse på RR1 og RR2 (RR1 på AGG1 og AGG2)
+
+    /* leaf m3_area {
       tailf:info "Get the list of RR neighbors for the metro area";
       type leafref {
         path "/inventory:inventory/inventory:METRO3Areas/inventory:METRO3Area/inventory:metro3_area";
       }
-    }
+    } */
 
     container bgp {
 
@@ -77,63 +86,27 @@ module ba_bgp {
           tailf:info "IP address of a Loopback interface";
           type inet:ipv4-address;
         }
-        /* leaf paths_route_policy {
-          tailf:info "e.g. RPL-uMPLS_PIC_INSTALL";
-          type string;
-          default "RPL-uMPLS_PIC_INSTALL";
-        }
-        leaf networks_route_policy {
-          tailf:info "e.g. RPL-uMPLS_ADVERTISE";
-          type string;
-          default "RPL-uMPLS_ADVERTISE";
-        }
-        leaf ng_route_policy_in {
-          tailf:info "e.g. RPL-uMPLS_IN";
-          type string;
-          default "RPL-uMPLS_IN";
-        }
-        leaf ng_route_policy_out {
-          tailf:info "e.g. RPL-uMPLS_OUT";
-          type string;
-          default "RPL-uMPLS_OUT";
-        } */
-        /* leaf neighbor_ipv4_address {
-          tailf:info "IP address of a neighbor RR. Used in case the RR inventory is in the ba_l3vpn CFS";
-          type inet:ipv4-address;
-        }
-        leaf neighbor_group_name {
-          tailf:info "Name of the neighbor group to which the RR belongs. Used in case the RR inventory is in the ba_l3vpn CFS";
-          type string;
-          default "T-RR-NC";
-        }
-        leaf neighbor_description {
-          tailf:info "Description of the neighbor RR. Used in case the RR inventory is in the ba_l3vpn CFS";
-          type string;
-          default "### ALL iBGP SESSIONS ###";
-        } */
-      }
-
-      /* container agg {
-        leaf device {
+        leaf rr1_device_name {
+          tailf:info "Device name of RR1";
           type leafref {
             path "/ncs:devices/ncs:device/ncs:name";
           }
         }
-        leaf neighbor_ipv4_address {
-          tailf:info "IP address of a neighbor RR. Used in case the RR inventory is in the ba_l3vpn CFS";
+        leaf rr1_ipv4_address {
+          tailf:info "IP address of RR1";
           type inet:ipv4-address;
         }
-        leaf neighbor_group_name {
-          tailf:info "Name of the neighbor group to which the RR belongs. Used in case the RR inventory is in the ba_l3vpn CFS";
-          type string;
-          default "T-RR-NC";
+        leaf rr2_device_name {
+          tailf:info "Device name of RR2";
+          type leafref {
+            path "/ncs:devices/ncs:device/ncs:name";
+          }
         }
-        leaf neighbor_description {
-          tailf:info "Description of the neighbor RR. Used in case the RR inventory is in the ba_l3vpn CFS";
-          type string;
-          default "### ALL iBGP SESSIONS ###";
+        leaf rr2_ipv4_address {
+          tailf:info "IP address of RR2";
+          type inet:ipv4-address;
         }
-      } */
+      }
     }
   }
 }
